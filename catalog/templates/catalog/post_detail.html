@@ -30,20 +30,20 @@
                 <div class="container">
                     <div class="card-footer">
                         <div class="row">
-                            <div class="col-6">
-                                <a class="p-1 btn btn-outline-primary w-100" href="{% url 'catalog:update_post' object.pk %}"><strong>Изменить</strong></a>
+                            <div class="col-6 text-center">
+                                <a class="p-1 btn btn-outline-primary w-75" href="{% url 'catalog:update_post' object.pk %}"><strong>Изменить</strong></a>
                             </div>
                             {% if not perms.catalog.management_posts  %}
-                            <div class="col-6">
-                                <a class="p-1 btn btn-outline-danger w-100" href="{% url 'catalog:delete_post' object.pk %}"><strong>Удалить</strong></a>
+                            <div class="col-6 text-center">
+                                <a class="p-1 btn btn-outline-danger w-75" href="{% url 'catalog:delete_post' object.pk %}"><strong>Удалить</strong></a>
                             </div>
                                 {% endif %}
                         {% if perms.catalog.management_posts %}
                             <div class="col-6 text-center">
                             {% if object.banned == 'одобрено модератором' %}
-                                <a class="p-1 btn btn-outline-danger w-100" href="{% url 'users:post-ban' object.pk %}"><strong>Забанить</strong></a>
+                                <a class="p-1 btn btn-outline-danger w-75" href="{% url 'users:post-ban' object.pk %}"><strong>Забанить</strong></a>
                             {% else %}
-                                <a class="p-1 btn btn-outline-success w-100" href="{% url 'users:post-ban' object.pk %}"><strong>Разбанить</strong></a>
+                                <a class="p-1 btn btn-outline-success w-75" href="{% url 'users:post-ban' object.pk %}"><strong>Разбанить</strong></a>
                             {% endif %}
                             </div>
                         {% endif %}

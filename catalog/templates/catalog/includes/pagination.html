@@ -8,10 +8,6 @@
                         <a class="page-link" aria-label="Previous" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">&laquo;</a>
                     </span>
                 </li>
-            {% else %}
-                <li>
-                    <span aria-hidden="true"><a class="page-link" aria-label="Previous" href="#">&laquo;</a></span>
-                </li>
             {% endif %}
             {% for pn in paginator.page_range %}
                 {% if page_obj.number == pn %}
@@ -31,10 +27,6 @@
                     <span>
                         <a class="page-link" aria-label="Previous" href="{{ request.path }}?page={{ page_obj.next_page_number }}">&raquo;</a>
                     </span>
-                </li>
-            {% else %}
-                <li class="page-item">
-                    <span><a class="page-link" aria-label="Previous" href="#  ">&raquo;</a></span>
                 </li>
             {% endif %}
         </ul>

@@ -9,6 +9,7 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ('email',)
 
     def get_form(self, request, obj=None, **kwargs):
+
         form = super().get_form(request, obj, **kwargs)
         disabled_fields = set()
         disabled_fields |= {

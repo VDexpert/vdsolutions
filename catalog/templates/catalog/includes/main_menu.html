@@ -2,32 +2,45 @@
 {% load static %}
 {% load catalog_filters %}
 
-<nav class="container">
-    <div class="row">
-        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-             <a class="p-2 btn btn-outline-primary w-100" href="{% url 'catalog:home' %}"><strong>Каталог</strong></a>
-        </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-            <a class="p-2 btn btn-outline-primary w-100" href="{% url 'catalog:post_list' %}"><strong>Блог</strong></a>
-        </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-            <a class="p-2 btn btn-outline-primary w-100" href="{% url 'catalog:contacts' %}"><strong>Контакты</strong></a>
-        </div>
-        {% if not user.is_authenticated %}
-            <div class="col-lg-6 col-md-3 col-sm-6 col-xs-6">
-                <a class="p-2 btn btn-outline-dark w-30 float-end" href="{% url 'users:login' %}"><strong>Войти</strong></a>
-            </div>
-        {% else %}
-            <div class="col-lg-6 col-md-2 col-sm-6 col-xs-6">
-                <div class="row float-end">
-                    {% if perms.catalog.management_category or perms.management_posts %}
-                    <div class="col-6"><a href="{% url 'users:user_posts' %}"><img src="{% static 'img/profile.png' %}" title="Перейти в профиль"></a></div>
-                {% else %}
-                    <div class="col-6"><a class="img-fluid" href="{% url 'users:user_products' %}"><img src="{% static 'img/profile.png' %}" title="Перейти в профиль"></a></div>
-                {% endif %}
-                    <div class="col-6"><a class="img-fluid" href="{% url 'users:logout' %}"><img src="{% static 'img/exit.png' %}" title="Выйти"></a></div>
-                </div>
-            </div>
-        {% endif %}
+<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+  <div class="container-fluid">
+   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="{% url 'catalog:home' %}"><img src="{% static "img/logo.png" %}" title="Skystore - software hub"></a>
+   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'catalog:home' %}">{% if request.path == '/' %}<strong class="text-primary">Каталог</strong>{% else %}Каталог{% endif %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'catalog:post_list' %}">{% if request.path == '/blog/' %}<strong class="text-primary">Блог</strong>{% else %}Блог{% endif %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'catalog:contacts' %}">{% if request.path == '/contact/' %}<strong class="text-primary">Контакты</strong>{% else %}Контакты{% endif %}</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link active" href="{% if perms.catalog.management_category or perms.management_posts %}{% url 'users:user_posts' %}
+                {% else %}{% url 'users:user_products' %}{% endif %}">{% if request.path == '/account/posts/' or request.path == '/account/products/' %}<strong class="text-primary">Личный кабинет</strong>{% else %}Личный кабинет{% endif %}</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link disabled" >    8 (800) 555-54-34</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" >    info@skystore.com</a>
+            </li>
+        </ul>
+      <ul class="d-flex">
+          {% if not user.is_authenticated %}
+            <a class="p-2 btn btn-outline-dark w-30 float-end" href="{% url 'users:login' %}"><strong>Войти</strong></a>
+          {% else %}
+              <a class="p-2 btn btn-outline-dark w-30 float-end" href="{% url 'users:logout' %}"><strong>Выйти</strong></a>
+          {% endif %}
+      </ul>
     </div>
+  </div>
 </nav>
+
+

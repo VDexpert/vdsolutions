@@ -6,6 +6,7 @@ from catalog.models import *
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView, FormView
 from catalog.auxfunc import translit
 from django.shortcuts import render, redirect
+from django.core.cache import cache
 
 from users.models import User
 
@@ -112,10 +113,28 @@ class ProductDetailView(DetailView):
     slug_url_kwarg = 'prod_slug'
     form = FeedbackForm()
 
+    def _cache_product(self):
+        queryset = self.model.objects.get(id=self.object.pk)
+
+        if settings.CACHE_ENABLED:
+            key = f'product_{self.object.pk}'
+            cache_data = cache.get(key)
+
+            if cache_data is None:
+                cache_data = queryset
+                cache.set(key, cache_data)
+                print(f'занесен объект{key} в кэш')
+
+                return cache_data
+
+            print(f'вернулись закэшированные данные объекта {self.object.pk}')
+            return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['versions'] = Version.objects.all().filter(product=self.object.pk)
         context['form'] = self.form
+        context['object'] = self._cache_product()
 
         return context
 

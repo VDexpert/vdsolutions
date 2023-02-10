@@ -19,20 +19,20 @@
                     {% if user.is_authenticated and object.user.pk == user.pk or perms.catalog.moderating_products %}
                         <div class="card-footer">
                             <div class="row">
-                                    <div class="col-6">
-                                        <a class="p-1 btn btn-outline-primary w-100" href="{% url 'catalog:update-product' object.pk %}"><strong>Изменить</strong></a>
+                                    <div class="col-6 text-center">
+                                        <a class="p-1 btn btn-outline-primary w-75" href="{% url 'catalog:update-product' object.pk %}"><strong>Изменить</strong></a>
                                     </div>
                                     {% if not perms.catalog.moderating_products %}
-                                    <div class="col-6">
-                                        <a class="p-1 btn btn-outline-danger w-100" href="{% url 'catalog:delete-product' object.pk %}"><strong>Удалить</strong></a>
+                                    <div class="col-6 text-center">
+                                        <a class="p-1 btn btn-outline-danger w-75" href="{% url 'catalog:delete-product' object.pk %}"><strong>Удалить</strong></a>
                                     </div>
                                     {% endif %}
                             {% if perms.catalog.moderating_products %}
                                 <div class="col-6 text-center">
                                 {% if object.banned == 'одобрено модератором' %}
-                                    <a class="p-1 btn btn-outline-danger w-100" href="{% url 'users:product-ban' object.pk %}"><strong>Забанить</strong></a>
+                                    <a class="p-1 btn btn-outline-danger w-75" href="{% url 'users:product-ban' object.pk %}"><strong>Забанить</strong></a>
                                 {% else %}
-                                    <a class="p-1 btn btn-outline-success w-100" href="{% url 'users:product-ban' object.pk %}"><strong>Разбанить</strong></a>
+                                    <a class="p-1 btn btn-outline-success w-75" href="{% url 'users:product-ban' object.pk %}"><strong>Разбанить</strong></a>
                                 {% endif %}
                                 </div>
                             {% endif %}
