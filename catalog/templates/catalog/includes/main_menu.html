@@ -1,0 +1,33 @@
+{% load catalog_tags %}
+{% load static %}
+{% load catalog_filters %}
+
+<nav class="container">
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+             <a class="p-2 btn btn-outline-primary w-100" href="{% url 'catalog:home' %}"><strong>Каталог</strong></a>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+            <a class="p-2 btn btn-outline-primary w-100" href="{% url 'catalog:post_list' %}"><strong>Блог</strong></a>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+            <a class="p-2 btn btn-outline-primary w-100" href="{% url 'catalog:contacts' %}"><strong>Контакты</strong></a>
+        </div>
+        {% if not user.is_authenticated %}
+            <div class="col-lg-6 col-md-3 col-sm-6 col-xs-6">
+                <a class="p-2 btn btn-outline-dark w-30 float-end" href="{% url 'users:login' %}"><strong>Войти</strong></a>
+            </div>
+        {% else %}
+            <div class="col-lg-6 col-md-2 col-sm-6 col-xs-6">
+                <div class="row float-end">
+                    {% if perms.catalog.management_category or perms.management_posts %}
+                    <div class="col-6"><a href="{% url 'users:user_posts' %}"><img src="{% static 'img/profile.png' %}" title="Перейти в профиль"></a></div>
+                {% else %}
+                    <div class="col-6"><a class="img-fluid" href="{% url 'users:user_products' %}"><img src="{% static 'img/profile.png' %}" title="Перейти в профиль"></a></div>
+                {% endif %}
+                    <div class="col-6"><a class="img-fluid" href="{% url 'users:logout' %}"><img src="{% static 'img/exit.png' %}" title="Выйти"></a></div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</nav>

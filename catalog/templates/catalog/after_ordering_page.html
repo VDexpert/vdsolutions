@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+
+    <div style="min-height:50vh" class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h3 class="display-4">Спасибо за вопрос разработчику!</h3>
+        <div class="row">
+            <div class="col-lg-3 col-md-12 col-sm-12"></div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <p class="lead">В ближайшее время он с Вами свяжется и ответит на все Ваши вопросы</p>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <a class="p-2 btn btn-outline-success w-100" href="{{ previous_page }}"><strong>Назад</strong></a><br>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <a class="p-2 btn btn-outline-primary w-100" href="{% url 'catalog:home' %}"><strong>На главную</strong></a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

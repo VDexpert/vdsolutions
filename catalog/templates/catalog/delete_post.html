@@ -1,0 +1,28 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+
+    <div class="row text-center">
+        <div class="col-lg-4 col-md-3 col-sm-12"></div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card mb-4 box-shadow border-warning">
+                    <div class="card-header text-bg-warning">
+                    <h2>Удаление публикации</h2>
+                </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <p>Вы действительно хотите удалить публикацию '{{ object.title }}'? Отменить удаление будет невозможно!</p>
+                           <div class="card-footer border-0">
+                               <div class="row">
+                                <div class="col-6"><button class="btn btn-outline-danger w-100" type="submit">Удалить</button></div>
+                                <div class="col-6"><a class="btn btn-primary w-100" href="{% url 'users:user_posts' %}">Отмена</a></div>
+                            </div>
+                           </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
