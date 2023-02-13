@@ -2,7 +2,7 @@ from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-from catalog.models import Version, Category
+from catalog.models import Version, Category, Product
 
 register = template.Library()
 
@@ -27,7 +27,6 @@ def getusergroup(user, autoescape=False):
     else:
         esc = lambda x: x
 
-    # result = esc(user.groups.filter(name='Контент-менеджеры').exists())
     return user.groups.filter(name='Контент-менеджеры').exists()
 
 
@@ -39,4 +38,20 @@ def getcategories(user, autoescape=False):
     else:
         esc = lambda x: x
 
-    return [x for x in Category.objects.all().filter(none_products='false')]
+    return [x for x in Category.objects.all() if Product.objects.all().filter(category=x).first()]
+
+
+@register.filter(needs_autoescape=False)
+def cleanversionerror(error, autoescape=False):
+
+    if autoescape:
+        esc = conditional_escape
+    else:
+        esc = lambda x: x
+
+    old_str = ["'", '{', '}', ':', '[', ']', 'value', ","]
+
+    for str in old_str:
+        new_str = str(error).replace(str, '')
+
+    return [x for x in Category.objects.all() if Product.objects.all().filter(category=x).first()]

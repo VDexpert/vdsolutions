@@ -3,12 +3,19 @@
 {% block content %}
 
     {% load catalog_filters %}
+    {% load catalog_tags %}
+
+    <head>
+      <title>Форма продукта - создание и редактирование</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    {{ form.media }}
+    </head>
 
     <form method="post" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-lg-5 col-md-12 col-sm-12">
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="card mb-4 box-shadow border-warning">
+                    <div class="card-header text-bg-warning">
                         {% if object.get_absolute_url %}
                     <h2>Редактирование продукта</h2>
                             {% else %}
@@ -16,25 +23,23 @@
                         {% endif %}
                     </div>
                     <div class="card-body">
-                            {% csrf_token %}
-                            {{ form.non_field_errors }}
-                            {{ form.as_p }}
-                            <div class="text-center">
-                                <button class="btn btn-outline-primary w-50" type="submit">Сохранить</button>
-                            </div>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="card-footer text-center">
+                            <button class="btn btn-outline-primary w-50" type="submit">Сохранить</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-7 col-md-12 col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                            <h5>Укажите версии продукта</h5>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="card border-warning">
+                    <div class="card-header text-bg-warning">
+                            <h5>Добавьте версии продукта</h5>
                     </div>
                     <div class="card-body">
                         <div class="formset">
-                         <div class="form-error text-danger"><strong>{{ form.error_status }}</strong></div>
+                         <div class="form-error text-danger">{% cleanversionerror formset.errors %}</div>
                         {{ formset.management_form }}
-
                             {% for form in formset.forms %}
                                     <div class="formset_row">
                                         {% for field in form.visible_fields %}
@@ -66,7 +71,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $('.formset_row').formset({
-        addText: '<span class="btn btn-outline-primary w-50">Добавить версию</span>',
+        {#addText: '<span class="btn btn-outline-primary w-50">Добавить версию</span>',#}
         deleteText: '<span class="btn btn-outline-danger w-50">Удалить версию</span>',
         prefix: 'tag_set',
     });

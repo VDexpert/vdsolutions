@@ -9,9 +9,9 @@
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <p class="lead">У Вас недостаточно прав для просмотра запрошенной страницы</p>
                 {% if perms.catalog.management_category or perms.management_posts %}
-                    <a class="p-2 btn btn-outline-success w-50" href="{% url 'users:user_posts' %}"><strong>В личный кабинет</strong></a>
+                    <a class="p-2 btn btn-outline-success w-100" href="{% url 'users:user_posts' %}"><strong>В личный кабинет</strong></a>
                 {% else %}
-                    <a class="p-2 btn btn-outline-success w-50" href="{% url 'users:user_products' %}"><strong>В личный кабинет</strong></a>
+                    <a class="p-2 btn btn-outline-success w-100" href="{% url 'users:user_products' %}"><strong>В личный кабинет</strong></a>
                 {% endif %}
             </div>
         </div>

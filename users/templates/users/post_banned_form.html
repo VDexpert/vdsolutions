@@ -2,6 +2,11 @@
 
 {% block content %}
 
+    <head>
+      <title>Бан-разбан статьи</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    </head>
+
     <div class="row text-center">
         <div class="col-lg-4 col-md-3 col-sm-12"></div>
             <div class="col-lg-4 col-md-6 col-sm-12">
@@ -26,10 +31,15 @@
                                     {% else %}
                                         <div class="col-6"><button class="btn btn-outline-success w-100" type="submit"><strong>Разбанить</strong></button></div>
                                     {% endif %}
-
-                                    <div class="col-6">
-                                        <a class="btn btn-outline-primary w-100" href="{% url 'users:user_posts' %}"><strong>Отмена</strong></a>
-                                    </div>
+                                    {% if request.META.HTTP_REFERER %}
+                                        <div class="col-6">
+                                            <a class="btn btn-outline-primary w-100" href="{{ request.META.HTTP_REFERER }}"><strong>Отмена</strong></a>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-6">
+                                            <a class="btn btn-outline-primary w-100" href="{% url 'users:user_posts' %}"><strong>Отмена</strong></a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </form>

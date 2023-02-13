@@ -1,6 +1,6 @@
 from django import template
 from catalog.auxfunc import translit
-from catalog.models import Version
+from catalog.models import Version, Contacts
 import re
 
 register = template.Library()
@@ -29,3 +29,17 @@ def getversion(product):
 @register.simple_tag()
 def getusername(email):
     return email.split('@')[0]
+
+@register.simple_tag()
+def cleanversionerror(error):
+    return str(error).replace("'", '').replace('{', '').replace('}', '').replace(':', '').replace('[', '').replace(']', '').replace('value', '')
+
+
+@register.simple_tag()
+def getemail():
+    return Contacts.objects.first().email
+
+
+@register.simple_tag()
+def getphone():
+    return Contacts.objects.first().phone

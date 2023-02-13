@@ -28,3 +28,15 @@
          color: #ffffff;
 }
 
+ul.errorlist li  {
+  color: red;
+}
+
+span.helptext {
+  font-size: small;
+  color: red;
+}
+
+a.add-row {
+  display: none;
+}

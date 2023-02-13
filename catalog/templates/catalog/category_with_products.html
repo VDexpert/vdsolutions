@@ -5,19 +5,32 @@
     {% load static %}
     {% load catalog_tags %}
 
+    <head>
+      <title>{% if object.meta_title_for_products %}{{ object.meta_title_for_products }}
+      {% else %}IT-продукты категории '{{ object.category_name }}' {% endif %}</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="description" content={{ object.meta_description_for_productsme }}>
+        <meta name="Keywords" content={{ object.keywords_for_products }}>
+    </head>
+
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">{% if object.category_h1_for_products %} {{ object.category_h1_for_products }} {% else %} IT-продукты категории "{{ object.category_name }}" {% endif %}</h1>
     <div class="row">
         <div class="col-lg-3 col-md-12 col-sm-12"></div>
         <div class="col-lg-6 col-md-12 col-sm-12">
-            <p class="lead">{{ object.annotation_for_products }}</p>
+            <p class="lead">{% if object.annotation_for_products %}
+                            {% autoescape off %}{{ object.annotation_for_products }}{% endautoescape %}
+                            {% endif %}</p>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-12 text-end">
-        <h5><strong>Продуктов в категории: {{ count_products }}</strong></h5>
+    <div class="col-lg-2 col-md-2 col-sm-12">
+        <h5><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Продуктов: {{ count_products }}</strong></h5>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-12 text-start">
+        {% include 'catalog/includes/categories_for_products.html' %}
     </div>
 </div>
 
@@ -35,9 +48,9 @@
                     </div>
                     <div class="card-body text-bg-warning">
                         <h1 class="card-title pricing-card-title">$ {{ object.unit_price }}</h1>
-                            <p>{{ object.description | truncatechars:100 }}</p>
+                            <p>{{ object.prod_annotation }}</p>
                             <p>Категория: {{ object.category }}</p>
-                                <p>{% getversion object.pk %}</p>
+{#                                <p>{% getversion object.pk %}</p>#}
                     </div>
                     <div class="card-footer text-bg-warning">
                         <div class="row">
@@ -52,6 +65,18 @@
     </div>
 
 {% include 'catalog/includes/pagination.html' %}
+
+<div class="row">
+    <div class="col-lg-2 col-md-12 col-sm-12"></div>
+    <div class="col-lg-8 col-md-12 col-sm-12">
+        {% if category.description_for_products %}
+            {% autoescape off %}{{ category.description_for_products }}{% endautoescape %}
+        {% endif %}
+    </div>
+</div>
+
+<div class="col-12"><p>   </p></div>
+<div class="col-12"><p>   </p></div>
 
 </main>
 

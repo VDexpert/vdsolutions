@@ -4,8 +4,9 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
 from catalog.forms import ProductForm, VersionForm
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
 from catalog.auxfunc import translit
+from django.utils import timezone
 
 
 class ProductCreateWithVersionView(CreateView):
@@ -67,6 +68,15 @@ class ProductCreateWithVersionView(CreateView):
             self.object = form.save()
             self.object.user = self.request.user
             self.object.slug = translit.do(self.object.product_name)
+            self.object.change_range_prod_at = timezone.now()
+            self.object.save()
+            print(form.data['category'])
+            print(type(form.data['category']))
+            id_category = form.data['category']
+            category = Category.objects.all().get(id=id_category)
+            category.add_new_prod = timezone.now()
+            print(timezone.now())
+            category.save()
 
             return super().form_valid(form)
 
@@ -126,6 +136,8 @@ class ProductWithVersionUpdateView(UpdateView):
         if form.is_valid():
             self.object = form.save()
             self.object.slug = translit.do(self.object.product_name)
+            self.object.save()
+
             if formset.is_valid():
                 formset.instance = form.save()
                 formset.save()

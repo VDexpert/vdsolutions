@@ -3,17 +3,17 @@
 <div class="col-lg-3 col-md-12 col-sm-12">
             <div class="card border-warning">
             {% if not user.avatar %}
-                <img src="{% static 'img/usernoimage.png' %}" class="card-img-top">
-            {% elif user.avatar%}
+                <img src="{% static 'img/usernoimage.jpg' %}" class="card-img-top">
+            {% elif user.avatar %}
                 <img src="{{ user.avatar.url }}" class="card-img-top">
             {% endif %}
             {% if not perms.catalog.moderating_products and not perms.catalog.management_category and not perms.catalog.management_posts %}
             {% if not user.first_name or not user.last_name or not user.phone or not user.country %}
               <div class="card-header text-center text-bg-danger">
-                  <p>Заполните профиль - доверия к Вашим продуктам будет больше</p></div>
+                  <p>Заполните профиль - это повысит доверие посетителей Skystore</p></div>
                 {% elif not user.avatar %}
                 <div class="card-header text-center text-bg-danger">
-                    <p>Загрузите фотографию - доверия к Вашим продуктам будет больше</p></div>
+                    <p>Загрузите фото - это повысит доверие посетителей Skystore</p></div>
             {% endif %}
             {% endif %}
               <div class="card-body">
@@ -26,19 +26,23 @@
                         </tr>
                         <tr>
                             <td class="col-4">Имя: </td>
-                            <td class="col-8 {% if not user.first_name %}table-danger{% endif %}">{{ user.first_name }} {% if not user.first_name %}Не указано {% endif %}</td>
+                            <td class="col-8 {% if not user.first_name %}table-danger{% endif %}">{% if not user.first_name %}Не указано {% else %}{{ user.first_name }}{% endif %}</td>
                         </tr>
                         <tr>
                             <td class="col-4">Фамилия: </td>
-                            <td class="col-8 {% if not user.last_name %}table-danger{% endif %}">{{ user.last_name }} {% if not user.last_name %}Не указано {% endif %}</td>
+                            <td class="col-8 {% if not user.last_name %}table-danger{% endif %}">{% if not user.last_name %}Не указано {% else %}{{ user.last_name }}{% endif %}</td>
                         </tr>
                         <tr>
                             <td class="col-4">Телефон: </td>
-                            <td class="col-8 {% if not user.phone %}table-danger{% endif %}">{{ user.phone }} {% if not user.phone %}Не указано {% endif %}</td>
+                            <td class="col-8 {% if not user.phone %}table-danger{% endif %}">{% if not user.phone %}Не указано {% else %}{{ user.phone }}{% endif %}</td>
                         </tr>
                         <tr>
                             <td class="col-4">Страна: </td>
-                            <td class="col-8 {% if not user.country %}table-danger{% endif %}">{{ user.country }} {% if not user.country %}Не указано {% endif %}</td>
+                            <td class="col-8 {% if not user.country %}table-danger{% endif %}">{% if not user.country %}Не указано {% else %}{{ user.country }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td class="col-4">Стэк: </td>
+                            <td class="col-8 {% if not user.stack %}table-danger{% endif %}">{% if not user.stack %}Не указано {% else %}{{ user.stack }}{% endif %}</td>
                         </tr>
                         <tr>
                         </tr>

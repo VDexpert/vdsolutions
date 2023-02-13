@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'tinymce',
     'catalog',
     'users',
 ]
@@ -129,6 +132,8 @@ STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
+
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
@@ -141,7 +146,7 @@ DEFAULT_FROM_EMAIL = 'fuckup@oscarbot.ru'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('PASSWORD_DATABASE')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
 
 AUTH_USER_MODEL = 'users.User'
@@ -157,3 +162,42 @@ if CACHE_ENABLED:
             'LOCATION': 'redis://127.0.0.1:6379'
         }
     }
+
+PROJECT_DIR = os.path.dirname(__file__)
+
+TINYMCE_SPELLCHECKER = True
+TINYMCE_COMPRESSOR = False
+
+FILEBROWSER_DIRECTORY = ''
+DIRECTORY = ''
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+TINYMCE_DEFAULT_CONFIG = {
+    "relative_urls": False,
+    "remove_script_host": False,
+    "convert_urls": True,
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 20,
+    'theme': 'silver',
+    'plugins': '''
+            textcolor save link image media preview codesample contextmenu
+            table code lists fullscreen  insertdatetime  nonbreaking
+            contextmenu directionality searchreplace wordcount visualblocks
+            visualchars code fullscreen autolink lists  charmap print  hr
+            anchor pagebreak
+            ''',
+    'toolbar1': '''
+            bold italic underline | fontselect,
+            fontsizeselect  | forecolor backcolor | alignleft alignright |
+            aligncenter alignjustify | indent outdent | bullist numlist table |
+            | link image media | codesample |
+            ''',
+
+    'contextmenu': 'formats | link image',
+    'menubar': True,
+    'statusbar': True,
+    "language": "ru",
+}
+
+SITE_ID = 1

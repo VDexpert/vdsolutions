@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 from catalog.forms_mixin import StyleFormMixin
+from catalog.models import Product
 from users.models import User
 from users.utils import send_email_for_verify
 from django.core.exceptions import ObjectDoesNotExist
@@ -77,4 +78,11 @@ class CustomUserEditForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'avatar', 'country', 'phone')
+        fields = ('first_name', 'last_name', 'avatar', 'country', 'phone', 'stack')
+
+
+class UpdateRangeProductForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ('confirm_update_range', 'change_range_prod', 'absolute_top')

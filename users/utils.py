@@ -16,7 +16,7 @@ def send_email_for_verify(request, user):
         'token': token_generator.make_token(user),
     }
     message = render_to_string('users/mails/verify_email.html', context=context,)
-    email = EmailMessage('Завершение регистрации', message, to=[user.email],)
+    email = EmailMessage('Завершение регистрации на сайте Skystore', message, to=[user.email],)
 
     try:
         email.send()
@@ -25,11 +25,16 @@ def send_email_for_verify(request, user):
         os.system(f'echo {e} >> account_verification_errors.txt')
 
 
-def send_email_for_reset(domain, email, new_password):
-    context = { 'domain': domain, 'new_password': new_password }
+def send_email_for_reset(request, email, new_password):
+    current_site = get_current_site(request)
+
+    context = {
+        'domain': current_site,
+        'new_password': new_password
+    }
 
     message = render_to_string('users/mails/password_reset_email.html', context=context,)
-    email = EmailMessage('Восстановление пароля', message, to=[email])
+    email = EmailMessage('Восстановление пароля на сайте Skystore', message, to=[email])
 
     try:
         email.send()

@@ -14,14 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.template.defaulttags import url
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
+from catalog.sitemaps import ProductSitemap, CategorySitemap, PostSitemap
+
+sitemaps = {
+    'categories': CategorySitemap,
+    'products': ProductSitemap,
+    'posts': PostSitemap,
+}
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('catalog.urls', namespace='catalog')),
     path('account/', include('users.urls',  namespace='users')),
+    path('tinymce/', include('tinymce.urls')),
+    re_path(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 handler404 = "catalog.views.page_not_found_view"

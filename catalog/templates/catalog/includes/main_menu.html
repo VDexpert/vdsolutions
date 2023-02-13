@@ -17,19 +17,21 @@
               <a class="nav-link active" href="{% url 'catalog:post_list' %}">{% if request.path == '/blog/' %}<strong class="text-primary">Блог</strong>{% else %}Блог{% endif %}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'catalog:contacts' %}">{% if request.path == '/contact/' %}<strong class="text-primary">Контакты</strong>{% else %}Контакты{% endif %}</a>
+              <a class="nav-link active" href="{% url 'catalog:contacts' %}">{% if request.path == '/contact/' %}<strong class="text-primary">Контакты&nbsp;&nbsp;&nbsp;&nbsp;</strong>{% else %}Контакты&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}</a>
             </li>
             {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link active" href="{% if perms.catalog.management_category or perms.management_posts %}{% url 'users:user_posts' %}
-                {% else %}{% url 'users:user_products' %}{% endif %}">{% if request.path == '/account/posts/' or request.path == '/account/products/' %}<strong class="text-primary">Личный кабинет</strong>{% else %}Личный кабинет{% endif %}</a>
+                {% else %}{% url 'users:user_products' %}{% endif %}">{% if request.path == '/account/posts/' or request.path == '/account/products/' %}<strong class="text-primary">
+                  <img src="{% static "img/house-door.svg" %}"> Личный кабинет</strong>{% else %}
+                  <img src="{% static "img/house-door.svg" %}"> Личный кабинет{% endif %}</a>
             </li>
             {% endif %}
             <li class="nav-item">
-              <a class="nav-link disabled" >    8 (800) 555-54-34</a>
+              <a class="nav-link disabled" >{% getphone %}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" >    info@skystore.com</a>
+              <a class="nav-link disabled" >{% getemail %}</a>
             </li>
         </ul>
       <ul class="d-flex">

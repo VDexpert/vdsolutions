@@ -1,0 +1,56 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+
+    {% load users_tags %}
+
+    <head>
+      <title>Обновление PushTop рейтинга продукта</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    </head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-3 col-sm-12"></div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card mb-4 box-shadow border-warning text-center">
+                    <div class="card-header text-bg-warning text-center">
+                        <h4 class="my-0 font-weight-normal">Обновление PushTop рейтинга продукта</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {%  if user.trials_update_range_prod %}
+                            <p>Вы действительно хотите обновить рейтинг Вашему продукту "{{ object.product_name }}"?</p>
+                            <p>Текущее количество Ваших попыток обновления рейтинга <strong>{{ user.trials_update_range_prod }}</strong> уменьшиться на 1.
+                                Когда PushTop будет равным 0, обновление рейтинга станет возможным после оплаты данной услуги по тарифу нашего портала</p>
+                            <input type="hidden" name="prod_id" value="{{ object.pk }}">
+                            <input type="hidden" name="user_id" value="{{ user.pk }}">
+                            <select name="confirm_update_range" class="form-control select2" id="id_confirm_update_range">
+                                  <option value="true" selected="">ДА</option>
+                                  <option value="false">НЕТ</option>
+                            </select>
+                        <div class="card-footer border-0">
+                            <div class="row">
+                                <div class="col-6"><button type="submit" class="btn btn-outline-success w-100"><strong>В ТОП!</strong></button>
+                                </div>
+                                {% if not request.META.HTTP_REFERER %}
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                    <a class="p-2 btn btn-outline-primary w-75" href="{% url 'users:user_products' %}"><strong>В профиль</strong></a>
+                                </div>
+                                {% else %}
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                    <a class="p-2 btn btn-outline-primary w-75" href="{{ request.META.HTTP_REFERER }}"><strong>Назад</strong></a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                 </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

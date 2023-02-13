@@ -1,22 +1,25 @@
 import os
+import datetime
+from smtplib import SMTPException
 from django.contrib.auth import login, logout, authenticate, models
-from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.views.generic import UpdateView, CreateView, ListView, FormView, TemplateView
 from catalog.forms import ProductBannedForm, PostBannedForm
-from catalog.models import Product, Post, Category
+from catalog.models import Product, Post, Category, Blog
 from users.models import User
-from users.forms import CustomUserEditForm, RegisterUserForm, CustomAuthenticationForm, CustomPasswordResetForm
+from users.forms import CustomUserEditForm, RegisterUserForm, CustomAuthenticationForm, CustomPasswordResetForm, \
+    UpdateRangeProductForm
 from users.utils import send_email_for_verify, send_email_for_reset
 from django.contrib.auth.tokens import default_token_generator as token_generator
-
-PermissionsMixin
+import json
+from django.conf import settings
 
 
 class RegisterUser(CreateView):
@@ -48,15 +51,17 @@ class RegisterUser(CreateView):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=password)
+
             try:
                 send_email_for_verify(request, user)
 
                 for perm in self.user_permissions:
                     user.user_permissions.add(self.get_perm(codename=perm['act'], app_label=perm['app'], model=perm['mod']).pk)
 
-            except Exception as e:
-                os.system(f'echo {e} >> register_errors.txt')
-                return redirect('users:some-error')
+            except SMTPException as e:
+                os.system(f'echo {datetime.datetime.now()}, {e} >> register_errors.txt')
+
+                return redirect('users:some_error')
 
             else:
                 return redirect('users:confirm_email')
@@ -72,6 +77,7 @@ class LoginUser(LoginView):
 
     def get_success_url(self):
         user = self.request.user
+
         if user.has_perm('catalog.management_posts') or user.has_perm('catalog.management_category'):
             return reverse_lazy('users:user_posts')
 
@@ -164,7 +170,7 @@ class ProductUserListView(ListView):
         if user.has_perm('catalog.moderating_products'):
             return super().get_queryset()
 
-        return super().get_queryset().filter(user=self.request.user)
+        return super().get_queryset().filter(user=self.request.user).order_by('-create_at').order_by('-absolute_top')
 
 
 class PostUserListView(ListView):
@@ -193,9 +199,9 @@ class PostUserListView(ListView):
         user = self.request.user
 
         if user.has_perm('catalog.management_posts')or user.has_perm('catalog.management_category'):
-            return super().get_queryset()
+            return super().get_queryset().order_by('-create_at')
 
-        return super().get_queryset().filter(user=self.request.user)
+        return super().get_queryset().filter(user=self.request.user).order_by('-create_at')
 
 
 class CustomPasswordChangeView(PasswordChangeView):
@@ -222,22 +228,26 @@ class CustomPasswordResetFormView(FormView):
     def post(self, request, *args, **kwargs):
         form = self.get_form()
 
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            user = User.objects.all().get(email=email)
-            new_password = User.objects.make_random_password(length=20)
-            user.set_password(new_password)
-            user.save()
+        try:
+            if form.is_valid():
+                email = form.cleaned_data.get('email')
+                user = User.objects.all().get(email=email)
+                new_password = User.objects.make_random_password(length=20)
+                user.set_password(new_password)
+                user.save()
 
-            domain = get_current_site(self.request)
+                send_email_for_reset(request, email, new_password)
 
-            send_email_for_reset(domain, email, new_password)
+                return redirect('users:confirm_reset')
 
-            return redirect('users:confirm_reset')
+            context = {'form': form}
 
-        context = {'form': form}
+            return render(request, self.template_name, context)
 
-        return render(request, self.template_name, context)
+        except SMTPException as e:
+            os.system(f'echo {datetime.datetime.now()}, {e} >> password_reset_errors.txt')
+
+            return reverse_lazy('users:some_error')
 
 
 class ConfirmEmailTemplateView(TemplateView):
@@ -265,7 +275,7 @@ class ConfirmResetPasswordTemplateView(TemplateView):
 
 
 class InvalidVerifyTemplateView(TemplateView):
-    template_name = 'users/invalid_verify.html'
+    template_name = 'users/errors/invalid_verify.html'
 
     def get(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -279,11 +289,6 @@ class InvalidVerifyTemplateView(TemplateView):
 class MenuProfileTemplateView(TemplateView):
     template_name = 'users/includes/menu_profile.html'
     model = User
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        return context
 
 
 class ChangeProductBannedFormView(UpdateView):
@@ -325,7 +330,7 @@ class CategoryUserListView(ListView):
 
 
 class ErrorPermissionTemplateView(TemplateView):
-    template_name = 'users/permission_error.html'
+    template_name = 'users/errors/permission_error.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -355,6 +360,94 @@ class ChangePostBannedFormView(UpdateView):
         return reverse_lazy('users:user_posts')
 
 
+
+class UpdateRangeProductUpdateView(UpdateView):
+    template_name = 'users/update_range_product.html'
+    model = Product
+    form_class = UpdateRangeProductForm
+    success_url = reverse_lazy('users:success_upd_prod_range')
+
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
+        user = self.request.user
+
+        if not user.is_authenticated:
+            return redirect('users:login')
+
+        if user.has_perm('catalog.moderating_products') or user.has_perm('catalog.management_category') \
+                or user.has_perm('catalog.management_posts'):
+            return redirect('users:error_permission')
+
+        if not user.trials_update_range_prod:
+            return redirect('users:order_trials')
+
+        return self.render_to_response(self.get_context_data())
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user.pk)
+
+    def form_valid(self, form):
+        if form.data['confirm_update_range'] == 'true':
+            user = User.objects.all().get(id=form.data['user_id'])
+
+            if user.trials_update_range_prod:
+                user.trials_update_range_prod -= 1
+                user.save()
+                self.object = form.save()
+                self.object.change_range_prod = datetime.datetime.now()
+
+                with open('catalog/abs_variables.json', 'r', encoding='utf-8') as source:
+                    data = json.load(source)
+                    for item in data:
+                        print(item)
+                        top = int(item["set_absolute_top_product"])
+                        top += 1
+                    self.object.absolute_top = top
+                    self.object.save()
+                    with open('catalog/abs_variables.json', 'w', encoding='utf-8') as out:
+                        json.dump([{"set_absolute_top_product": top}], out, indent=2)
+
+                return super().form_valid(form)
+
+            else:
+                return reverse_lazy('users:order_trials')
+        else:
+            return reverse_lazy('catalog:post_detail')
+
+
+class OrderTrialUpdateRangeProductTemplateView(TemplateView):
+    template_name = 'users/order_trials_update_range_product.html'
+
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
+        user = self.request.user
+
+        if not user.is_authenticated:
+            return redirect('users:login')
+
+        if user.has_perm('catalog.moderating_products') or user.has_perm('catalog.management_category') \
+                or user.has_perm('catalog.management_posts'):
+            return redirect('users:error_permission')
+
+        return self.render_to_response(self.get_context_data())
+
+    def post(self, *args, **kwargs):
+
+        try:
+            send_mail(
+                subject='''Заказ пакета PushTop от пользователя Skystore''',
+                message=f'''Email пользователя: {self.request.user.email}''',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[x.email for x in User.objects.all().filter(groups__name='Менеджеры')]
+            )
+
+        except SMTPException as e:
+            os.system(f'echo {datetime.datetime.now()}, {e} >> ordering_trials_update_range_product_errors.txt')
+
+            return redirect('users:some_error')
+
+        else:
+            return redirect('users:after_ordering_trials')
 
 
 

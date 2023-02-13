@@ -1,12 +1,71 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from users.models import User
+from tinymce import models as tinymce_models
 
 NULLABLE = {'blank': True, 'null': True}
 
 
+class Home(models.Model):
+    home_h1 = models.CharField(max_length=100, verbose_name='Заголовок')
+    home_annotation = models.CharField(max_length=150, verbose_name='Аннотация', help_text='максимальное количество символов - 150')
+    title = models.CharField(max_length=70, verbose_name='Метатэг Title', help_text='максимальное количество символов - 70')
+    description = tinymce_models.HTMLField(verbose_name='Содержание', **NULLABLE)
+    meta_description = models.CharField(verbose_name='Метатэг description', max_length=300, **NULLABLE,
+                                        help_text='максимальное количество символов - 300')
+    meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE,
+                                     help_text='максимальное количество символов - 150')
+
+    class Meta():
+        verbose_name = 'Главная страница'
+        verbose_name_plural = 'Главная страница'
+
+
+class Blog(models.Model):
+    blog_h1 = models.CharField(max_length=100, verbose_name='Заголовок', **NULLABLE)
+    blog_annotation = models.CharField(max_length=150, verbose_name='Аннотация', **NULLABLE,
+                                       help_text='максимальное количество символов - 150')
+    title = models.CharField(max_length=70, verbose_name='Метатэг Title',  **NULLABLE)
+    description = tinymce_models.HTMLField(verbose_name='Содержание',  **NULLABLE)
+    meta_description = models.CharField(verbose_name='Метатэг Description', max_length=300, **NULLABLE,
+                                        help_text='максимальное количество символов - 300')
+    meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE,
+                                     help_text='максимальное количество символов - 150')
+
+    class Meta():
+        verbose_name = 'Блог'
+        verbose_name_plural = 'Блог'
+
+
+class Contacts(models.Model):
+    contacts_h1 = models.CharField(max_length=100, verbose_name='Заголовок', **NULLABLE,)
+    title = models.CharField(max_length=70, verbose_name='Метатэг Title', **NULLABLE,)
+    official_company_name = models.CharField(max_length=30, verbose_name='Юридическое название', **NULLABLE, help_text='максимальное количество символов - 30')
+    country = models.CharField(max_length=20, verbose_name='Страна', **NULLABLE, help_text='максимальное количество символов - 20')
+    itin = models.CharField(max_length=20, verbose_name='ИНН', **NULLABLE, help_text='максимальное количество символов - 20')
+    address = models.CharField(max_length=50, verbose_name='Адрес', **NULLABLE, help_text='максимальное количество символов - 50')
+    phone = models.CharField(max_length=30, verbose_name='Телефон', **NULLABLE, help_text='максимальное количество символов - 30')
+    email = models.CharField(max_length=20, verbose_name='Email', **NULLABLE, help_text='максимальное количество символов - 20')
+    meta_description = models.CharField(verbose_name='Метатэг Description', max_length=300, **NULLABLE,
+                                        help_text='максимальное количество символов - 300')
+    meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE,
+                                     help_text='максимальное количество символов - 150')
+
+    class Meta():
+        verbose_name = 'Контакты'
+        verbose_name_plural = 'Контакты'
+
+
 class Product(models.Model):
+    STATUS_ACTIVE = 'опубликовано'
+    STATUS_INACTIVE = 'не опубликовано'
+    STATUSES = (
+        (STATUS_ACTIVE, 'ДА'),
+        (STATUS_INACTIVE, 'НЕТ')
+    )
+
     BANNED_TRUE = 'заблокировано модератором'
     BANNED_FALSE = 'одобрено модератором'
     BANNED_STATUSES = (
@@ -14,18 +73,31 @@ class Product(models.Model):
         (BANNED_FALSE, 'НЕТ')
     )
 
+    CONFIRM_TRUE = 'true'
+    CONFIRM_FALSE = 'false'
+    CONFIRMS = (
+        (CONFIRM_TRUE, 'ДА'),
+        (CONFIRM_FALSE, 'НЕТ')
+    )
+
     user = models.ForeignKey(User, verbose_name='Продавец', on_delete=models.CASCADE, **NULLABLE)
-    product_name = models.CharField(max_length=70, verbose_name='Наименование', db_index=True, unique=True)
-    slug = models.SlugField(max_length=70, verbose_name='URL',  db_index=True, unique=True, null=True)
-    picture = models.ImageField(verbose_name='Фото', upload_to='products/', **NULLABLE)
+    product_name = models.CharField(max_length=90, verbose_name='Наименование', db_index=True, unique=True,
+                                    help_text='максимальное количество символов - 90')
+    slug = models.SlugField(max_length=90, verbose_name='URL',  db_index=True, unique=True, null=True)
+    picture = models.ImageField(verbose_name='Фото', upload_to='products/', **NULLABLE, help_text='рекомендуемый размер - 2000*1000')
     category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория', db_index=True)
     unit_price = models.CharField(verbose_name='Цена', max_length=10)
+    status = models.CharField(choices=STATUSES, default=STATUS_ACTIVE, max_length=20, verbose_name='Публиковать?')
+    banned = models.CharField(choices=BANNED_STATUSES, default=BANNED_FALSE, max_length=30, verbose_name='Забанить продукт?')
+    prod_annotation = models.CharField(max_length=150, verbose_name='Аннотация - выводится в карточке продукта',
+                                       help_text='максимальное количество символов - 150', **NULLABLE)
+    description = tinymce_models.HTMLField(verbose_name='Полное описание')
+    confirm_update_range = models.CharField(choices=CONFIRMS, default=CONFIRM_TRUE, verbose_name='Поднять продукт в ТОП?', max_length=10)
     create_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     change_at = models.DateTimeField(verbose_name='Дата изменения', auto_now=True)
-    banned = models.CharField(choices=BANNED_STATUSES, default=BANNED_FALSE, max_length=30, verbose_name='Забанить продукт?')
-    description = models.TextField(verbose_name='Полное описание')
-    meta_title = models.CharField(verbose_name='Метатег title', max_length=70, **NULLABLE)
-    meta_description = models.CharField(verbose_name='Метатег description', max_length=300, **NULLABLE)
+
+    change_range_prod = models.DateTimeField(verbose_name='Рейтинг изменен', **NULLABLE)
+    absolute_top = models.IntegerField(verbose_name='Позиция в топе', default=0, **NULLABLE)
 
     class Meta():
         verbose_name = 'продукт'
@@ -49,7 +121,7 @@ class Version(models.Model):
         (STATUS_INACTIVE, 'НЕТ')
     )
 
-    value = models.CharField(verbose_name='Номер версии', max_length=10)
+    value = models.CharField(verbose_name='Номер версии', max_length=10, help_text='максимальное количество символов - 10')
     product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Продукт')
     description = models.CharField(verbose_name='Улучшения версии', max_length=250)
     status = models.CharField(verbose_name='Версия активная?', choices=STATUSES, default=STATUS_INACTIVE, max_length=10)
@@ -63,21 +135,23 @@ class Version(models.Model):
 
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=50, verbose_name='Наименование', db_index=True, unique=True)
+    category_name = models.CharField(max_length=30, verbose_name='Наименование', db_index=True, unique=True,
+                                     help_text='Выбирайте наименование тщательно - от него формируется ссылка и его нельзя будет изменить, максимальное количество символов - 30')
     slug = models.SlugField(max_length=70, verbose_name='URL', db_index=True, unique=True, **NULLABLE)
-    none_products = models.CharField(verbose_name='Категория пустая?', default='true', max_length=10)
-    none_posts = models.CharField(verbose_name='Категория пустая?', default='true', max_length=10)
+    add_new_prod = models.DateTimeField(verbose_name='Дата добавления последнего продукта', **NULLABLE)
 
     category_h1_for_products = models.CharField(verbose_name='Заголовк H1 для продуктов', max_length=70, **NULLABLE)
-    annotation_for_products = models.CharField(verbose_name='Аннотация для продуктов', max_length=120, **NULLABLE)
-    description_for_products = models.TextField(verbose_name='Полное описание для продуктов', **NULLABLE)
+    annotation_for_products = models.CharField(verbose_name='Аннотация для продуктов', max_length=200, **NULLABLE,
+                                               help_text='максимальное количество символов - 200',)
+    description_for_products = tinymce_models.HTMLField(verbose_name='Полное описание для продуктов', **NULLABLE)
     meta_title_for_products = models.CharField(verbose_name='Title для продуктов', max_length=70, **NULLABLE)
     meta_description_for_products = models.CharField(verbose_name='Description для продуктов', max_length=300, **NULLABLE)
     keywords_for_products = models.CharField(verbose_name='Keywords для продуктов', max_length=150, **NULLABLE)
 
     category_h1_for_posts = models.CharField(verbose_name='Заголовк H1 для блога', max_length=70, **NULLABLE)
-    annotation_for_posts = models.CharField(verbose_name='Аннотация для блога', max_length=120, **NULLABLE)
-    description_for_posts = models.TextField(verbose_name='Полное описание для блога', **NULLABLE)
+    annotation_for_posts = models.CharField(verbose_name='Аннотация для блога', max_length=200, **NULLABLE,
+                                            help_text='максимальное количество символов - 200',)
+    description_for_posts = tinymce_models.HTMLField(verbose_name='Полное описание для блога', **NULLABLE)
     meta_title_for_posts = models.CharField(verbose_name='Title для блога', max_length=70, **NULLABLE)
     meta_description_for_posts = models.CharField(verbose_name='Description для блога', max_length=300,**NULLABLE)
     keywords_for_posts = models.CharField(verbose_name='Keywords для блога', max_length=150, **NULLABLE)
@@ -113,17 +187,15 @@ class Post(models.Model):
     )
 
     user = models.ForeignKey(User, verbose_name='Автор (продавец)', on_delete=models.CASCADE, **NULLABLE)
-    title = models.CharField(max_length=300, verbose_name='Заголовок', db_index=True, unique=True)
-    slug = models.SlugField(max_length=150, verbose_name='URL',  db_index=True, unique=True, null=True)
-    content = models.TextField(verbose_name='Содержание')
-    picture = models.ImageField(verbose_name='Фото', upload_to='posts/', **NULLABLE)
+    title = models.CharField(max_length=100, verbose_name='Заголовок', db_index=True, unique=True, help_text='максимальное количество символов - 100')
+    slug = models.SlugField(max_length=100, verbose_name='URL',  db_index=True, unique=True, null=True)
+    content = tinymce_models.HTMLField(verbose_name='Содержание')
+    picture = models.ImageField(verbose_name='Фото', upload_to='posts/', **NULLABLE, help_text='рекомендуемый размер - 2000*1000')
     create_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
-    change_at = models.DateTimeField(verbose_name='Дата изменения', auto_now=True)
+    change_at = models.DateTimeField(verbose_name='Дата изменения', **NULLABLE)
     count_views = models.IntegerField(default=0, verbose_name='Количество просмотров')
     status = models.CharField(choices=STATUSES, default=STATUS_ACTIVE, max_length=20, verbose_name='Публиковать?')
     category = models.ForeignKey('Category', verbose_name='Категория', db_index=True, on_delete=models.PROTECT, **NULLABLE)
-    meta_title = models.CharField(verbose_name='Метатег title для SEO', max_length=70, **NULLABLE)
-    meta_description = models.CharField(verbose_name='Метатег description для SEO', max_length=300, **NULLABLE)
     banned = models.CharField(choices=BANNED_STATUSES, default=BANNED_FALSE, max_length=30, verbose_name='Забанить пост?')
 
     class Meta():
