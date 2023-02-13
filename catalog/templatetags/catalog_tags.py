@@ -37,9 +37,15 @@ def cleanversionerror(error):
 
 @register.simple_tag()
 def getemail():
-    return Contacts.objects.first().email
+    if Contacts.objects.all():
+        return Contacts.objects.all().first().email
+
+    return 'False email'
 
 
 @register.simple_tag()
 def getphone():
-    return Contacts.objects.first().phone
+    if Contacts.objects.all():
+        return Contacts.objects.all().first().phone
+
+    return 'False phone'
