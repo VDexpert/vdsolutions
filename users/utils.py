@@ -8,10 +8,10 @@ import os
 
 
 def send_email_for_verify(request, user):
-    current_site = get_current_site(request)
+    current_site = request.get_host()
     context = {
         'user': user,
-        'domain': current_site.domain,
+        'domain': current_site,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': token_generator.make_token(user),
     }
@@ -26,7 +26,7 @@ def send_email_for_verify(request, user):
 
 
 def send_email_for_reset(request, email, new_password):
-    current_site = get_current_site(request)
+    current_site = request.get_host()
 
     context = {
         'domain': current_site,
