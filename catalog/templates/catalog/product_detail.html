@@ -91,12 +91,16 @@
                 <div class="card mb-4 box-shadow border-warning text-center">
                     {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
                     <div class="card-header">
-                        <div class="card-header"><strong>Разработчик: </strong>{{ object.user.first_name }} {{ object.user.last_name }}
+                        <div class="card-header text-bg-warning"><strong>Разработчик: </strong>{{ object.user.first_name }} {{ object.user.last_name }}
                         </div>
                         <div class="row g-0">
                             <div class="col-6">
                                 {% if not object.user.avatar %}
-                                    <img class="img-fluid" src="{% static 'img/usernoimage.jpg' %}">
+                                    {% if object.user.gender == 'женский' %}
+                                        <img class="img-fluid" src="{% static 'img/womannoimage.png' %}">
+                                    {% else %}
+                                        <img class="img-fluid" src="{% static 'img/usernoimage.jpg' %}">
+                                    {% endif %}
                                 {% elif object.user.avatar %}
                                     <img class="img-fluid" src="{{ object.user.avatar.url }}">
                                 {% endif %}

@@ -78,7 +78,7 @@ class CustomUserEditForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'avatar', 'country', 'phone', 'stack')
+        fields = ('first_name', 'last_name', 'gender', 'avatar', 'country', 'phone', 'stack')
 
 
 class UpdateRangeProductForm(StyleFormMixin, forms.ModelForm):

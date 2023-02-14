@@ -3,12 +3,16 @@
 <div class="col-lg-3 col-md-12 col-sm-12">
             <div class="card border-warning">
             {% if not user.avatar %}
-                <img src="{% static 'img/usernoimage.jpg' %}" class="card-img-top">
+                {% if user.gender == 'женский' %}
+                    <img src="{% static 'img/womannoimage.png' %}" class="card-img-top">
+                {% else %}
+                    <img src="{% static 'img/usernoimage.jpg' %}" class="card-img-top">
+                {% endif %}
             {% elif user.avatar %}
                 <img src="{{ user.avatar.url }}" class="card-img-top">
             {% endif %}
             {% if not perms.catalog.moderating_products and not perms.catalog.management_category and not perms.catalog.management_posts %}
-            {% if not user.first_name or not user.last_name or not user.phone or not user.country %}
+            {% if not user.first_name or not user.last_name or not user.phone or not user.country or not user.stack %}
               <div class="card-header text-center text-bg-danger">
                   <p>Заполните профиль - это повысит доверие посетителей Skystore</p></div>
                 {% elif not user.avatar %}
@@ -23,6 +27,10 @@
                         <tr>
                             <td class="col-4">Почта: </td>
                             <td class="col-8">{{ user.email | truncatechars:20 }}</td>
+                        </tr>
+                        <tr>
+                            <td class="col-4">Пол: </td>
+                            <td class="col-8 {% if not user.gender %}table-danger{% endif %}">{% if not user.gender %}Не указано {% else %}{{ user.gender }}{% endif %}</td>
                         </tr>
                         <tr>
                             <td class="col-4">Имя: </td>
@@ -43,8 +51,6 @@
                         <tr>
                             <td class="col-4">Стэк: </td>
                             <td class="col-8 {% if not user.stack %}table-danger{% endif %}">{% if not user.stack %}Не указано {% else %}{{ user.stack }}{% endif %}</td>
-                        </tr>
-                        <tr>
                         </tr>
                     </tbody>
                 </table>
