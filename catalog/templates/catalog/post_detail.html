@@ -75,7 +75,7 @@
             {% if not user.is_authenticated or not user.email == object.user.email %}
             <div class="col-lg-4 col-md-12 col-sm-12">
                 <div class="card mb-4 box-shadow text-center border-warning">
-                {% if object.user.last_name and object.user.first_name and object.user.stack %}
+                {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
                 <div class="card-header">
                     <div class="card-header"><strong>Разработчик: </strong>{{ object.user.first_name }} {{ object.user.last_name }}
                     </div>
