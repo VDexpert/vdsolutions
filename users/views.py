@@ -170,7 +170,7 @@ class ProductUserListView(ListView):
         if user.has_perm('catalog.moderating_products'):
             return super().get_queryset()
 
-        return super().get_queryset().filter(user=self.request.user).order_by('-create_at').order_by('-absolute_top')
+        return super().get_queryset().filter(user=self.request.user).order_by('-create_at').order_by('-absolute_top', 'id')
 
 
 class PostUserListView(ListView):
@@ -396,7 +396,7 @@ class UpdateRangeProductUpdateView(UpdateView):
                 self.object = form.save()
                 self.object.change_range_prod = datetime.datetime.now()
 
-                with open('catalog/abs_variables.json', 'r', encoding='utf-8') as source:
+                with open('catalog/abs-variables/var.json', 'r', encoding='utf-8') as source:
                     data = json.load(source)
                     for item in data:
                         print(item)
@@ -404,7 +404,7 @@ class UpdateRangeProductUpdateView(UpdateView):
                         top += 1
                     self.object.absolute_top = top
                     self.object.save()
-                    with open('catalog/abs_variables.json', 'w', encoding='utf-8') as out:
+                    with open('catalog/abs-variables/var.json', 'w', encoding='utf-8') as out:
                         json.dump([{"set_absolute_top_product": top}], out, indent=2)
 
                 return super().form_valid(form)
