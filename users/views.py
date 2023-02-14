@@ -3,7 +3,6 @@ import datetime
 from smtplib import SMTPException
 from django.contrib.auth import login, logout, authenticate, models
 from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
@@ -170,7 +169,7 @@ class ProductUserListView(ListView):
         if user.has_perm('catalog.moderating_products'):
             return super().get_queryset()
 
-        return super().get_queryset().filter(user=self.request.user).order_by('-create_at').order_by('-absolute_top', 'id')
+        return super().get_queryset().filter(user=self.request.user).order_by('-create_at').order_by('-absolute_top', 'create_at')
 
 
 class PostUserListView(ListView):
@@ -399,7 +398,6 @@ class UpdateRangeProductUpdateView(UpdateView):
                 with open('catalog/abs-variables/var.json', 'r', encoding='utf-8') as source:
                     data = json.load(source)
                     for item in data:
-                        print(item)
                         top = int(item["set_absolute_top_product"])
                         top += 1
                     self.object.absolute_top = top
