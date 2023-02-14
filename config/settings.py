@@ -87,7 +87,8 @@ DATABASES = {
         'NAME': 'skystore',
         'PORT': 5432,
         'USER': 'postgres',
-        'PASSWORD': os.getenv('PASSWORD_DATABASE')
+        'PASSWORD': os.getenv('PASSWORD_DATABASE'),
+        'HOST': 'localhost'
     }
 }
 
