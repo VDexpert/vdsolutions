@@ -10,7 +10,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.views.generic import UpdateView, CreateView, ListView, FormView, TemplateView
 from catalog.forms import ProductBannedForm, PostBannedForm
-from catalog.models import Product, Post, Category, Blog
+from catalog.models import Product, Post, Category
 from users.models import User
 from users.forms import CustomUserEditForm, RegisterUserForm, CustomAuthenticationForm, CustomPasswordResetForm, \
     UpdateRangeProductForm
@@ -227,26 +227,28 @@ class CustomPasswordResetFormView(FormView):
     def post(self, request, *args, **kwargs):
         form = self.get_form()
 
-        try:
-            if form.is_valid():
-                email = form.cleaned_data.get('email')
-                user = User.objects.all().get(email=email)
-                new_password = User.objects.make_random_password(length=20)
-                user.set_password(new_password)
-                user.save()
-
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            user = User.objects.all().get(email=email)
+            new_password = User.objects.make_random_password(length=20)
+            user.set_password(new_password)
+            user.save()
+            try:
                 send_email_for_reset(request, email, new_password)
 
+            except SMTPException as e:
+                print('ошибка отправки письма при восстановлении пароля')
+                os.system(f'echo {timezone.now()}, {e} >> password_reset_errors.txt')
+
+                return redirect('users:some_error')
+
+            else:
                 return redirect('users:confirm_reset')
 
-            context = {'form': form}
+        context = {'form': form}
 
-            return render(request, self.template_name, context)
+        return render(request, self.template_name, context)
 
-        except SMTPException as e:
-            os.system(f'echo {timezone.now()}, {e} >> password_reset_errors.txt')
-
-            return reverse_lazy('users:some_error')
 
 
 class ConfirmEmailTemplateView(TemplateView):
@@ -357,7 +359,6 @@ class ChangePostBannedFormView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('users:user_posts')
-
 
 
 class UpdateRangeProductUpdateView(UpdateView):

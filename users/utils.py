@@ -18,11 +18,7 @@ def send_email_for_verify(request, user):
     message = render_to_string('users/mails/verify_email.html', context=context,)
     email = EmailMessage('Завершение регистрации на сайте Skystore', message, to=[user.email],)
 
-    try:
-        email.send()
-
-    except Exception as e:
-        os.system(f'echo {e} >> account_verification_errors.txt')
+    email.send()
 
 
 def send_email_for_reset(request, email, new_password):
@@ -36,8 +32,4 @@ def send_email_for_reset(request, email, new_password):
     message = render_to_string('users/mails/password_reset_email.html', context=context,)
     email = EmailMessage('Восстановление пароля на сайте Skystore', message, to=[email])
 
-    try:
-        email.send()
-
-    except Exception as e:
-        os.system(f'echo {e} >> reset_password_errors.txt')
+    email.send()
