@@ -17,7 +17,7 @@ class ProductHomeListView(ListView):
     paginate_orphans = 3
 
     def get_queryset(self):
-        return super().get_queryset().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором').order_by('-absolute_top', '-create_at')
+        return super().get_queryset().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором').order_by('-absolute_top', '-create_at', '-id')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -96,7 +96,7 @@ class CategoryWithProductsDetailView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        products_category = Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором', category=self.object.pk).order_by('-absolute_top', '-create_at')
+        products_category = Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором', category=self.object.pk).order_by('-absolute_top', '-create_at', '-id')
         paginator = Paginator(products_category, 12)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -181,7 +181,7 @@ class PostListView(ListView):
         return context
 
     def get_queryset(self):
-        return super().get_queryset().filter(status=Post.STATUS_ACTIVE, banned=Post.BANNED_FALSE).order_by('-create_at')
+        return super().get_queryset().filter(status=Post.STATUS_ACTIVE, banned=Post.BANNED_FALSE).order_by('-create_at', '-id')
 
 
 class CategoryWithPostsDetailView(DetailView):
@@ -198,7 +198,7 @@ class CategoryWithPostsDetailView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        posts_category = Post.objects.all().filter(status=Post.STATUS_ACTIVE, category=self.object.pk, banned=Post.BANNED_FALSE).order_by('-create_at')
+        posts_category = Post.objects.all().filter(status=Post.STATUS_ACTIVE, category=self.object.pk, banned=Post.BANNED_FALSE).order_by('-create_at', '-id')
         paginator = Paginator(posts_category, 12)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)

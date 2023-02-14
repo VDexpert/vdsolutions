@@ -167,9 +167,9 @@ class ProductUserListView(ListView):
         user = self.request.user
 
         if user.has_perm('catalog.moderating_products'):
-            return super().get_queryset()
+            return super().get_queryset().order_by('-absolute_top', 'create_at', '-id')
 
-        return super().get_queryset().filter(user=self.request.user).order_by('-create_at').order_by('-absolute_top', 'create_at')
+        return super().get_queryset().filter(user=self.request.user).order_by('-absolute_top', 'create_at', '-id')
 
 
 class PostUserListView(ListView):
@@ -198,9 +198,9 @@ class PostUserListView(ListView):
         user = self.request.user
 
         if user.has_perm('catalog.management_posts')or user.has_perm('catalog.management_category'):
-            return super().get_queryset().order_by('-create_at')
+            return super().get_queryset().order_by('-create_at', '-id')
 
-        return super().get_queryset().filter(user=self.request.user).order_by('-create_at')
+        return super().get_queryset().filter(user=self.request.user).order_by('-create_at', '-id')
 
 
 class CustomPasswordChangeView(PasswordChangeView):
