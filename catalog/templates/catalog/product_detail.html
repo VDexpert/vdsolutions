@@ -2,6 +2,8 @@
 
     {% load static %}
 
+{% load tz %}
+
 {% block content %}
 
     <head>
@@ -46,7 +48,7 @@
                         <br>Дата создания: {{ object.create_at.date }}</small></p>
                          {% if user.is_authenticated and object.user.pk == user.pk or perms.catalog.moderating_products %}
                              {% if object.change_range_prod %}
-                            <p class="card-text"><small class="text-muted">Поднято в ТОП: {{ object.change_range_prod }}</small></p>
+                            <p class="card-text"><small class="text-muted">Поднято в ТОП: {{ object.change_range_prod|timezone:"Europe/Moscow" }} (UTC+2)</small></p>
                              {% endif %}
                         {% endif %}
                         <p class="card-text">{% autoescape off %}{{ object.description|linebreaks }}{% endautoescape %}</p>

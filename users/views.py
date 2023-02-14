@@ -1,5 +1,4 @@
 import os
-import datetime
 from smtplib import SMTPException
 from django.contrib.auth import login, logout, authenticate, models
 from django.contrib.auth.views import LoginView, PasswordChangeView
@@ -19,6 +18,7 @@ from users.utils import send_email_for_verify, send_email_for_reset
 from django.contrib.auth.tokens import default_token_generator as token_generator
 import json
 from django.conf import settings
+from django.utils import timezone
 
 
 class RegisterUser(CreateView):
@@ -58,7 +58,7 @@ class RegisterUser(CreateView):
                     user.user_permissions.add(self.get_perm(codename=perm['act'], app_label=perm['app'], model=perm['mod']).pk)
 
             except SMTPException as e:
-                os.system(f'echo {datetime.datetime.now()}, {e} >> register_errors.txt')
+                os.system(f'echo {timezone.now()}, {e} >> register_errors.txt')
 
                 return redirect('users:some_error')
 
@@ -244,7 +244,7 @@ class CustomPasswordResetFormView(FormView):
             return render(request, self.template_name, context)
 
         except SMTPException as e:
-            os.system(f'echo {datetime.datetime.now()}, {e} >> password_reset_errors.txt')
+            os.system(f'echo {timezone.now()}, {e} >> password_reset_errors.txt')
 
             return reverse_lazy('users:some_error')
 
@@ -393,7 +393,7 @@ class UpdateRangeProductUpdateView(UpdateView):
                 user.trials_update_range_prod -= 1
                 user.save()
                 self.object = form.save()
-                self.object.change_range_prod = datetime.datetime.now()
+                self.object.change_range_prod = timezone.now()
 
                 with open('catalog/abs-variables/var.json', 'r', encoding='utf-8') as source:
                     data = json.load(source)
@@ -440,7 +440,7 @@ class OrderTrialUpdateRangeProductTemplateView(TemplateView):
             )
 
         except SMTPException as e:
-            os.system(f'echo {datetime.datetime.now()}, {e} >> ordering_trials_update_range_product_errors.txt')
+            os.system(f'echo {timezone.now()}, {e} >> ordering_trials_update_range_product_errors.txt')
 
             return redirect('users:some_error')
 
