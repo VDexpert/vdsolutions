@@ -51,11 +51,8 @@
                             <p>Категория: {{ object.category }}</p>
 {#                                <p>{% getversion object.pk %}</p>#}
                     </div>
-                    <div class="card-footer text-bg-warning">
-                        <div class="row">
-                            <div class="col-6"><a class="btn btn-primary w-100" href="{{ object.get_absolute_url }}"><strong>Подробнее</strong></a></div>
-                            <div class="col-6"><a class="btn btn-success w-100" href="#"><strong>Купить</strong></a></div>
-                        </div>
+                    <div class="card-footer text-bg-warning text-center">
+                        <div class="col-12"><a class="btn btn-primary w-50" href="{{ object.get_absolute_url }}"><strong>Подробнее</strong></a></div>
                     </div>
                 </div>
             </div>
