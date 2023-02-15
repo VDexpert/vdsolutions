@@ -10,14 +10,14 @@ class CategoryFormCreate(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Category
-        exclude = ('slug',)
+        exclude = ('slug', 'add_new_prod')
 
 
 class CategoryFormUpdate(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Category
-        exclude = ('slug', 'category_name')
+        exclude = ('slug', 'category_name', 'add_new_prod')
 
 
 class ProductForm(StyleFormMixin, forms.ModelForm):
