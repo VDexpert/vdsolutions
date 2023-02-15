@@ -11,7 +11,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
 
-    {% if object.banned == 'заблокировано модератором' %}
+    {% if object.banned == 'заблокировано модератором' and not perms.catalog.moderating_products %}
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h3 class="display-4">Продукт заблокирован модератором</h3>
         <div class="row">
