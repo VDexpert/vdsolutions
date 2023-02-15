@@ -59,14 +59,14 @@
                     </thead>
                     <tbody>
                         {% for object in object_list %}
-                            <tr class="{% if object.status == 'не опубликовано' %}table-success
-                                        {% elif object.banned == 'заблокировано модератором' %}table-dark
+                            <tr class="{% if object.banned == 'заблокировано модератором' %}table-dark
+                                        {% elif object.status == 'не опубликовано' %}table-success
                                         {% else %}table-light{% endif %}">
                                 <td><a class="link-primary" href="{{ object.get_absolute_url }}"><p>{{ object.product_name }}</p></a></td>
                                 <td>{{ object.prod_annotation }}</td>
                                 <td><a class="link-primary" href="{% url 'catalog:category_with_products' object.category.slug %}">{{ object.category }}</a></td>
-                                <td>{% if object.status == 'не опубликовано' %}<p class="text-danger"><strong>{{ object.status }}</strong></p>
-                                    {% elif object.banned == 'заблокировано модератором' %}<p class="text-warning"><strong>Забанено по правилам портала</strong></p>
+                                <td>{% if object.banned == 'заблокировано модератором' %}<p class="text-warning"><strong>Забанено по правилам портала</strong></p>
+                                    {% elif object.status == 'не опубликовано' %}<p class="text-danger"><strong>{{ object.status }}</strong></p>
                                     {% else %}{{ object.status }}{% endif %}</td>
                                 <td>
                                     <a class="img-fluid" href="{% url 'catalog:update_product' object.pk %}"><img src="{% static "img/update.png" %}" title="Редактировать продукт"></a>

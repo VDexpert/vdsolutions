@@ -111,6 +111,7 @@ class PostForm(StyleFormMixin, forms.ModelForm):
 
 
 class ProductBannedForm(StyleFormMixin, forms.ModelForm):
+    reason_ban = forms.CharField(label='Причина бана', max_length=200, help_text='поле обязательное - это будет отправлено разработчику')
 
     class Meta:
         model = Product
@@ -124,9 +125,10 @@ class FeedbackForm(StyleFormMixin, forms.Form):
 
 
 class PostBannedForm(StyleFormMixin, forms.ModelForm):
+    reason_ban = forms.CharField(label='Причина бана', max_length=200, help_text='поле обязательное - это будет отправлено разработчику')
 
     class Meta:
-        model = Post
+        model = Product
         fields = ('banned',)
 
 

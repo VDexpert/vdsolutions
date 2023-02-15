@@ -24,14 +24,29 @@
                         {% endif %}
                         <form method="post">
                             {% csrf_token %}
-                            {{ form.as_p }}
+                            {% if object.banned == 'заблокировано модератором' %}
+                                    <input type="hidden" name="reason_ban" value="Спасибо, что прислушались к нашим требованиям">
+                                    {{ form.banned.errors }}
+                                    <label class="form-label text-success" for="id_banned"><strong>Разбанить публикацию?</strong></label>
+                                    {{ form.banned }}
+                                {% endif %}
+
+                                {% if object.banned == 'одобрено модератором' %}
+                                    {{ form.banned.errors }}
+                                    <label class="form-label text-danger" for="id_banned"><strong>Забанить публикацию?</strong></label>
+                                    {{ form.banned }}
+                                    {{ form.reason_ban.errors }}
+                                    <label class="form-label small" for="id_reason_bun">{{ form.reason_ban.label }}</label>
+                                    {{ form.reason_ban }}
+                                    <span class="helptext">{{ form.reason_ban.help_text }}</span>
+                                {% endif %}
                             <div class="card-footer border-0">
                                 <div class="row">
-                                    {% if object.banned == 'одобрено модератором' %}
-                                        <div class="col-6"><button class="btn btn-outline-danger w-100" type="submit"><strong>Забанить</strong></button></div>
-                                    {% else %}
-                                        <div class="col-6"><button class="btn btn-outline-success w-100" type="submit"><strong>Разбанить</strong></button></div>
-                                    {% endif %}
+                                        {% if object.banned == 'одобрено модератором' %}
+                                            <div class="col-6"><button class="btn btn-outline-danger w-100" type="submit"><strong>Сохранить</strong></button></div>
+                                        {% else %}
+                                            <div class="col-6"><button class="btn btn-outline-success w-100" type="submit"><strong>Сохранить</strong></button></div>
+                                         {% endif %}
                                     {% if request.META.HTTP_REFERER %}
                                         <div class="col-6">
                                             <a class="btn btn-outline-primary w-100" href="{{ request.META.HTTP_REFERER }}"><strong>Отмена</strong></a>

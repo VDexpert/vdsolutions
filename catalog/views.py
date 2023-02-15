@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from catalog.forms import PostForm, CategoryFormUpdate, CategoryFormCreate, FeedbackForm, ChangeBlogForm
 from catalog.models import *
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView, FormView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, FormView
 from catalog.auxfunc import translit
 from django.shortcuts import render, redirect
 from django.utils import timezone

@@ -1,10 +1,14 @@
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator as token_generator
 import os
+from django.conf import settings
+from django.utils import timezone
+from smtplib import SMTPException
 
 
 def send_email_for_verify(request, user):

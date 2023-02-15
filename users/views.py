@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, authenticate, models
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
@@ -282,7 +283,7 @@ class MenuProfileTemplateView(TemplateView):
     model = User
 
 
-class ChangeProductBannedFormView(UpdateView):
+class ChangeProductBannedUpdateView(UpdateView):
     model = Product
     form_class = ProductBannedForm
     template_name = 'users/product_banned_form.html'
@@ -298,8 +299,58 @@ class ChangeProductBannedFormView(UpdateView):
 
         return super().get(request, *args, **kwargs)
 
-    def get_success_url(self):
-        return reverse_lazy('users:user_products')
+    def form_valid(self, form):
+        obj = super().get_object()
+
+        if form.data['banned'] == 'одобрено модератором' and obj.banned == 'одобрено модератором':
+            form.add_error('banned', f'Выберите значение ЗАБАНИТЬ')
+
+            return super().render_to_response(super().get_context_data(form=form))
+
+        if form.data['banned'] == 'заблокировано модератором' and obj.banned == 'заблокировано модератором':
+            form.add_error('banned', f'Выберите значение РАЗБАНИТЬ')
+
+            return super().render_to_response(super().get_context_data(form=form))
+
+        if form.data['banned'] == 'одобрено модератором':
+            obj = form.save()
+            reason_ban = form.data['reason_ban']
+
+            try:
+                send_mail(
+                    subject='''Ваш продукт на портале Skystore разбанен''',
+                    message=f'''Продукт '{obj.product_name}' разбанен. {reason_ban}. Если у Вас есть вопросы, Вы можете написать модератору на почту {self.request.user.email}''',
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[obj.user.email,]
+                )
+
+            except SMTPException as e:
+                os.system(f'echo {timezone.now()}, {e} >> send_reason_ban_product_errors.txt')
+
+                return redirect('users:error_send_ban_status')
+
+            else:
+                return redirect('users:user_products')
+
+        if form.data['banned'] == 'заблокировано модератором':
+            obj = form.save()
+            reason_ban = form.data['reason_ban']
+
+            try:
+                send_mail(
+                    subject='''Ваш продукт на портале Skystore забанен''',
+                    message=f'''Продукт: '{obj.product_name}' забанен. \nПричины бана: {reason_ban}. Если у Вас есть вопросы. Вы можете написать модератору на почту {self.request.user.email}''',
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[obj.user.email,]
+                )
+
+            except SMTPException as e:
+                os.system(f'echo {timezone.now()}, {e} >> send_reason_ban_product_errors.txt')
+
+                return redirect('users:error_send_ban_status')
+
+            else:
+                return redirect('users:user_products')
 
 
 class CategoryUserListView(ListView):
@@ -329,7 +380,7 @@ class ErrorPermissionTemplateView(TemplateView):
         return context
 
 
-class ChangePostBannedFormView(UpdateView):
+class ChangePostBannedUpdateView(UpdateView):
     model = Post
     form_class = PostBannedForm
     template_name = 'users/post_banned_form.html'
@@ -345,8 +396,58 @@ class ChangePostBannedFormView(UpdateView):
 
         return super().get(request, *args, **kwargs)
 
-    def get_success_url(self):
-        return reverse_lazy('users:user_posts')
+    def form_valid(self, form):
+        obj = super().get_object()
+
+        if form.data['banned'] == 'одобрено модератором' and obj.banned == 'одобрено модератором':
+            form.add_error('banned', f'Выберите значение ЗАБАНИТЬ')
+
+            return super().render_to_response(super().get_context_data(form=form))
+
+        if form.data['banned'] == 'заблокировано модератором' and obj.banned == 'заблокировано модератором':
+            form.add_error('banned', f'Выберите значение РАЗБАНИТЬ')
+
+            return super().render_to_response(super().get_context_data(form=form))
+
+        if form.data['banned'] == 'одобрено модератором':
+            obj = form.save()
+            reason_ban = form.data['reason_ban']
+
+            try:
+                send_mail(
+                    subject='''Ваша публикация на портале Skystore разбанена''',
+                    message=f'''Публикация '{obj.title}' разбанена. {reason_ban}. Если у Вас есть вопросы, Вы можете написать модератору на почту {self.request.user.email}''',
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[obj.user.email, ]
+                )
+
+            except SMTPException as e:
+                os.system(f'echo {timezone.now()}, {e} >> send_reason_ban_product_errors.txt')
+
+                return redirect('users:error_send_ban_status')
+
+            else:
+                return redirect('users:user_posts')
+
+        if form.data['banned'] == 'заблокировано модератором':
+            obj = form.save()
+            reason_ban = form.data['reason_ban']
+
+            try:
+                send_mail(
+                    subject='''Ваша публикация на портале Skystore забанена''',
+                    message=f'''Публикация: '{obj.title}' забанена. \nПричины бана: {reason_ban}. Если у Вас есть вопросы. Вы можете написать модератору на почту {self.request.user.email}''',
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[obj.user.email, ]
+                )
+
+            except SMTPException as e:
+                os.system(f'echo {timezone.now()}, {e} >> send_reason_ban_product_errors.txt')
+
+                return redirect('users:error_send_ban_status')
+
+            else:
+                return redirect('users:user_posts')
 
 
 class UpdateRangeProductUpdateView(UpdateView):
