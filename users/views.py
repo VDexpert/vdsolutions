@@ -305,6 +305,7 @@ class ChangeProductBannedFormView(UpdateView):
 class CategoryUserListView(ListView):
     model = Category
     template_name = 'users/categories_for_content_manager.html'
+    ordering = 'id'
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
