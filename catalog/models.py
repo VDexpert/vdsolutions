@@ -69,8 +69,8 @@ class Product(models.Model):
     BANNED_TRUE = 'заблокировано модератором'
     BANNED_FALSE = 'одобрено модератором'
     BANNED_STATUSES = (
-        (BANNED_TRUE, 'ДА'),
-        (BANNED_FALSE, 'НЕТ')
+        (BANNED_TRUE, 'ЗАБАНИТЬ'),
+        (BANNED_FALSE, 'РАЗБАНИТЬ')
     )
 
     CONFIRM_TRUE = 'true'
@@ -182,8 +182,8 @@ class Post(models.Model):
     BANNED_TRUE = 'заблокировано модератором'
     BANNED_FALSE = 'одобрено модератором'
     BANNED_STATUSES = (
-        (BANNED_TRUE, 'ДА'),
-        (BANNED_FALSE, 'НЕТ')
+        (BANNED_TRUE, 'ЗАБАНИТЬ'),
+        (BANNED_FALSE, 'РАЗБАНИТЬ')
     )
 
     user = models.ForeignKey(User, verbose_name='Автор (продавец)', on_delete=models.CASCADE, **NULLABLE)
