@@ -39,19 +39,3 @@ def getcategories(user, autoescape=False):
         esc = lambda x: x
 
     return [x for x in Category.objects.all() if Product.objects.all().filter(category=x).first()]
-
-
-@register.filter(needs_autoescape=False)
-def cleanversionerror(error, autoescape=False):
-
-    if autoescape:
-        esc = conditional_escape
-    else:
-        esc = lambda x: x
-
-    old_str = ["'", '{', '}', ':', '[', ']', 'value', ","]
-
-    for str in old_str:
-        new_str = str(error).replace(str, '')
-
-    return [x for x in Category.objects.all() if Product.objects.all().filter(category=x).first()]
