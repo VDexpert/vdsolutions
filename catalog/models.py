@@ -140,21 +140,29 @@ class Category(models.Model):
     slug = models.SlugField(max_length=70, verbose_name='URL', db_index=True, unique=True, **NULLABLE)
     add_new_prod = models.DateTimeField(verbose_name='Дата добавления последнего продукта', **NULLABLE)
 
-    category_h1_for_products = models.CharField(verbose_name='Заголовк H1 для продуктов', max_length=70, **NULLABLE)
+    category_h1_for_products = models.CharField(verbose_name='Заголовк H1 для продуктов', max_length=70, **NULLABLE,
+                                                help_text='максимальное количество символов - 70')
     annotation_for_products = models.CharField(verbose_name='Аннотация для продуктов', max_length=200, **NULLABLE,
                                                help_text='максимальное количество символов - 200',)
     description_for_products = tinymce_models.HTMLField(verbose_name='Полное описание для продуктов', **NULLABLE)
-    meta_title_for_products = models.CharField(verbose_name='Title для продуктов', max_length=70, **NULLABLE)
-    meta_description_for_products = models.CharField(verbose_name='Description для продуктов', max_length=300, **NULLABLE)
-    keywords_for_products = models.CharField(verbose_name='Keywords для продуктов', max_length=150, **NULLABLE)
+    meta_title_for_products = models.CharField(verbose_name='Title для продуктов', max_length=70, **NULLABLE,
+                                               help_text='максимальное количество символов - 70')
+    meta_description_for_products = models.CharField(verbose_name='Description для продуктов', max_length=300, **NULLABLE,
+                                                     help_text='максимальное количество символов - 300')
+    keywords_for_products = models.CharField(verbose_name='Keywords для продуктов', max_length=150, **NULLABLE,
+                                             help_text='максимальное количество символов - 150')
 
-    category_h1_for_posts = models.CharField(verbose_name='Заголовк H1 для блога', max_length=70, **NULLABLE)
+    category_h1_for_posts = models.CharField(verbose_name='Заголовк H1 для блога', max_length=70, **NULLABLE,
+                                             help_text='максимальное количество символов - 70')
     annotation_for_posts = models.CharField(verbose_name='Аннотация для блога', max_length=200, **NULLABLE,
                                             help_text='максимальное количество символов - 200',)
     description_for_posts = tinymce_models.HTMLField(verbose_name='Полное описание для блога', **NULLABLE)
-    meta_title_for_posts = models.CharField(verbose_name='Title для блога', max_length=70, **NULLABLE)
-    meta_description_for_posts = models.CharField(verbose_name='Description для блога', max_length=300,**NULLABLE)
-    keywords_for_posts = models.CharField(verbose_name='Keywords для блога', max_length=150, **NULLABLE)
+    meta_title_for_posts = models.CharField(verbose_name='Title для блога', max_length=70, **NULLABLE,
+                                            help_text='максимальное количество символов - 70')
+    meta_description_for_posts = models.CharField(verbose_name='Description для блога', max_length=300,**NULLABLE,
+                                                  help_text='максимальное количество символов - 300')
+    keywords_for_posts = models.CharField(verbose_name='Keywords для блога', max_length=150, **NULLABLE,
+                                          help_text='максимальное количество символов - 150')
 
     class Meta():
         verbose_name = 'категория'
