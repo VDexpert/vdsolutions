@@ -15,7 +15,6 @@ class ProductCreateWithVersionView(CreateView):
     template_name = 'catalog/form_product_with_versions.html'
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -28,7 +27,7 @@ class ProductCreateWithVersionView(CreateView):
         if not user.has_perm('catalog.add_product'):
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('users:user_products')
@@ -70,12 +69,9 @@ class ProductCreateWithVersionView(CreateView):
             self.object.slug = translit.do(self.object.product_name)
             self.object.change_range_prod_at = timezone.now()
             self.object.save()
-            print(form.data['category'])
-            print(type(form.data['category']))
             id_category = form.data['category']
             category = Category.objects.all().get(id=id_category)
             category.add_new_prod = timezone.now()
-            print(timezone.now())
             category.save()
 
             return super().form_valid(form)
@@ -87,7 +83,6 @@ class ProductWithVersionUpdateView(UpdateView):
     template_name = 'catalog/form_product_with_versions.html'
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -99,7 +94,7 @@ class ProductWithVersionUpdateView(UpdateView):
         if not user.has_perm('catalog.change_product'):
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         if self.request.user.has_perm('catalog.moderating_products'):

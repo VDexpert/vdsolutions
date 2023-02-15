@@ -144,7 +144,6 @@ class ProductDeleteView(DeleteView):
     success_url = reverse_lazy('users:user_products')
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -157,7 +156,7 @@ class ProductDeleteView(DeleteView):
         if not user.has_perm('catalog.delete_product'):
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(user=self.request.user)
@@ -295,9 +294,6 @@ class PostUpdateView(UpdateView):
         if not user.is_authenticated:
             return redirect('users:login')
 
-        if user.has_perm('catalog.management_posts'):
-            return self.render_to_response(self.get_context_data())
-
         if user.has_perm('catalog.moderating_products'):
             return redirect('users:error_permission')
 
@@ -324,7 +320,6 @@ class PostDeleteView(DeleteView):
     success_url = reverse_lazy('users:user_posts')
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -338,7 +333,7 @@ class PostDeleteView(DeleteView):
 
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('users:user_posts')

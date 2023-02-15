@@ -148,28 +148,24 @@ class ProductUserListView(ListView):
     template_name = 'users/product_list_profile.html'
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not self.request.user.is_authenticated:
             return redirect('users:login')
 
-        if user.has_perm('catalog.moderating_products'):
-            return self.render_to_response(self.get_context_data())
-
         if user.has_perm('catalog.management_category') or user.has_perm('catalog.management_posts'):
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
 
     def get_queryset(self):
         user = self.request.user
 
         if user.has_perm('catalog.moderating_products'):
-            return super().get_queryset().order_by('-absolute_top', 'create_at', '-id')
+            return super().get_queryset().order_by('-absolute_top', '-create_at', '-id')
 
-        return super().get_queryset().filter(user=self.request.user).order_by('-absolute_top', 'create_at', '-id')
+        return super().get_queryset().filter(user=self.request.user).order_by('-absolute_top', '-create_at', '-id')
 
 
 class PostUserListView(ListView):
@@ -177,7 +173,6 @@ class PostUserListView(ListView):
     template_name = 'users/post_list_profile.html'
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -186,13 +181,10 @@ class PostUserListView(ListView):
         if user.has_perm('catalog.moderating_products'):
             return redirect('users:error_permission')
 
-        if user.has_perm('catalog.management_posts') or user.has_perm('catalog.management_category'):
-            return self.render_to_response(self.get_context_data())
-
         if not user.has_perm('catalog.view_post'):
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         user = self.request.user
@@ -214,12 +206,11 @@ class CustomPasswordResetFormView(FormView):
     form_class = CustomPasswordResetForm
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
 
         if self.request.user.is_authenticated:
             return redirect('users:user_products')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('users:confirm_reset')
@@ -237,7 +228,6 @@ class CustomPasswordResetFormView(FormView):
                 send_email_for_reset(request, email, new_password)
 
             except SMTPException as e:
-                print('ошибка отправки письма при восстановлении пароля')
                 os.system(f'echo {timezone.now()}, {e} >> password_reset_errors.txt')
 
                 return redirect('users:some_error')
@@ -298,7 +288,6 @@ class ChangeProductBannedFormView(UpdateView):
     template_name = 'users/product_banned_form.html'
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -307,7 +296,7 @@ class ChangeProductBannedFormView(UpdateView):
         if not user.has_perm('catalog.moderating_products'):
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('users:user_products')
@@ -318,7 +307,6 @@ class CategoryUserListView(ListView):
     template_name = 'users/categories_for_content_manager.html'
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -327,7 +315,7 @@ class CategoryUserListView(ListView):
         if not user.has_perm('catalog.management_category'):
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
 
 class ErrorPermissionTemplateView(TemplateView):
@@ -346,7 +334,6 @@ class ChangePostBannedFormView(UpdateView):
     template_name = 'users/post_banned_form.html'
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -355,7 +342,7 @@ class ChangePostBannedFormView(UpdateView):
         if not user.has_perm('catalog.management_posts'):
             return redirect('users:error_permission')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('users:user_posts')
@@ -368,7 +355,6 @@ class UpdateRangeProductUpdateView(UpdateView):
     success_url = reverse_lazy('users:success_upd_prod_range')
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
         user = self.request.user
 
         if not user.is_authenticated:
@@ -381,7 +367,7 @@ class UpdateRangeProductUpdateView(UpdateView):
         if not user.trials_update_range_prod:
             return redirect('users:order_trials')
 
-        return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user.pk)
