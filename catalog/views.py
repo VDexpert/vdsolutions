@@ -47,13 +47,6 @@ class CategoryCreateView(CreateView):
         else:
             return redirect('users:error_permission')
 
-    def form_valid(self, form):
-        self.object = form.save()
-        self.object.slug = translit.do(self.object.category_name)
-        self.object.save()
-
-        return super().form_valid(form)
-
 
 class CategoryUpdateView(UpdateView):
     model = Category

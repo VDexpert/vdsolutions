@@ -72,6 +72,10 @@ class ProductCreateWithVersionView(CreateView):
             id_category = form.data['category']
             category = Category.objects.all().get(id=id_category)
             category.add_new_prod = timezone.now()
+
+            if not category.slug:
+                category.slug = translit.do(category.category_name)
+
             category.save()
 
             return super().form_valid(form)
