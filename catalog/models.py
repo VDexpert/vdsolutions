@@ -91,7 +91,7 @@ class Product(models.Model):
     banned = models.CharField(choices=BANNED_STATUSES, default=BANNED_FALSE, max_length=30, verbose_name='Забанить продукт?')
     prod_annotation = models.CharField(max_length=150, verbose_name='Аннотация - выводится в карточке продукта',
                                        help_text='максимальное количество символов - 150', **NULLABLE)
-    description = tinymce_models.HTMLField(verbose_name='Полное описание')
+    description = tinymce_models.HTMLField(verbose_name='Полное описание', **NULLABLE)
     confirm_update_range = models.CharField(choices=CONFIRMS, default=CONFIRM_TRUE, verbose_name='Поднять продукт в ТОП?', max_length=10)
     create_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     change_at = models.DateTimeField(verbose_name='Дата изменения', auto_now=True)
@@ -197,7 +197,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, verbose_name='Автор (продавец)', on_delete=models.CASCADE, **NULLABLE)
     title = models.CharField(max_length=100, verbose_name='Заголовок', db_index=True, unique=True, help_text='максимальное количество символов - 100')
     slug = models.SlugField(max_length=100, verbose_name='URL',  db_index=True, unique=True, null=True)
-    content = tinymce_models.HTMLField(verbose_name='Содержание')
+    content = tinymce_models.HTMLField(verbose_name='Содержание', **NULLABLE)
     picture = models.ImageField(verbose_name='Фото', upload_to='posts/', **NULLABLE, help_text='рекомендуемый размер - 2000*1000')
     create_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     change_at = models.DateTimeField(verbose_name='Дата изменения', **NULLABLE)
