@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from users.models import User
 from tinymce import models as tinymce_models
