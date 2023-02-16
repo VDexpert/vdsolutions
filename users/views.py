@@ -499,7 +499,7 @@ class UpdateRangeProductUpdateView(UpdateView):
             else:
                 return reverse_lazy('users:order_trials')
         else:
-            return reverse_lazy('catalog:post_detail')
+            return redirect('users:user_products')
 
 
 class OrderTrialUpdateRangeProductTemplateView(TemplateView):
