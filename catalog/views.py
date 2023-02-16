@@ -307,6 +307,12 @@ class PostUpdateView(UpdateView):
         self.object.slug = translit.do(self.object.title)
         self.object.change_at = timezone.now()
         self.object.save()
+        id_category = form.data['category']
+        category = Category.objects.all().get(id=id_category)
+
+        if not category.slug:
+            category.slug = translit.do(category.category_name)
+            category.save()
 
         return super().form_valid(form)
 

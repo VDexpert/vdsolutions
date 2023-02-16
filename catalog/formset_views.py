@@ -140,6 +140,15 @@ class ProductWithVersionUpdateView(UpdateView):
             if formset.is_valid():
                 formset.instance = form.save()
                 formset.save()
+                id_category = form.data['category']
+                category = Category.objects.all().get(id=id_category)
+
+                if not category.slug:
+                    category.slug = translit.do(category.category_name)
+                    category.save()
+
+                return super().form_valid(form)
+
             else:
                 return self.render_to_response(self.get_context_data(form=form))
 
