@@ -111,7 +111,7 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['versions'] = Version.objects.all().filter(product=self.object.pk)
+        context['versions'] = Version.objects.all().filter(product=self.object.pk).order_by('-id')
         context['form'] = self.form
         #context['object'] = self._cache_product()
 

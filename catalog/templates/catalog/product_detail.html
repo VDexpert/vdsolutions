@@ -33,10 +33,10 @@
                     {% if user.is_authenticated and object.user.pk == user.pk %}
                     <div class="card-header text-bg-warning">
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-8 col-8"> </div>
-                            <div class="col-lg-6 col-md-8 col-sm-8 col-8">
-                           <a class="btn btn-lg btn-block btn-outline-dark w-100" href="{% url 'users:upd_prod_range' object.pk %}">
-                               <strong>PushTop - поднять в ТОП каталога!</strong></a>
+                            <div class="col-lg-3 col-md-2 col-sm-12 col-12"> </div>
+                            <div class="col-lg-6 col-md-8 col-sm-12 col-12">
+                               <a class="btn btn-lg btn-block btn-outline-dark w-100" href="{% url 'users:upd_prod_range' object.pk %}">
+                                  <strong>PushTop - поднять в ТОП каталога!</strong></a>
                             </div>
                         </div>
                     </div>
@@ -147,11 +147,19 @@
                     </thead>
                     <tbody class="table-light">
                     {% for version in versions %}
-                        <tr {% if version.status == 'активно' %} class="table-success" {% endif %}>
-                            <td class="col-2">{{ version.value }}</td>
-                            <td class="col-5">{{ version.description }}</td>
-                            <td class="col-1">{{ version.status }}</td>
-                        </tr>
+                        {% if version.status == 'активно' %}
+                            <tr class="table-success">
+                                <td class="col-2"><strong>{{ version.value }}</strong></td>
+                                <td class="col-5"><strong>{{ version.description }}</strong></td>
+                                <td class="col-1"><strong>{{ version.status }}</strong></td>
+                            </tr>
+                        {% else %}
+                            <tr class="table-light">
+                                <td class="col-2">{{ version.value }}</td>
+                                <td class="col-5">{{ version.description }}</td>
+                                <td class="col-1">{{ version.status }}</td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                     </tbody>
                 </table>

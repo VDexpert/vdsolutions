@@ -13,7 +13,7 @@
 
     <form method="post" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-5 col-md-12 col-sm-12">
                 <div class="card mb-4 box-shadow border-warning">
                     <div class="card-header text-bg-warning">
                         {% if object.get_absolute_url %}
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-7 col-md-12 col-sm-12">
                 <div class="card border-warning">
                     <div class="card-header text-bg-warning">
                             <h5>Добавьте версии продукта</h5>
@@ -41,18 +41,22 @@
                          <div class="form-error text-danger">{% cleanversionerror formset.errors %}</div>
                         {{ formset.management_form }}
                             {% for form in formset.forms %}
-                                    <div class="formset_row">
+                                    <div class="formset_row row">
                                         {% for field in form.visible_fields %}
-                                                <div class="formset-col">
+                                                <div class="formset-col {% if forloop.counter == 1 %}col-2
+                                                                        {% elif forloop.counter == 2 %}col-8
+                                                                        {% elif forloop.counter == 3 %}col-2
+                                                                        {% endif %}">
                                                     {% if forloop.first %}
                                                         {% for hidden in form.hidden_fields %}
                                                             {{ hidden }}
                                                         {% endfor %}
                                                     {% endif %}
                                                     {% if not forloop.last %}
-                                                        <p>{{ field.label }}
+                                                        <p>{{ field.label }}</p>
                                                     {% endif %}
-                                                    {{ field }}
+                                                 {{ field }}
+                                                    <span class="helptext">{{ field.help_text }}</span>
                                                     <div class="form-error text-danger">{{ field.errors }}</div>
                                                 </div>
                                         {% endfor %}
@@ -72,7 +76,7 @@
 <script>
     $('.formset_row').formset({
         {#addText: '<span class="btn btn-outline-primary w-50">Добавить версию</span>',#}
-        deleteText: '<span class="btn btn-outline-danger w-50">Удалить версию</span>',
+        deleteText: '<span class="btn btn-outline-danger w-25">Удалить версию</span>',
         prefix: 'tag_set',
     });
 </script>

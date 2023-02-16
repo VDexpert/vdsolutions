@@ -8,14 +8,12 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class Home(models.Model):
-    home_h1 = models.CharField(max_length=100, verbose_name='Заголовок')
-    home_annotation = models.CharField(max_length=150, verbose_name='Аннотация', help_text='максимальное количество символов - 150')
-    title = models.CharField(max_length=70, verbose_name='Метатэг Title', help_text='максимальное количество символов - 70')
+    home_h1 = models.CharField(max_length=100, verbose_name='Заголовок',  help_text='До 100 символов')
+    home_annotation = models.CharField(max_length=150, verbose_name='Аннотация', help_text='До 150 символов')
+    title = models.CharField(max_length=70, verbose_name='Метатэг Title', help_text='До 70 символов')
     description = tinymce_models.HTMLField(verbose_name='Содержание', **NULLABLE)
-    meta_description = models.CharField(verbose_name='Метатэг description', max_length=300, **NULLABLE,
-                                        help_text='максимальное количество символов - 300')
-    meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE,
-                                     help_text='максимальное количество символов - 150')
+    meta_description = models.CharField(verbose_name='Метатэг description', max_length=300, **NULLABLE, help_text='До 300 символов')
+    meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE, help_text='До 150 символов')
 
     class Meta():
         verbose_name = 'Главная страница'
@@ -23,15 +21,12 @@ class Home(models.Model):
 
 
 class Blog(models.Model):
-    blog_h1 = models.CharField(max_length=100, verbose_name='Заголовок', **NULLABLE)
-    blog_annotation = models.CharField(max_length=150, verbose_name='Аннотация', **NULLABLE,
-                                       help_text='максимальное количество символов - 150')
-    title = models.CharField(max_length=70, verbose_name='Метатэг Title',  **NULLABLE)
+    blog_h1 = models.CharField(max_length=100, verbose_name='Заголовок', **NULLABLE,  help_text='До 100 символов')
+    blog_annotation = models.CharField(max_length=150, verbose_name='Аннотация', **NULLABLE, help_text='До 150 символов')
+    title = models.CharField(max_length=70, verbose_name='Метатэг Title',  **NULLABLE,  help_text='До 70 символов')
     description = tinymce_models.HTMLField(verbose_name='Содержание',  **NULLABLE)
-    meta_description = models.CharField(verbose_name='Метатэг Description', max_length=300, **NULLABLE,
-                                        help_text='максимальное количество символов - 300')
-    meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE,
-                                     help_text='максимальное количество символов - 150')
+    meta_description = models.CharField(verbose_name='Метатэг Description', max_length=300, **NULLABLE, help_text='До 300 символов')
+    meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE, help_text='До 150 символов')
 
     class Meta():
         verbose_name = 'Блог'
@@ -39,18 +34,18 @@ class Blog(models.Model):
 
 
 class Contacts(models.Model):
-    contacts_h1 = models.CharField(max_length=100, verbose_name='Заголовок', **NULLABLE,)
-    title = models.CharField(max_length=70, verbose_name='Метатэг Title', **NULLABLE,)
-    official_company_name = models.CharField(max_length=30, verbose_name='Юридическое название', **NULLABLE, help_text='максимальное количество символов - 30')
-    country = models.CharField(max_length=20, verbose_name='Страна', **NULLABLE, help_text='максимальное количество символов - 20')
-    itin = models.CharField(max_length=20, verbose_name='ИНН', **NULLABLE, help_text='максимальное количество символов - 20')
-    address = models.CharField(max_length=50, verbose_name='Адрес', **NULLABLE, help_text='максимальное количество символов - 50')
-    phone = models.CharField(max_length=30, verbose_name='Телефон', **NULLABLE, help_text='максимальное количество символов - 30')
-    email = models.CharField(max_length=20, verbose_name='Email', **NULLABLE, help_text='максимальное количество символов - 20')
+    contacts_h1 = models.CharField(max_length=100, verbose_name='Заголовок', **NULLABLE,  help_text='До 100 символов')
+    title = models.CharField(max_length=70, verbose_name='Метатэг Title', **NULLABLE,  help_text='До 70 символов')
+    official_company_name = models.CharField(max_length=30, verbose_name='Юридическое название', **NULLABLE,  help_text='До 30 символов')
+    country = models.CharField(max_length=20, verbose_name='Страна', **NULLABLE,  help_text='До 20 символов')
+    itin = models.CharField(max_length=20, verbose_name='ИНН', **NULLABLE,  help_text='До 20 символов')
+    address = models.CharField(max_length=50, verbose_name='Адрес', **NULLABLE,  help_text='До 50 символов')
+    phone = models.CharField(max_length=30, verbose_name='Телефон', **NULLABLE,  help_text='До 30 символов')
+    email = models.CharField(max_length=20, verbose_name='Email', **NULLABLE,  help_text='До 20 символов')
     meta_description = models.CharField(verbose_name='Метатэг Description', max_length=300, **NULLABLE,
-                                        help_text='максимальное количество символов - 300')
+                                        help_text='До 300 символов')
     meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE,
-                                     help_text='максимальное количество символов - 150')
+                                     help_text='До 150 символов')
 
     class Meta():
         verbose_name = 'Контакты'
@@ -81,7 +76,7 @@ class Product(models.Model):
 
     user = models.ForeignKey(User, verbose_name='Продавец', on_delete=models.CASCADE, **NULLABLE)
     product_name = models.CharField(max_length=90, verbose_name='Наименование', db_index=True, unique=True,
-                                    help_text='максимальное количество символов - 90')
+                                    help_text='До 90 символов')
     slug = models.SlugField(max_length=90, verbose_name='URL',  db_index=True, unique=True, null=True)
     picture = models.ImageField(verbose_name='Фото', upload_to='products/', **NULLABLE, help_text='рекомендуемый размер - 2000*1000')
     category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория', db_index=True)
@@ -89,7 +84,7 @@ class Product(models.Model):
     status = models.CharField(choices=STATUSES, default=STATUS_ACTIVE, max_length=20, verbose_name='Публиковать?')
     banned = models.CharField(choices=BANNED_STATUSES, default=BANNED_FALSE, max_length=30, verbose_name='Забанить продукт?')
     prod_annotation = models.CharField(max_length=150, verbose_name='Аннотация - выводится в карточке продукта',
-                                       help_text='максимальное количество символов - 150', **NULLABLE)
+                                       help_text='До 150 символов', **NULLABLE)
     description = tinymce_models.HTMLField(verbose_name='Полное описание', **NULLABLE)
     confirm_update_range = models.CharField(choices=CONFIRMS, default=CONFIRM_TRUE, verbose_name='Поднять продукт в ТОП?', max_length=10)
     create_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
@@ -120,10 +115,10 @@ class Version(models.Model):
         (STATUS_INACTIVE, 'НЕТ')
     )
 
-    value = models.CharField(verbose_name='Номер версии', max_length=10, help_text='максимальное количество символов - 10')
+    value = models.CharField(verbose_name='Номер', max_length=10)
     product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Продукт')
-    description = models.CharField(verbose_name='Улучшения версии', max_length=250)
-    status = models.CharField(verbose_name='Версия активная?', choices=STATUSES, default=STATUS_INACTIVE, max_length=10)
+    description = models.CharField(verbose_name='Улучшения версии', max_length=250,  help_text='До 250 символов')
+    status = models.CharField(verbose_name='Активная?', choices=STATUSES, default=STATUS_INACTIVE, max_length=10)
 
     def __str__(self):
         return f'{self.value}, {self.product}, {self.description}, {self.status}'
@@ -135,33 +130,33 @@ class Version(models.Model):
 
 class Category(models.Model):
     category_name = models.CharField(max_length=30, verbose_name='Наименование', db_index=True, unique=True,
-                                     help_text='Выбирайте наименование тщательно - от него формируется ссылка и его нельзя будет изменить, максимальное количество символов - 30')
+                                     help_text='Выбирайте наименование тщательно - от него формируется ссылка и его нельзя будет изменить, до 30 символов')
     slug = models.SlugField(max_length=70, verbose_name='URL', db_index=True, unique=True, **NULLABLE)
     add_new_prod = models.DateTimeField(verbose_name='Дата добавления последнего продукта', **NULLABLE)
 
     category_h1_for_products = models.CharField(verbose_name='Заголовк H1 для продуктов', max_length=70, **NULLABLE,
-                                                help_text='максимальное количество символов - 70')
+                                                help_text='До 70 символов')
     annotation_for_products = models.CharField(verbose_name='Аннотация для продуктов', max_length=200, **NULLABLE,
-                                               help_text='максимальное количество символов - 200',)
+                                               help_text='До 200 символов',)
     description_for_products = tinymce_models.HTMLField(verbose_name='Полное описание для продуктов', **NULLABLE)
     meta_title_for_products = models.CharField(verbose_name='Title для продуктов', max_length=70, **NULLABLE,
-                                               help_text='максимальное количество символов - 70')
+                                               help_text='До 70 символов')
     meta_description_for_products = models.CharField(verbose_name='Description для продуктов', max_length=300, **NULLABLE,
-                                                     help_text='максимальное количество символов - 300')
+                                                     help_text='До 300 символов')
     keywords_for_products = models.CharField(verbose_name='Keywords для продуктов', max_length=150, **NULLABLE,
-                                             help_text='максимальное количество символов - 150')
+                                             help_text='До 150 символов')
 
     category_h1_for_posts = models.CharField(verbose_name='Заголовк H1 для блога', max_length=70, **NULLABLE,
-                                             help_text='максимальное количество символов - 70')
+                                             help_text='До 70 символов')
     annotation_for_posts = models.CharField(verbose_name='Аннотация для блога', max_length=200, **NULLABLE,
-                                            help_text='максимальное количество символов - 200',)
+                                            help_text='До 200 символов')
     description_for_posts = tinymce_models.HTMLField(verbose_name='Полное описание для блога', **NULLABLE)
     meta_title_for_posts = models.CharField(verbose_name='Title для блога', max_length=70, **NULLABLE,
-                                            help_text='максимальное количество символов - 70')
+                                            help_text='До 70 символов')
     meta_description_for_posts = models.CharField(verbose_name='Description для блога', max_length=300,**NULLABLE,
-                                                  help_text='максимальное количество символов - 300')
+                                                  help_text='До 300 символов')
     keywords_for_posts = models.CharField(verbose_name='Keywords для блога', max_length=150, **NULLABLE,
-                                          help_text='максимальное количество символов - 150')
+                                          help_text='До 150 символов')
 
     class Meta():
         verbose_name = 'категория'
@@ -194,7 +189,7 @@ class Post(models.Model):
     )
 
     user = models.ForeignKey(User, verbose_name='Автор (продавец)', on_delete=models.CASCADE, **NULLABLE)
-    title = models.CharField(max_length=100, verbose_name='Заголовок', db_index=True, unique=True, help_text='максимальное количество символов - 100')
+    title = models.CharField(max_length=100, verbose_name='Заголовок', db_index=True, unique=True,  help_text='До 100 символов')
     slug = models.SlugField(max_length=100, verbose_name='URL',  db_index=True, unique=True, null=True)
     content = tinymce_models.HTMLField(verbose_name='Содержание', **NULLABLE)
     picture = models.ImageField(verbose_name='Фото', upload_to='posts/', **NULLABLE, help_text='рекомендуемый размер - 2000*1000')

@@ -1,7 +1,7 @@
 {%  load catalog_tags %}
 
 <div class="filter">
-  {% for object in categories %}
-    <a href="{% url 'catalog:category_with_products' object.slug %}"><button class="button text-bg-primary">{{ object.category_name }}</button></a>
+    {% for object in categories %}
+        <a href="{% url 'catalog:category_with_products' object.slug %}"><button class="button text-bg-primary">{{ object.category_name }}</button></a>
   {% endfor %}
 </div>
