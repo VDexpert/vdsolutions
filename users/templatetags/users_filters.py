@@ -35,7 +35,7 @@ def getemptyfields(category, autoescape=True):
     else:
         esc = lambda x: x
 
-    return [mark_safe(esc(field.verbose_name)) for field in category._meta.fields if not category.__getattribute__(str(field).split('.')[-1].replace("'", '')) and str(field) != 'catalog.Category.add_new_prod']
+    return [mark_safe(esc(field.verbose_name)) for field in category._meta.fields if not category.__getattribute__(str(field).split('.')[-1].replace("'", '')) and str(field) != 'catalog.Category.add_new_prod' and str(field) != 'catalog.Category.slug']
 
 
 @register.filter(needs_autoescape=False)
