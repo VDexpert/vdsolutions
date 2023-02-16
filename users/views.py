@@ -155,7 +155,7 @@ class ProductUserListView(ListView):
             return redirect('users:login')
 
         if user.has_perm('catalog.management_category') or user.has_perm('catalog.management_posts'):
-            return redirect('users:error_permission')
+            return redirect('users:user_posts')
 
         return super().get(request, *args, **kwargs)
 
@@ -180,7 +180,7 @@ class PostUserListView(ListView):
             return redirect('users:login')
 
         if user.has_perm('catalog.moderating_products'):
-            return redirect('users:error_permission')
+            return redirect('users:user_products')
 
         if not user.has_perm('catalog.view_post'):
             return redirect('users:error_permission')
