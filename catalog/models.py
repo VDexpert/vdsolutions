@@ -114,7 +114,7 @@ class Version(models.Model):
         (STATUS_INACTIVE, 'НЕТ')
     )
 
-    value = models.CharField(verbose_name='Номер', max_length=10)
+    value = models.CharField(verbose_name='№', max_length=10)
     product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Продукт')
     description = models.CharField(verbose_name='Улучшения', max_length=250,  help_text='До 250 символов')
     status = models.CharField(verbose_name='Релиз?', choices=STATUSES, default=STATUS_INACTIVE, max_length=10)

@@ -1,10 +1,10 @@
 {% load static %}
 
-        <div class="card mb-4 box-shadow border-warning">
+        <div class="card mb-4 box-shadow border-warning mx-3">
                 <div class="card-header text-bg-warning">
                     <div class="row">
                         <div class="col-8">
-                             <strong>{{ user.email|truncatechars:18 }}</strong><br>
+                             <strong>{{ user.email|truncatechars:15 }}</strong><br>
                         <strong>{% if not user.first_name or not user.last_name %}<span class="text-danger">Укажите</span>{% endif %}
                             {% if user.first_name %}{{ user.first_name }}{% else %}<span class="text-danger">имя</span>{% endif %}
                             {% if user.last_name %}{{ user.last_name }}{% else %}<span class="text-danger">фамилию</span>{% endif %}</strong>

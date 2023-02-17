@@ -125,6 +125,7 @@ class ProductWithVersionUpdateView(UpdateView):
         else:
             formset = FormSet(instance=self.object)
         context_data['formset'] = formset
+        context_data['none_versions'] = False if not count_versions else True
 
         return context_data
 

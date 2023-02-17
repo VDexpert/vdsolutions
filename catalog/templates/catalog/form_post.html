@@ -11,19 +11,19 @@
     <div class="row">
         <div class="col-lg-3 col-md-2 col-sm-12"></div>
             <div class="col-lg-6 col-md-8 col-sm-12">
-                <div class="card mb-4 box-shadow border-warning">
-                    <div class="card-header text-bg-warning">
+                <div class="card mb-4 box-shadow border-warning mx-3">
+                    <div class="card-header text-bg-warning py-0">
                         {% if object.get_absolute_url %}
-                    <h2>Редактирование публикации</h2>
+                    <h5>Редактирование публикации</h5>
                             {% else %}
-                            <h2>Создание публикации</h2>
+                            <h5>Создание публикации</h5>
                         {% endif %}
                 </div>
                     <div class="card-body">
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <div class="card-footer text-center border-0">
+                            <div class="card-footer text-center border-0 px-0">
                                 <button class="btn btn-outline-primary w-50" type="submit"><strong>Сохранить</strong></button>
                             </div>
                         </form>
