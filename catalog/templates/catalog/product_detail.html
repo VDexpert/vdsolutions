@@ -1,6 +1,7 @@
 {% extends 'catalog/base.html' %}
 
     {% load static %}
+    {% load user_agents %}
 
 {% load tz %}
 
@@ -57,19 +58,19 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-6 text-center">
-                                <a class="p-1 btn btn-outline-primary w-75" href="{% url 'catalog:update_product' object.pk %}"><strong>Изменить</strong></a>
+                                <a class="p-1 btn btn-outline-primary {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:update_product' object.pk %}"><strong>Изменить</strong></a>
                             </div>
                             {% if not perms.catalog.moderating_products %}
                             <div class="col-6 text-center">
-                                <a class="p-1 btn btn-outline-danger w-75" href="{% url 'catalog:delete_product' object.pk %}"><strong>Удалить</strong></a>
+                                <a class="p-1 btn btn-outline-danger {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:delete_product' object.pk %}"><strong>Удалить</strong></a>
                             </div>
                             {% endif %}
                         {% if perms.catalog.moderating_products %}
                             <div class="col-6 text-center">
                             {% if object.banned == 'одобрено модератором' %}
-                                <a class="p-1 btn btn-outline-danger w-75" href="{% url 'users:product_ban' object.pk %}"><strong>Забанить</strong></a>
+                                <a class="p-1 btn btn-outline-danger {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:product_ban' object.pk %}"><strong>Забанить</strong></a>
                             {% else %}
-                                <a class="p-1 btn btn-outline-success w-75" href="{% url 'users:product_ban' object.pk %}"><strong>Разбанить</strong></a>
+                                <a class="p-1 btn btn-outline-success {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:product_ban' object.pk %}"><strong>Разбанить</strong></a>
                             {% endif %}
                             </div>
                         {% endif %}
@@ -90,28 +91,7 @@
             <div class="col-lg-4 col-md-12 col-sm-12">
                 <div class="card mb-4 box-shadow border-warning text-center">
                     {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
-                    <div class="card-header">
-                        <div class="card-header text-bg-warning"><strong>Разработчик: </strong>{{ object.user.first_name }} {{ object.user.last_name }}
-                        </div>
-                        <div class="row g-0">
-                            <div class="col-6">
-                                {% if not object.user.avatar %}
-                                    {% if object.user.gender == 'женский' %}
-                                        <img class="img-fluid" src="{% static 'img/womannoimage.png' %}">
-                                    {% else %}
-                                        <img class="img-fluid" src="{% static 'img/usernoimage.jpg' %}">
-                                    {% endif %}
-                                {% elif object.user.avatar %}
-                                    <img class="img-fluid" src="{{ object.user.avatar.url }}">
-                                {% endif %}
-                            </div>
-                            <div class="col-6 text-start">
-                                <div class="card-body">
-                                    <div class="card-text"><p><strong>Стек: </strong>{{ object.user.stack }}</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        {% include 'catalog/includes/user_card_for_form_feedback.html' %}
                     {% endif %}
                     <div class="card-header text-bg-warning">
                         <h4 class="my-0 font-weight-normal">Задайте вопрос разработчику</h4>
@@ -123,7 +103,7 @@
                             <input type="hidden" name="product_owner" value="{{ object.user.email }}">
                             {{ form.as_p }}
                             <div class="card-footer border-0">
-                                <button type="submit" class="btn btn-lg btn-block btn-outline-success w-75"><strong>Отправить</strong></button>
+                                <button type="submit" class="btn btn-block btn-outline-success w-75"><strong>Отправить</strong></button>
                             </div>
                         </form>
                     </div>
@@ -133,39 +113,67 @@
         </div>
     </div>
     {% if versions %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-2 col-md-12 col-sm-12"></div>
-            <div class="col-lg-7 col-md-12 col-sm-12">
-                <table class="table table-striped table-info">
-                    <thead class="table-dark">
-                        <tr>
-                            <td class="col-2">Версия</td>
-                            <td class="col-5">Описание версии</td>
-                            <td class="col-1">Активность</td>
-                        </tr>
-                    </thead>
-                    <tbody class="table-light">
-                    {% for version in versions %}
-                        {% if version.status == 'активно' %}
-                            <tr class="table-success">
-                                <td class="col-2"><strong>{{ version.value }}</strong></td>
-                                <td class="col-5"><strong>{{ version.description }}</strong></td>
-                                <td class="col-1"><strong>{{ version.status }}</strong></td>
+        {% if not request|is_mobile %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-12 col-sm-12"></div>
+                <div class="col-lg-7 col-md-12 col-sm-12">
+                    <table class="table table-striped table-info">
+                        <thead class="table-dark">
+                            <tr>
+                                <td class="col-2"><strong>Номер</strong></td>
+                                <td class="col-5"><strong>Описание версии</strong></td>
+                                <td class="col-1"><strong>Релиз</strong></td>
                             </tr>
-                        {% else %}
-                            <tr class="table-light">
-                                <td class="col-2">{{ version.value }}</td>
-                                <td class="col-5">{{ version.description }}</td>
-                                <td class="col-1">{{ version.status }}</td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="table-light">
+                        {% for version in versions %}
+                            {% if version.status == 'активно' %}
+                                <tr class="table-success">
+                                    <td><strong>{{ version.value }}</strong></td>
+                                    <td><strong>{{ version.description }}</strong></td>
+                                    <td><strong>{{ version.status }}</strong></td>
+                                </tr>
+                            {% else %}
+                                <tr class="table-light">
+                                    <td>{{ version.value }}</td>
+                                    <td>{{ version.description }}</td>
+                                    <td>{{ version.status }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    {% elif request|is_mobile %}
+        <div class="container">
+            <table class="table table-striped table-info">
+                <thead class="table-dark">
+                    <tr>
+                        <td class="col-3"><strong>№</strong></td>
+                        <td class="col-12"><strong>Описание версии</strong></td>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                {% for version in versions %}
+                    {% if version.status == 'активно' %}
+                        <tr class="table-success">
+                            <td><strong>{{ version.value }}</strong></td>
+                            <td><strong>{{ version.description }}</strong></td>
+                        </tr>
+                    {% else %}
+                        <tr class="table-light">
+                            <td>{{ version.value }}</td>
+                            <td>{{ version.description }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
     {% endif %}
     {% endif %}
 

@@ -1,6 +1,7 @@
 {% extends 'catalog/base.html' %}
 
     {% load static %}
+    {% load user_agents %}
 
 {% block content %}
 
@@ -41,19 +42,19 @@
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-6 text-center">
-                                        <a class="p-1 btn btn-outline-primary w-75" href="{% url 'catalog:update_post' object.pk %}"><strong>Изменить</strong></a>
+                                        <a class="p-1 btn btn-outline-primary {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:update_post' object.pk %}"><strong>Изменить</strong></a>
                                     </div>
                                     {% if not perms.catalog.management_posts  %}
                                     <div class="col-6 text-center">
-                                        <a class="p-1 btn btn-outline-danger w-75" href="{% url 'catalog:delete_post' object.pk %}"><strong>Удалить</strong></a>
+                                        <a class="p-1 btn btn-outline-danger {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:delete_post' object.pk %}"><strong>Удалить</strong></a>
                                     </div>
                                     {% endif %}
                                     {% if perms.catalog.management_posts %}
                                     <div class="col-6 text-center">
                                     {% if object.banned == 'одобрено модератором' %}
-                                        <a class="p-1 btn btn-outline-danger w-75" href="{% url 'users:post_ban' object.pk %}"><strong>Забанить</strong></a>
+                                        <a class="p-1 btn btn-outline-danger {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:post_ban' object.pk %}"><strong>Забанить</strong></a>
                                     {% else %}
-                                        <a class="p-1 btn btn-outline-success w-75" href="{% url 'users:post_ban' object.pk %}"><strong>Разбанить</strong></a>
+                                        <a class="p-1 btn btn-outline-success {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:post_ban' object.pk %}"><strong>Разбанить</strong></a>
                                     {% endif %}
                                     </div>
                                     {% endif %}
@@ -76,29 +77,7 @@
             <div class="col-lg-4 col-md-12 col-sm-12">
                 <div class="card mb-4 box-shadow text-center border-warning">
                 {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
-                <div class="card-header">
-                    <div class="card-header text-bg-warning"><strong>Разработчик: </strong>{{ object.user.first_name }} {{ object.user.last_name }}
-                    </div>
-                    <div class="row g-0">
-                        <div class="col-6">
-                            {% if not object.user.avatar %}
-                                    {% if object.user.gender == 'женский' %}
-                                        <img class="img-fluid" src="{% static 'img/womannoimage.png' %}">
-                                    {% else %}
-                                        <img class="img-fluid" src="{% static 'img/usernoimage.jpg' %}">
-                                    {% endif %}
-                                {% elif object.user.avatar %}
-                                    <img class="img-fluid" src="{{ object.user.avatar.url }}">
-                                {% endif %}
-                        </div>
-                        <div class="col-6 text-start">
-                            <div class="card-body">
-                                <div class="card-text"><p><strong>Стек: </strong>{{ object.user.stack }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    {% include 'catalog/includes/user_card_for_form_feedback.html' %}
                 {% endif %}
                 <div class="card-header text-bg-warning">
                     <h4 class="my-0 font-weight-normal">Задать вопрос автору</h4>
