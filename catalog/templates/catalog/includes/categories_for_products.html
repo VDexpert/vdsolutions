@@ -2,6 +2,6 @@
 
 <div class="filter">
     {% for object in categories %}
-        <a href="{% url 'catalog:category_with_products' object.slug %}"><button class="button text-bg-primary">{{ object.category_name }}</button></a>
+        <a href="{% url 'catalog:category_with_products' object.slug %}"><button class="button text-bg-primary my-1 mx-1">{{ object.category_name }}</button></a>
   {% endfor %}
 </div>
