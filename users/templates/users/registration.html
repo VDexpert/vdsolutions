@@ -10,35 +10,30 @@
     </head>
 
     <div class="row">
-        <div class="col-lg-4 col-md-12 col-sm-12"></div>
-            <div class="col-lg-4 col-md-8 col-sm-12">
+        <div class="col-lg-4 col-md-3 col-sm-12"></div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="card border-warning mb-4 box-shadow text-center border-warning mx-3">
-                    <div class="card-header text-center text-bg-warning py-0">
+                    <div class="card-header text-center text-bg-warning py-1">
                         <h5>Регистрация в сервисе {{ password }}</h5>
                     </div>
-                    <div class="card-body mb-3">
+                    <div class="card-body px-4">
                         <form method="post">
                             {% csrf_token %}
-                            <div class="mb-3">
-                                <label class="form-label" for="id_email">{{ form.email.label }}</label>
-                                <input type="email" class="form-input form-control form-control-sm" name="email"  required="" id="id_email">
-                                <div class="form-error text-danger">{{  form.email.errors }}</div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="id_password1">{{ form.password1.label }}</label>
-                                <input type="password" class="form-input form-control form-control-sm" name="password1" required="" id="id_password1">
-                                <div class="form-error text-danger">{{  form.password1.errors }}</div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="id_password2">{{ form.password2.label }}</label>
-                                <input type="password" class="form-input form-control form-control-sm" name="password2" required="" id="id_password2">
-                                <div class="form-error text-danger">{{  form.password2.errors }}</div>
-                            </div>
-                                <button class="btn btn-outline-success text-center {% if not request|is_mobile %}w-50{% else %}w-75{% endif %}" type="submit"><strong>Регистрация</strong></button>
-                            <div class="mb-3">   </div>
-                            <div class="mb-3">
-                                <p>У Вас уже есть аккаунт?  <a class="link-primary" href="{% url 'users:login' %}">Авторизация</a></p>
-                            </div>
+                            <label class="form-label" for="id_email">{{ form.email.label }}</label>
+                            <input type="email" class="form-input form-control form-control-sm mb-4" name="email"  required="" id="id_email">
+                            <div class="form-error text-danger">{{  form.email.errors }}</div>
+
+                            <label class="form-label" for="id_password1">{{ form.password1.label }}</label>
+                            <input type="password" class="form-input form-control form-control-sm mb-4" name="password1" required="" id="id_password1">
+                            <div class="form-error text-danger">{{  form.password1.errors }}</div>
+
+                            <label class="form-label" for="id_password2">{{ form.password2.label }}</label>
+                            <input type="password" class="form-input form-control form-control-sm mb-4" name="password2" required="" id="id_password2">
+                            <div class="form-error text-danger">{{  form.password2.errors }}</div>
+
+                            <button class="btn btn-outline-success px-0 mb-3 text-center w-75" type="submit"><strong>Регистрация</strong></button>
+
+                            <p>У Вас уже есть аккаунт?  <a class="link-primary" href="{% url 'users:login' %}">Авторизация</a></p>
                         </form>
                     </div>
                 </div>

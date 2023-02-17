@@ -14,9 +14,14 @@
 
     <form method="post" enctype="multipart/form-data">
         <div class="row">
+        {% if perms.catalog.moderating_products and not none_versions %}
+            <div class="col-lg-3 col-md-2 col-sm-12"><p>&nbsp;</p></div>
+             <div class="col-lg-6 col-md-8 col-sm-12">
+        {% else %}
             <div class="col-lg-5 col-md-12 col-sm-12">
+        {% endif %}
                 <div class="card mb-4 box-shadow border-warning mx-1">
-                    <div class="card-header text-bg-warning">
+                    <div class="card-header text-bg-warning py-1 text-center">
                         {% if object.get_absolute_url %}
                     <h5>Редактирование продукта</h5>
                             {% else %}
@@ -40,7 +45,7 @@
                     </div>
                 {% elif not perms.catalog.moderating_products %}
                     <div class="card border-warning mx-2">
-                    <div class="card-header text-bg-warning">
+                    <div class="card-header text-bg-warning py-1">
                             <h5>Добавьте версии продукта11</h5>
                     </div>
                 {% endif %}
