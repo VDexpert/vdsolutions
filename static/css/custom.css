@@ -24,9 +24,10 @@
   filter: brightness(50%);
 }
 
-.post-link-preview {
+.white-link {
          color: #ffffff;
 }
+
 
 ul.errorlist li  {
   color: red;
