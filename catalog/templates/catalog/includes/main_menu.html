@@ -27,12 +27,12 @@
                   <img src="{% static "img/house-door.svg" %}"> Личный кабинет{% endif %}</a>
             </li>
             {% endif %}
-            <li class="nav-item">
-              <a class="nav-link disabled" >{% getphone %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" >{% getemail %}</a>
-            </li>
+{#            <li class="nav-item">#}
+{#              <a class="nav-link disabled" >{% getphone %}</a>#}
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#              <a class="nav-link disabled" >{% getemail %}</a>#}
+{#            </li>#}
         </ul>
       <ul class="d-flex">
           {% if not user.is_authenticated %}

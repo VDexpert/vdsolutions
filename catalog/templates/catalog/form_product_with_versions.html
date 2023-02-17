@@ -23,9 +23,9 @@
                 <div class="card mb-4 box-shadow border-warning mx-1">
                     <div class="card-header text-bg-warning py-1 text-center">
                         {% if object.get_absolute_url %}
-                    <h5>Редактирование продукта</h5>
+                    <h3>Редактирование продукта</h3>
                             {% else %}
-                            <h2>Создание продукта</h2>
+                            <h3>Создание продукта</h3>
                         {% endif %}
                     </div>
                     <div class="card-body">
@@ -41,12 +41,12 @@
             {% if perms.catalog.moderating_products and none_versions %}
                 <div class="card border-warning mb-5">
                     <div class="card-header text-bg-warning">
-                            <h6>Добавьте версии продукта</h6>
+                            <h5>Добавьте версии продукта</h5>
                     </div>
                 {% elif not perms.catalog.moderating_products %}
                     <div class="card border-warning mx-2 mb-5">
                     <div class="card-header text-bg-warning py-1">
-                            <h5>Добавьте версии продукта11</h5>
+                            <h5>Добавьте версии продукта</h5>
                     </div>
                 {% endif %}
                     <div class="card-body">

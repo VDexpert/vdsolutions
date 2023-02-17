@@ -24,9 +24,31 @@
   filter: brightness(50%);
 }
 
-.white-link {
-         color: #ffffff;
+.post-white-link {
+         color: #ffffff;;
 }
+
+.post-white-link:hover {
+        color: yellow;
+}
+
+a.white-link {
+         color: #ffffff;;
+}
+
+a.white-link:hover {
+    color: yellow;
+    text-decoration: unset;
+   }
+
+a.dark-link {
+    color: #000000;
+}
+
+a.dark-link:hover {
+    color: blue;
+    text-decoration: unset;
+   }
 
 
 ul.errorlist li  {
@@ -40,4 +62,8 @@ span.helptext {
 
 a.add-row {
   display: none;
+}
+
+.td-table-info {
+  background-color: #cff4fc;
 }

@@ -18,14 +18,14 @@
         {% include 'users/includes/menu_profile.html' %}
 
         <div class="col-lg-9 col-md-12 col-sm-12">
-            <div class="card border-warning mb-5">
+            <div class="card border-0 mb-5">
                 <div class="card-header text-center px-0 py-0">
-                    <div class="row">
+                    <div class="row text-bg-success px-0 mx-0">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <nav class="nav flex-column">
-                                <ul class="nav nav-tabs pb-2">
+                                <ul class="nav nav-tabs pt-2 pb-0">
                                       <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'users:user_posts' %}">Публикации</a>
+                                        <a class="nav-link white-link" href="{% url 'users:user_posts' %}">Публикации</a>
                                       </li>
                                       <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="{% url 'users:categories_for_content_manager' %}"><strong>Категории</strong></a>
@@ -34,7 +34,7 @@
                             </nav>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <a class="p-1 btn btn-outline-success w-75 my-2" href="{% url 'catalog:create_category' %}"><strong>Добавить категорию</strong></a>
+                            <a class="p-1 btn btn-outline-light w-75 my-2" href="{% url 'catalog:create_category' %}"><strong>Добавить категорию</strong></a>
                         </div>
                     </div>
                 </div>
@@ -51,25 +51,30 @@
                     </thead>
                     <tbody>
                         {% for object in object_list %}
-                            <tr class="table-light">
+
+                            <tr class="{% if not object|getemptyfields|cutbrackets %}table-info{% else %}table-light{% endif %}">
+
                                 <td><p>{{ object.category_name }}</p></td>
+
                                 <td>{% if object|getemptyfields %}<p><strong class="text-danger">Заполните поля: </strong>{{ object|getemptyfields|cutbrackets }}</p>
-                                    {% else %}<p class="text-success"><strong>В категории все заполнено</strong></p>
+                                    {% else %}<p><strong>В категории все заполнено</strong></p>
                                     {% endif %}</td>
+
                                 <td>{% if object|checkexistproduct == False %}
                                     <p class="text-danger">Нет продуктов. Категория не отображается в разделе блога</p>
                                     {% else %}
-                                    <p>Есть продукты. Категория отображается в <a class="link-primary" href="{% url 'catalog:category_with_products' object.slug %}">разделе продуктов</a></p>
+                                    <p>Есть продукты. Категория отображается в <a class="dark-link" href="{% url 'catalog:category_with_products' object.slug %}">разделе продуктов</a></p>
                                     {% endif %}
                                     {% if object|checkexistpost == False %}
                                     <p class="text-danger">Нет статей. Категория не отображается в разделе блога</p>
                                     {% else %}
-                                    <p>Есть статьи. Категория отображается в <a class="link-primary" href="{% url 'catalog:category_with_posts' object.slug %}">разделе блога</a></p>
+                                    <p>Есть статьи. Категория отображается в <a class="dark-link" href="{% url 'catalog:category_with_posts' object.slug %}">разделе блога</a></p>
                                     {% endif %}
                                 </td>
+
                                 <td>
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-12">
                                             <a class="img-fluid" href="{% url 'catalog:update_category' object.pk %}"><img class="img-fluid" src="{% static "img/update.png" %}" title="Редактировать продукт"></a>
                                         </div>
                                     </div>
@@ -89,14 +94,14 @@
 
         {% include 'users/includes/menu_profile_for_mobile.html' %}
 
-        <div class="card border-warning mx-3 mb-5">
+        <div class="card border-0 mx-3 mb-5">
                 <div class="card-header text-center px-0 py-0">
-                    <div class="row">
+                    <div class="row text-bg-success px-0 mx-0">
                         <div class="col-12">
                             <nav class="nav flex-column">
-                                <ul class="nav nav-tabs">
+                                <ul class="nav nav-tabs pt-2 pb-0">
                                       <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'users:user_posts' %}">Публикации</a>
+                                        <a class="nav-link white-link" href="{% url 'users:user_posts' %}">Публикации</a>
                                       </li>
                                       <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="{% url 'users:categories_for_content_manager' %}"><strong>Категории</strong></a>
@@ -105,13 +110,13 @@
                             </nav>
                         </div>
                         <div class="col-12">
-                            <a class="p-1 btn btn-success w-50" href="{% url 'catalog:create_category' %}"><strong><img class="img-fluid" src="{% static "img/plus.png" %}">   Категория</strong></a>
+                            <a class="p-1 btn btn-outline-light w-50 my-2" href="{% url 'catalog:create_category' %}"><strong><img class="img-fluid" src="{% static "img/plus.png" %}">   Категория</strong></a>
                         </div>
                     </div>
                 </div>
                 {% if object_list %}
               <div class="card-body px-0 py-0">
-                <table class="table table-striped mb-0">
+                <table class="table table-striped table-info mb-0 pb-0">
                     <tbody>
                         {% for object in object_list %}
                             <tr class="table-info">
@@ -136,12 +141,12 @@
                                     {% if object|checkexistproduct == False %}
                                     <p class="text-danger">Нет продуктов. Категория не отображается в разделе блога</p>
                                     {% else %}
-                                    <p>Есть продукты. Категория отображается в <a class="link-primary" href="{% url 'catalog:category_with_products' object.slug %}">разделе продуктов</a></p>
+                                    <p>Есть продукты. Категория отображается в <a class="dark-link" href="{% url 'catalog:category_with_products' object.slug %}">разделе продуктов</a></p>
                                     {% endif %}
                                     {% if object|checkexistpost == False %}
                                     <p class="text-danger">Нет статей. Категория не отображается в разделе блога</p>
                                     {% else %}
-                                    <p>Есть статьи. Категория отображается в <a class="link-primary" href="{% url 'catalog:category_with_posts' object.slug %}">разделе блога</a></p>
+                                    <p>Есть статьи. Категория отображается в <a class="dark-link" href="{% url 'catalog:category_with_posts' object.slug %}">разделе блога</a></p>
                                     {% endif %}
                                 </td>
                             </tr>

@@ -143,6 +143,13 @@ class UserUpdateProfileView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('users:user_products')
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.phone = str(self.object.phone).replace('+', '').replace('(', '').replace(')', '').replace('-', '').replace(' ', '')
+        self.object.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
 
 class ProductUserListView(ListView):
     model = Product
