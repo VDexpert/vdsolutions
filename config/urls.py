@@ -14,12 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.template.defaulttags import url
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from catalog.sitemaps import ProductSitemap, CategorySitemap, PostSitemap
+from django.views.static import serve
+from django.conf.urls import (
+    # handler400,
+    # handler403,
+    handler404,
+    # handler500,
+)
+
 
 sitemaps = {
     'categories': CategorySitemap,
@@ -36,7 +43,10 @@ urlpatterns = [
     re_path(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
-handler404 = "catalog.views.page_not_found_view"
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,}),]
+
+handler404 = 'catalog.views.error_404'
+

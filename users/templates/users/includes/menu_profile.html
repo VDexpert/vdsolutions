@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="col-lg-3 col-md-12 col-sm-12">
-            <div class="card border-warning">
+        <div class="card border-warning mb-5">
             {% if not user.avatar %}
                 {% if user.gender == 'женский' %}
                     <img src="{% static 'img/womannoimage.png' %}" class="card-img-top">
@@ -11,60 +11,59 @@
             {% elif user.avatar %}
                 <img src="{{ user.avatar.url }}" class="card-img-top">
             {% endif %}
-            {% if not perms.catalog.moderating_products and not perms.catalog.management_category and not perms.catalog.management_posts %}
-                {% if not user.trials_update_range_prod %}
-                    <div class="card-header text-center text-bg-warning">
-                        <a class="btn btn-lg btn-block btn-outline-dark w-75" href="{% url 'users:upd_prod_range' user.pk %}">
-                            <strong>Заказать PushTop</strong>
-                        </a>
-                    </div>
-                {% endif %}
-            {% if not user.first_name or not user.last_name or not user.phone or not user.country or not user.stack %}
-              <div class="card-header text-center text-bg-danger">
-                  <p>Заполните профиль - это повысит доверие посетителей Skystore</p></div>
-                {% elif not user.avatar %}
-                <div class="card-header text-center text-bg-danger">
-                    <p>Загрузите фото - это повысит доверие посетителей Skystore</p></div>
+        {% if not perms.catalog.moderating_products and not perms.catalog.management_category and not perms.catalog.management_posts %}
+            {% if not user.trials_update_range_prod %}
+                <div class="card-header text-center text-bg-warning">
+                    <a class="btn btn-lg btn-block btn-outline-dark w-75" href="{% url 'users:order_trials' %}">
+                        <strong>Заказать PushTop</strong>
+                    </a>
+                </div>
             {% endif %}
-            {% endif %}
-              <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted">Ваши данные</h6>
-                <table class="table table-striped table-info">
-                    <tbody>
-                        <tr>
-                            <td class="col-4">Почта: </td>
-                            <td class="col-8">{{ user.email | truncatechars:20 }}</td>
-                        </tr>
-                        <tr>
-                            <td class="col-4">Пол: </td>
-                            <td class="col-8 {% if not user.gender %}table-danger{% endif %}">{% if not user.gender %}Не указано {% else %}{{ user.gender }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <td class="col-4">Имя: </td>
-                            <td class="col-8 {% if not user.first_name %}table-danger{% endif %}">{% if not user.first_name %}Не указано {% else %}{{ user.first_name }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <td class="col-4">Фамилия: </td>
-                            <td class="col-8 {% if not user.last_name %}table-danger{% endif %}">{% if not user.last_name %}Не указано {% else %}{{ user.last_name }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <td class="col-4">Телефон: </td>
-                            <td class="col-8 {% if not user.phone %}table-danger{% endif %}">{% if not user.phone %}Не указано {% else %}{{ user.phone }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <td class="col-4">Страна: </td>
-                            <td class="col-8 {% if not user.country %}table-danger{% endif %}">{% if not user.country %}Не указано {% else %}{{ user.country }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <td class="col-4">Стэк: </td>
-                            <td class="col-8 {% if not user.stack %}table-danger{% endif %}">{% if not user.stack %}Не указано {% else %}{{ user.stack }}{% endif %}</td>
-                        </tr>
-                    </tbody>
-                </table>
-              </div>
-                <p class="text-center"><a class="link-primary" href="{% url 'users:change_password' %}"><strong>Сменить пароль</strong></a></p>
-              <div class="card-footer text-bg-warning">
-                 <a class="p-1 btn btn-outline-dark w-100" href="{% url 'users:edit_profile' %}"><strong>Редактировать профиль</strong></a>
-              </div>
-            </div>
+        {% if not user.first_name or not user.last_name or not user.phone or not user.country or not user.stack %}
+          <div class="card-header text-center text-bg-danger">
+              <p>Заполните профиль - это повысит доверие посетителей Skystore</p></div>
+            {% elif not user.avatar %}
+            <div class="card-header text-center text-bg-danger">
+                <p>Загрузите фото - это повысит доверие посетителей Skystore</p></div>
+        {% endif %}
+        {% endif %}
+          <div class="card-body px-0 py-0">
+            <table class="table table-striped table-info my-0">
+                <tbody>
+                    <tr>
+                        <td class="col-4">Почта: </td>
+                        <td class="col-8">{{ user.email | truncatechars:20 }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-4">Пол: </td>
+                        <td class="col-8 {% if not user.gender %}table-danger{% endif %}">{% if not user.gender %}Не указано {% else %}{{ user.gender }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-4">Имя: </td>
+                        <td class="col-8 {% if not user.first_name %}table-danger{% endif %}">{% if not user.first_name %}Не указано {% else %}{{ user.first_name }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-4">Фамилия: </td>
+                        <td class="col-8 {% if not user.last_name %}table-danger{% endif %}">{% if not user.last_name %}Не указано {% else %}{{ user.last_name }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-4">Телефон: </td>
+                        <td class="col-8 {% if not user.phone %}table-danger{% endif %}">{% if not user.phone %}Не указано {% else %}{{ user.phone }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-4">Страна: </td>
+                        <td class="col-8 {% if not user.country %}table-danger{% endif %}">{% if not user.country %}Не указано {% else %}{{ user.country }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-4">Стэк: </td>
+                        <td class="col-8 {% if not user.stack %}table-danger{% endif %}">{% if not user.stack %}Не указано {% else %}{{ user.stack }}{% endif %}</td>
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+            <p class="text-center"><a class="link-primary" href="{% url 'users:change_password' %}"><strong>Сменить пароль</strong></a></p>
+          <div class="card-footer text-bg-warning">
+             <a class="p-1 btn btn-outline-dark w-100" href="{% url 'users:edit_profile' %}"><strong>Редактировать профиль</strong></a>
+          </div>
         </div>
+    </div>

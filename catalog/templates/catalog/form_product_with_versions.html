@@ -4,6 +4,7 @@
 
     {% load catalog_filters %}
     {% load catalog_tags %}
+    {% load user_agents %}
 
     <head>
       <title>Форма продукта - создание и редактирование</title>
@@ -32,34 +33,57 @@
                 </div>
             </div>
             <div class="col-lg-7 col-md-12 col-sm-12">
+            {% if perms.catalog.moderating_products and not form.visible_fields %}
                 <div class="card border-warning">
                     <div class="card-header text-bg-warning">
                             <h5>Добавьте версии продукта</h5>
                     </div>
+                {% else %}
+                    <div class="card border-warning">
+                    <div class="card-header text-bg-warning">
+                            <h5>Добавьте версии продукта</h5>
+                    </div>
+                {% endif %}
                     <div class="card-body">
                         <div class="formset">
-                         <div class="form-error text-danger">{% cleanversionerror formset.errors %}</div>
+                            <div class="form-error text-danger"><strong>{{ form.error_status }}</strong></div>
+                             <div class="form-error text-danger">{% cleanversionerror formset.errors %}</div>
                         {{ formset.management_form }}
                             {% for form in formset.forms %}
-                                    <div class="formset_row row">
-                                        {% for field in form.visible_fields %}
-                                                <div class="formset-col {% if forloop.counter == 1 %}col-2
-                                                                        {% elif forloop.counter == 2 %}col-8
-                                                                        {% elif forloop.counter == 3 %}col-2
-                                                                        {% endif %}">
-                                                    {% if forloop.first %}
-                                                        {% for hidden in form.hidden_fields %}
-                                                            {{ hidden }}
-                                                        {% endfor %}
+                                <div class="formset_row row">
+                                    {% for field in form.visible_fields %}
+                                            {% if not request|is_mobile %}
+                                            <div class="formset-col {% if forloop.counter == 1 %}col-2">
+                                                                    {% elif forloop.counter == 2 %}col-8">
+                                                                    {% elif forloop.counter == 3 %}col-2">
+                                                                    {% endif %}
+                                            {% elif request|is_mobile %}
+                                            <div class="formset-col {% if forloop.counter == 1 %}col-3">
+                                                                    {% elif forloop.counter == 2 %}col-6">
+                                                                    {% elif forloop.counter == 3 %}col-3">
+                                                                    {% endif %}
+                                            {% endif %}
+                                                {% if forloop.first %}
+                                                    {% for hidden in form.hidden_fields %}
+                                                        {{ hidden }}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                {% if not forloop.last %}
+                                                    <p>{{ field.label }}</p>
+                                                {% endif %}
+                                            {% if perms.catalog.moderating_products %}
+                                                    {% if field.label == 'Удалить' %}
+                                                        {{ field.hidden }}
+                                                    {% else %}
+                                                        {{ field }}
                                                     {% endif %}
-                                                    {% if not forloop.last %}
-                                                        <p>{{ field.label }}</p>
-                                                    {% endif %}
-                                                 {{ field }}
-                                                    <span class="helptext">{{ field.help_text }}</span>
-                                                    <div class="form-error text-danger">{{ field.errors }}</div>
-                                                </div>
-                                        {% endfor %}
+                                                {% else %}
+                                                {{ field }}
+                                            {% endif %}
+                                                <span class="helptext">{{ field.help_text }}</span>
+                                                <div class="form-error text-danger">{{ field.errors }}</div>
+                                            </div>
+                                    {% endfor %}
                                 </div>
                            {% endfor %}
                         </div>
@@ -69,6 +93,8 @@
         </div>
     </form>
 
+{% if not perms.catalog.moderating_products %}
+
 <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.js"
         integrity="sha512-Tsdobfrx6IMRPi8d5z3AtjWNSbZxGm58IZFnblaRaepw562ZITlRhUM2Zu87vbvZjQxGmmto+31zEBLZ4wjs+w=="
@@ -76,9 +102,11 @@
 <script>
     $('.formset_row').formset({
         {#addText: '<span class="btn btn-outline-primary w-50">Добавить версию</span>',#}
-        deleteText: '<span class="btn btn-outline-danger w-25">Удалить версию</span>',
+        deleteText: '<span class="btn btn-outline-danger">Удалить версию</span>',
         prefix: 'tag_set',
     });
 </script>
+
+{% endif %}
 
 {% endblock %}

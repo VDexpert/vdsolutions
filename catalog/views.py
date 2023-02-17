@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from catalog.forms import PostForm, CategoryFormUpdate, CategoryFormCreate, FeedbackForm, ChangeBlogForm
 from catalog.models import *
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, FormView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, FormView, TemplateView
 from catalog.auxfunc import translit
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -17,11 +17,11 @@ class ProductHomeListView(ListView):
     paginate_orphans = 3
 
     def get_queryset(self):
-        return super().get_queryset().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором').order_by('-absolute_top', '-create_at', '-id')
+        return super().get_queryset().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором').order_by('-create_at', '-absolute_top', '-id')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = [x for x in Category.objects.all() if Product.objects.all().filter(category=x)]
+        context['categories'] = [x for x in Category.objects.all() if Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned=Product.BANNED_FALSE, category=x).first()]
         context['versions'] = Version.objects.all()
         context['count_products'] = self.get_queryset().count()
         context['home'] = Home.objects.all().first()
@@ -82,24 +82,53 @@ class CategoryWithProductsDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
 
-        if not Product.objects.all().filter(category=self.object.pk).exists():
+        if not Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned=Product.BANNED_FALSE, category=self.object.pk).first():
             return redirect('catalog:double_404_page')
 
         return self.render_to_response(self.get_context_data())
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        products_category = Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором', category=self.object.pk).order_by('-absolute_top', '-create_at', '-id')
+        products_category = Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором', category=self.object.pk).order_by('-create_at', '-absolute_top', '-id')
         paginator = Paginator(products_category, 12)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
-        context['categories'] = [x for x in Category.objects.all() if Product.objects.all().filter(category=x)]
+        context['categories'] = [x for x in Category.objects.all() if Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned=Product.BANNED_FALSE, category=x).first()]
         context['page_obj'] = page_obj
         context['versions'] = Version.objects.all()
         context['count_products'] = products_category.count()
         context['paginator'] = paginator
         context['products'] = paginator.page(int(str(page_obj).split(' ')[1])).object_list
+
+        return context
+
+
+class CategoryWithPostsDetailView(DetailView):
+    model = Category
+    template_name = 'catalog/category_with_posts.html'
+
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
+
+        if not Post.objects.all().filter(status=Post.STATUS_ACTIVE, banned=Post.BANNED_FALSE, category=self.object.pk).first():
+            return redirect('catalog:double_404_page')
+
+        return self.render_to_response(self.get_context_data())
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts_category = Post.objects.all().filter(status=Post.STATUS_ACTIVE, category=self.object.pk, banned=Post.BANNED_FALSE).order_by('-create_at', '-id')
+        paginator = Paginator(posts_category, 12)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        context['categories'] = [x for x in Category.objects.all() if Post.objects.all().filter(status=Post.STATUS_ACTIVE, banned=Post.BANNED_FALSE, category=x).first()]
+        context['page_obj'] = page_obj
+        context['versions'] = Version.objects.all()
+        context['count_posts'] = posts_category.count()
+        context['paginator'] = paginator
+        context['posts'] = paginator.page(int(str(page_obj).split(' ')[1])).object_list
 
         return context
 
@@ -174,35 +203,6 @@ class PostListView(ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(status=Post.STATUS_ACTIVE, banned=Post.BANNED_FALSE).order_by('-create_at', '-id')
-
-
-class CategoryWithPostsDetailView(DetailView):
-    model = Category
-    template_name = 'catalog/category_with_posts.html'
-
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
-
-        if not Post.objects.all().filter(category=self.object.pk).exists():
-            return redirect('catalog:double_404_page')
-
-        return self.render_to_response(self.get_context_data())
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        posts_category = Post.objects.all().filter(status=Post.STATUS_ACTIVE, category=self.object.pk, banned=Post.BANNED_FALSE).order_by('-create_at', '-id')
-        paginator = Paginator(posts_category, 12)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-
-        context['categories'] = [x for x in Category.objects.all() if Post.objects.all().filter(category=x)]
-        context['page_obj'] = page_obj
-        context['versions'] = Version.objects.all()
-        context['count_posts'] = posts_category.count()
-        context['paginator'] = paginator
-        context['posts'] = paginator.page(int(str(page_obj).split(' ')[1])).object_list
-
-        return context
 
 
 class PostDetailView(DetailView):
@@ -398,5 +398,9 @@ class ChangeBlogUpdateView(UpdateView):
         return reverse_lazy('users:user_posts')
 
 
-def page_not_found_view(request, exception):
-    return render(request, 'page_404.html', status=404)
+def error_404(request, exception):
+    context = {}
+    context['page_title'] = '404'
+    response = render(request, 'catalog/page_404.html', context=context)
+    response.status_code = 404
+    return response

@@ -38,4 +38,4 @@ def getcategories(user, autoescape=False):
     else:
         esc = lambda x: x
 
-    return [x for x in Category.objects.all() if Product.objects.all().filter(category=x).first()]
+    return [x for x in Category.objects.all() if Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned=Product.BANNED_FALSE, category=x).first()]

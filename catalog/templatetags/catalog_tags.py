@@ -32,7 +32,7 @@ def getusername(email):
 
 @register.simple_tag()
 def cleanversionerror(error):
-    return str(error).replace("'", '').replace('{', '').replace('}', '').replace(':', '').replace('[', '').replace(']', '').replace('value', '')
+    return str(error).replace("'", '').replace('{', '').replace('}', '').replace(':', '').replace('[', '').replace(']', '').replace('value', '').replace(',', '')
 
 
 @register.simple_tag()

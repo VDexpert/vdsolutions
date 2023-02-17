@@ -1,3 +1,4 @@
+import re
 from django.db import transaction
 from django.forms import inlineformset_factory
 from django.shortcuts import redirect
@@ -7,6 +8,7 @@ from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version, Category
 from catalog.auxfunc import translit
 from django.utils import timezone
+from django.utils.html import conditional_escape as esc
 
 
 class ProductCreateWithVersionView(CreateView):
@@ -68,6 +70,8 @@ class ProductCreateWithVersionView(CreateView):
             self.object.user = self.request.user
             self.object.slug = translit.do(self.object.product_name)
             self.object.change_range_prod_at = timezone.now()
+            origin_description = re.sub(r"<[^>]+>", "", self.object.description, flags=re.S)
+            self.object.prod_annotation = origin_description[:150]
             self.object.save()
             id_category = form.data['category']
             category = Category.objects.all().get(id=id_category)
@@ -109,10 +113,12 @@ class ProductWithVersionUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('users:user_products')
 
+
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         count_versions = Version.objects.all().filter(product=self.object.pk).count()
-        FormSet = inlineformset_factory(self.model, Version, form=VersionForm, extra=1000, max_num=count_versions + 6)
+        FormSet = inlineformset_factory(self.model, Version, form=VersionForm, extra=1000,
+                                        max_num=count_versions + 6 if not self.request.user.has_perm('catalog.moderating_products') else 0)
 
         if self.request.method == 'POST':
             formset = FormSet(self.request.POST, instance=self.object)
@@ -128,13 +134,15 @@ class ProductWithVersionUpdateView(UpdateView):
         active_versions = len([x for x in form.data.values() if x == 'активно'])
 
         if active_versions > 1:
-            form.error_status = 'Необходимо, чтобы только одна версия вашей программы была активной'
+            form.error_status = 'Необходимо, чтобы только одна версия Вашей программы была активной'
 
             return self.render_to_response(self.get_context_data(form=form))
 
         if form.is_valid():
             self.object = form.save()
             self.object.slug = translit.do(self.object.product_name)
+            origin_description = re.sub(r"<[^>]+>", "", self.object.description, flags=re.S)
+            self.object.prod_annotation = origin_description[:150]
             self.object.save()
 
             if formset.is_valid():

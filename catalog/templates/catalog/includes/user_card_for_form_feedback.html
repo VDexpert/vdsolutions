@@ -1,0 +1,24 @@
+{% load static %}
+
+<div class="card">
+    <div class="card-header text-bg-warning"><strong>Разработчик: </strong>{{ object.user.first_name }} {{ object.user.last_name }}
+    </div>
+    <div class="row g-0">
+        <div class="col-6">
+            {% if not object.user.avatar %}
+                {% if object.user.gender == 'женский' %}
+                    <img class="img-fluid" src="{% static 'img/womannoimage.png' %}">
+                {% else %}
+                    <img class="img-fluid" src="{% static 'img/usernoimage.jpg' %}">
+                {% endif %}
+            {% elif object.user.avatar %}
+                <img class="img-fluid" src="{{ object.user.avatar.url }}">
+            {% endif %}
+        </div>
+        <div class="col-6 text-start">
+            <div class="card-body py-0">
+                <div class="card-text"><p><strong>Стек: </strong>{{ object.user.stack }}</p></div>
+            </div>
+        </div>
+    </div>
+</div>

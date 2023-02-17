@@ -1,4 +1,5 @@
 {% extends 'catalog/base.html' %}
+{% load user_agents %}
 
 {% block content %}
 
@@ -21,10 +22,10 @@
              <form method="post">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                    <a class="p-2 btn btn-outline-success w-75" href="{% url 'users:user_products' %}"><strong>В профиль</strong></a>
+                    <a class="p-2 btn btn-outline-success {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:user_products' %}"><strong>В профиль</strong></a>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                        <a class="p-2 btn btn-outline-primary w-75" href="{% url 'catalog:home' %}"><strong>На главную</strong></a>
+                        <a class="p-2 btn btn-outline-primary {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:home' %}"><strong>На главную</strong></a>
                     </div>
                 </div>
               </form>

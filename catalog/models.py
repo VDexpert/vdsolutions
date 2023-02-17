@@ -83,8 +83,7 @@ class Product(models.Model):
     unit_price = models.CharField(verbose_name='Цена', max_length=10)
     status = models.CharField(choices=STATUSES, default=STATUS_ACTIVE, max_length=20, verbose_name='Публиковать?')
     banned = models.CharField(choices=BANNED_STATUSES, default=BANNED_FALSE, max_length=30, verbose_name='Забанить продукт?')
-    prod_annotation = models.CharField(max_length=150, verbose_name='Аннотация - выводится в карточке продукта',
-                                       help_text='До 150 символов', **NULLABLE)
+    prod_annotation = models.CharField(max_length=150, verbose_name='Аннотация', **NULLABLE)
     description = tinymce_models.HTMLField(verbose_name='Полное описание', **NULLABLE)
     confirm_update_range = models.CharField(choices=CONFIRMS, default=CONFIRM_TRUE, verbose_name='Поднять продукт в ТОП?', max_length=10)
     create_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
@@ -117,8 +116,8 @@ class Version(models.Model):
 
     value = models.CharField(verbose_name='Номер', max_length=10)
     product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Продукт')
-    description = models.CharField(verbose_name='Улучшения версии', max_length=250,  help_text='До 250 символов')
-    status = models.CharField(verbose_name='Активная?', choices=STATUSES, default=STATUS_INACTIVE, max_length=10)
+    description = models.CharField(verbose_name='Улучшения', max_length=250,  help_text='До 250 символов')
+    status = models.CharField(verbose_name='Релиз?', choices=STATUSES, default=STATUS_INACTIVE, max_length=10)
 
     def __str__(self):
         return f'{self.value}, {self.product}, {self.description}, {self.status}'
