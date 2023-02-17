@@ -39,12 +39,12 @@
             </div>
             <div class="col-lg-7 col-md-12 col-sm-12">
             {% if perms.catalog.moderating_products and none_versions %}
-                <div class="card border-warning">
+                <div class="card border-warning mb-5">
                     <div class="card-header text-bg-warning">
                             <h6>Добавьте версии продукта</h6>
                     </div>
                 {% elif not perms.catalog.moderating_products %}
-                    <div class="card border-warning mx-2">
+                    <div class="card border-warning mx-2 mb-5">
                     <div class="card-header text-bg-warning py-1">
                             <h5>Добавьте версии продукта11</h5>
                     </div>
@@ -74,7 +74,7 @@
                                                     {% endfor %}
                                                 {% endif %}
                                                 {% if not forloop.last %}
-                                                    <p>{{ field.label }}</p>
+                                                    <p class="mb-0">{{ field.label }}</p>
                                                 {% endif %}
                                             {% if perms.catalog.moderating_products %}
                                                     {% if field.label == 'Удалить' %}
@@ -86,7 +86,6 @@
                                                 {{ field }}
                                             {% endif %}
                                                 <span class="helptext">{{ field.help_text }}</span>
-                                                <div class="form-error text-danger">{{ field.errors }}</div>
                                             </div>
                                     {% endfor %}
                                 </div>
