@@ -9,7 +9,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
 
-    {% if not request|is_mobile %}
+{% if not request|is_mobile %}
 
 <div class="container">
     <div class="row">
@@ -17,7 +17,7 @@
         {% include 'users/includes/menu_profile.html' %}
 
         <div class="col-lg-9 col-md-12 col-sm-12">
-            <div class="card border-0 mb-5">
+            <div class="card border-0 mb-5 mt-5">
                 <div class="card-header text-center px-0 py-0">
                     <div class="row text-bg-success px-0 mx-0">
                         {% if not object_list %}
@@ -29,13 +29,20 @@
                                     {% if not perms.catalog.management_posts or not perms.catalog.management_category %}
                                       <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="{% url 'users:user_products' %}">
-                                            {% if perms.catalog.moderating_products %}<strong>Продукты</strong> {% else %}<strong>Мои продукты</strong>{% endif %}</a>
+                                            {% if perms.catalog.moderating_products %}
+                                                <strong>Продукты</strong>
+                                            {% else %}<strong>Мои продукты</strong>
+                                            {% endif %}
+                                        </a>
                                       </li>
                                     {% endif %}
                                     {% if not perms.catalog.moderating_products %}
                                       <li class="nav-item">
                                         <a class="nav-link white-link" href="{% url 'users:user_posts' %}"
-                                                 {% if not perms.catalog.management_posts %}>Мои публикации {% else %}Публикации{% endif %}</a>
+                                                 {% if not perms.catalog.management_posts %}>Мои публикации
+                                                 {% else %}Публикации
+                                                 {% endif %}
+                                        </a>
                                       </li>
                                     {% endif %}
                                 </ul>
@@ -43,7 +50,9 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             {% if not perms.catalog.moderating_products %}
-                            <a class="p-1 btn btn-outline-light w-75 my-2" href="{% url 'catalog:create_product' %}"><strong>Добавить продукт</strong></a>
+                            <a class="p-1 btn btn-outline-light w-75 my-2" href="{% url 'catalog:create_product' %}">
+                                <strong>Добавить продукт</strong>
+                            </a>
                             {% endif %}
                         </div>
                     </div>
@@ -53,10 +62,10 @@
                 <table class="table table-striped table-info mb-0">
                     <thead>
                         <tr class="text-center">
-                            <th class="col-2" scope="col">Наименование</th>
+                            <th class="col-3" scope="col">Наименование</th>
                             <th class="col-4" scope="col">Аннотация</th>
-                            <th class="col-1" scope="col">Категория</th>
-                            <th class="col-1" scope="col">Статус</th>
+                            <th class="col-3" scope="col">Категория</th>
+                            <th class="col-2" scope="col">Статус</th>
                             <th class="col-1" scope="col"></th>
                         </tr>
                     </thead>
@@ -64,35 +73,62 @@
                         {% for object in object_list %}
                             <tr class="{% if object.banned == 'заблокировано модератором' %}table-dark
                                         {% elif object.status == 'не опубликовано' %}table-light
-                                        {% else %}table-info{% endif %}">
+                                        {% else %}table-info
+                                        {% endif %}">
 
-                                <td><a class="{% if object.banned == 'заблокировано модератором' %}white-link{% else %}dark-link{% endif %}" href="{{ object.get_absolute_url }}"><div class="container px-0">{{ object.product_name }}</div></a></td>
+                                <td class="table-text-break">
+                                    <a class="{% if object.banned == 'заблокировано модератором' %}white-link
+                                                {% else %}dark-link{% endif %}" href="{{ object.get_absolute_url }}">
+                                        {{ object.product_name }}
+                                    </a>
+                                </td>
 
-                                <td class="card-text"><div class="container px-0">{{ object.prod_annotation }}</div></td>
+                                <td class="table-text-break">{{ object.prod_annotation }}
+                                </td>
 
-                                <td><a class="{% if object.banned == 'заблокировано модератором' %}white-link{% else %}dark-link{% endif %}" href="{% url 'catalog:category_with_products' object.category.slug %}">{{ object.category }}</a></td>
+                                <td>
+                                    <a class="{% if object.banned == 'заблокировано модератором' %}white-link
+                                                {% else %}dark-link
+                                                {% endif %}" href="{% url 'catalog:category_with_products' object.category.slug %}">
+                                        {{ object.category }}
+                                    </a>
+                                </td>
 
-                                <td>{% if object.banned == 'заблокировано модератором' %}<p class="text-warning"><strong>Забанено по правилам портала</strong></p>
-                                    {% elif object.status == 'не опубликовано' %}<p class="text-danger"><strong>{{ object.status }}</strong></p>
-                                    {% else %}{{ object.status }}{% endif %}</td>
+                                <td>{% if object.banned == 'заблокировано модератором' %}
+                                        <p class="text-warning">
+                                            <strong>Забанено по правилам портала</strong>
+                                        </p>
+                                    {% elif object.status == 'не опубликовано' %}
+                                        <p class="text-danger">
+                                            <strong>{{ object.status }}</strong>
+                                        </p>
+                                    {% else %}{{ object.status }}
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <div class="row">
                                         <div class="col-12 mb-2">
-                                            <a class="img-fluid" href="{% url 'catalog:update_product' object.pk %}"><img src="{% static "img/update.png" %}" title="Редактировать продукт"></a>
+                                            <a class="img-fluid" href="{% url 'catalog:update_product' object.pk %}">
+                                                <img src="{% static "img/update.png" %}" title="Редактировать продукт">
+                                            </a>
                                         </div>
                                         {% if not perms.catalog.moderating_products %}
                                         <div class="col-12 mb-2">
-                                            <a class="img-fluid" href="{% url 'catalog:delete_product' object.pk %}"><img src="{% static "img/delete.png" %}" title="Удалить продукт"></a>
+                                            <a class="img-fluid" href="{% url 'catalog:delete_product' object.pk %}">
+                                                <img src="{% static "img/delete.png" %}" title="Удалить продукт">
+                                            </a>
                                         </div>
                                         {% endif %}
                                 {% if perms.catalog.moderating_products %}
-                                    <div class="col-12 mb-2">
-                                        {% if object.banned == 'одобрено модератором' %}
-                                        <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}"><img src="{% static "img/banned-on.png" %}" title="Забанить продукт"></a>
-                                        {% else %}
-                                        <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}"><img src="{% static "img/banned-off.png" %}" title="Разбанить продукт"></a>
-                                        {% endif %}
-                                    </div>
+                                    {% if object.banned == 'одобрено модератором' %}
+                                    <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}">
+                                        <img src="{% static "img/banned-on.png" %}" title="Забанить продукт">
+                                    </a>
+                                    {% else %}
+                                    <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}">
+                                        <img src="{% static "img/banned-off.png" %}" title="Разбанить продукт">
+                                    </a>
+                                    {% endif %}
                                 {% endif %}
                                 </td>
                             </tr>
@@ -106,9 +142,9 @@
 </div>
 </div>
 
-    {% elif request|is_mobile %}
+{% elif request|is_mobile %}
 
-        {% include 'users/includes/menu_profile_for_mobile.html' %}
+    {% include 'users/includes/menu_profile_for_mobile.html' %}
 
 <div class="card border-0 mx-3 mb-5">
     <div class="card-header text-center px-0 py-0">
@@ -121,12 +157,15 @@
                     <ul class="nav nav-tabs pt-2 pb-0">
                         {% if not perms.catalog.management_posts or not perms.catalog.management_category %}
                           <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'users:user_products' %}"><strong>Продукты</strong></a>
+                            <a class="nav-link active" aria-current="page" href="{% url 'users:user_products' %}">
+                                <strong>Продукты</strong>
+                            </a>
                           </li>
                         {% endif %}
                         {% if not perms.catalog.moderating_products %}
                           <li class="nav-item">
-                            <a class="nav-link white-link" href="{% url 'users:user_posts' %}">Публикации</a>
+                            <a class="nav-link white-link" href="{% url 'users:user_posts' %}">Публикации
+                            </a>
                           </li>
                         {% endif %}
                     </ul>
@@ -134,7 +173,9 @@
             </div>
             <div class="col-12 text-center px-0">
                 {% if not perms.catalog.moderating_products %}
-                    <a class="p-1 btn btn-outline-light w-50 my-2" href="{% url 'catalog:create_product' %}"><img class="img-fluid" src="{% static "img/plus.png" %}"> Продукт</a>
+                    <a class="p-1 btn btn-outline-light w-50 my-2" href="{% url 'catalog:create_product' %}">
+                        <img class="img-fluid" src="{% static "img/plus.png" %}"> Продукт
+                    </a>
                 {% endif %}
             </div>
         </div>
@@ -149,28 +190,45 @@
                             {% elif object.status == 'не опубликовано' %}table-light
                             {% else %}table-info{% endif %}">
 
-                    <td class="col-8"><a class="{% if object.banned == 'заблокировано модератором' %}white-link{% else %}dark-link{% endif %}" href="{{ object.get_absolute_url }}"><div class="container px-0">{{ object.product_name }}</div></a>
-                        {% if object.banned == 'заблокировано модератором' %}<p class="text-warning"><strong>Забанено по правилам портала</strong></p>
-                                    {% elif object.status == 'не опубликовано' %}<p class="text-danger"><strong>{{ object.status }}</strong></p>
+                    <td class="col-8 table-text-break">
+                        <a class="{% if object.banned == 'заблокировано модератором' %}white-link
+                                    {% else %}dark-link
+                                    {% endif %}" href="{{ object.get_absolute_url }}">
+                            {{ object.product_name }}
+                        </a>
+                        {% if object.banned == 'заблокировано модератором' %}
+                            <p class="text-warning"><strong>Забанено по правилам портала</strong>
+                            </p>
+                                    {% elif object.status == 'не опубликовано' %}
+                                        <p class="text-danger"><strong>{{ object.status }}</strong>
+                                        </p>
                                     {% endif %}
                     </td>
 
                     <td class="col-4">
                         <div class="row">
                             <div class="col-6">
-                                <a class="img-fluid" href="{% url 'catalog:update_product' object.pk %}"><img class="img-fluid" src="{% static "img/update.png" %}" title="Редактировать продукт"></a>
+                                <a class="img-fluid" href="{% url 'catalog:update_product' object.pk %}">
+                                    <img class="img-fluid" src="{% static "img/update.png" %}" title="Редактировать продукт">
+                                </a>
                             </div>
                             {% if not perms.catalog.moderating_products %}
                             <div class="col-6">
-                                <a class="img-fluid" href="{% url 'catalog:delete_product' object.pk %}"><img class="img-fluid" src="{% static "img/delete.png" %}" title="Удалить продукт"></a>
+                                <a class="img-fluid" href="{% url 'catalog:delete_product' object.pk %}">
+                                    <img class="img-fluid" src="{% static "img/delete.png" %}" title="Удалить продукт">
+                                </a>
                             </div>
                             {% endif %}
                     {% if perms.catalog.moderating_products %}
                         <div class="col-6">
                             {% if object.banned == 'одобрено модератором' %}
-                            <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}"><img class="img-fluid" src="{% static "img/banned-on.png" %}" title="Забанить продукт"></a>
+                            <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}">
+                                <img class="img-fluid" src="{% static "img/banned-on.png" %}" title="Забанить продукт">
+                            </a>
                             {% else %}
-                            <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}"><img class="img-fluid" src="{% static "img/banned-off.png" %}" title="Разбанить продукт"></a>
+                            <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}">
+                                <img class="img-fluid" src="{% static "img/banned-off.png" %}" title="Разбанить продукт">
+                            </a>
                             {% endif %}
                         </div>
                     {% endif %}

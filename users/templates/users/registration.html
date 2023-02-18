@@ -4,40 +4,41 @@
 {% load static %}
     {% load user_agents %}
 
-    <head>
-      <title>Регистрация на сайте Skystore</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    </head>
+<head>
+  <title>Регистрация на сайте Skystore</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 
-    <div class="row">
-        <div class="col-lg-4 col-md-3 col-sm-12"></div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="card border-warning mb-4 box-shadow text-center border-warning mx-3">
-                    <div class="card-header text-center text-bg-warning py-1">
-                        <h3>Регистрация</h3>
-                    </div>
-                    <div class="card-body px-4">
-                        <form method="post">
-                            {% csrf_token %}
-                            <label class="form-label" for="id_email">{{ form.email.label }}</label>
-                            <input type="email" class="form-input form-control form-control-sm mb-4" name="email"  required="" id="id_email">
-                            <div class="form-error text-danger">{{  form.email.errors }}</div>
+<div class="row">
+    <div class="col-lg-4 col-md-3 col-sm-12">
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card border-warning my-5 box-shadow text-center border-warning mx-3">
+            <div class="card-header text-center text-bg-warning py-1">
+                <h3>Регистрация</h3>
+            </div>
+            <div class="card-body px-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <label class="form-label" for="id_email">{{ form.email.label }}</label>
+                    <input type="email" class="form-input form-control form-control-sm mb-4" name="email"  required="" id="id_email">
+                    <div class="form-error text-danger">{{  form.email.errors }}</div>
 
-                            <label class="form-label" for="id_password1">{{ form.password1.label }}</label>
-                            <input type="password" class="form-input form-control form-control-sm mb-4" name="password1" required="" id="id_password1">
-                            <div class="form-error text-danger">{{  form.password1.errors }}</div>
+                    <label class="form-label" for="id_password1">{{ form.password1.label }}</label>
+                    <input type="password" class="form-input form-control form-control-sm mb-4" name="password1" required="" id="id_password1">
+                    <div class="form-error text-danger">{{  form.password1.errors }}</div>
 
-                            <label class="form-label" for="id_password2">{{ form.password2.label }}</label>
-                            <input type="password" class="form-input form-control form-control-sm mb-4" name="password2" required="" id="id_password2">
-                            <div class="form-error text-danger">{{  form.password2.errors }}</div>
+                    <label class="form-label" for="id_password2">{{ form.password2.label }}</label>
+                    <input type="password" class="form-input form-control form-control-sm mb-4" name="password2" required="" id="id_password2">
+                    <div class="form-error text-danger">{{  form.password2.errors }}</div>
 
-                            <button class="btn btn-outline-success px-0 mb-3 text-center w-75" type="submit"><strong>Регистрация</strong></button>
+                    <button class="btn btn-outline-success px-0 mb-3 text-center w-75" type="submit"><strong>Регистрация</strong></button>
 
-                            <p>У Вас уже есть аккаунт?  <a class="link-primary" href="{% url 'users:login' %}">Авторизация</a></p>
-                        </form>
-                    </div>
-                </div>
+                    <p>У Вас уже есть аккаунт?  <a class="link-primary" href="{% url 'users:login' %}">Авторизация</a></p>
+                </form>
             </div>
         </div>
+    </div>
+</div>
 
 {% endblock %}

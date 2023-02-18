@@ -6,96 +6,102 @@
     {% load catalog_tags %}
     {% load user_agents %}
 
-    <head>
-      <title>Форма продукта - создание и редактирование</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    {{ form.media }}
-    </head>
+<head>
+  <title>Форма продукта - создание и редактирование</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{{ form.media }}
+</head>
 
-    <form method="post" enctype="multipart/form-data">
-        <div class="row">
-        {% if perms.catalog.moderating_products and not none_versions %}
-            <div class="col-lg-3 col-md-2 col-sm-12"><p>&nbsp;</p></div>
-             <div class="col-lg-6 col-md-8 col-sm-12">
-        {% else %}
-            <div class="col-lg-5 col-md-12 col-sm-12">
-        {% endif %}
-                <div class="card mb-4 box-shadow border-warning mx-1">
-                    <div class="card-header text-bg-warning py-1 text-center">
-                        {% if object.get_absolute_url %}
-                    <h3>Редактирование продукта</h3>
-                            {% else %}
-                            <h3>Создание продукта</h3>
-                        {% endif %}
-                    </div>
-                    <div class="card-body">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <div class="card-footer text-center border-0 px-0">
-                            <button class="btn btn-outline-primary w-50" type="submit"><strong>Сохранить</strong></button>
-                        </div>
-                    </div>
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+    {% if perms.catalog.moderating_products and not none_versions %}
+        <div class="col-lg-3 col-md-2 col-sm-12"><p>&nbsp;</p>
+        </div>
+         <div class="col-lg-6 col-md-8 col-sm-12">
+    {% else %}
+        <div class="col-lg-5 col-md-12 col-sm-12">
+    {% endif %}
+            <div class="card box-shadow border-warning mx-1 mt-5">
+                <div class="card-header text-bg-warning py-1 text-center">
+                    {% if object.get_absolute_url %}
+                <h3>Редактирование продукта</h3>
+                        {% else %}
+                        <h3>Создание продукта</h3>
+                    {% endif %}
                 </div>
-            </div>
-            <div class="col-lg-7 col-md-12 col-sm-12">
-            {% if perms.catalog.moderating_products and none_versions %}
-                <div class="card border-warning mb-5">
-                    <div class="card-header text-bg-warning">
-                            <h5>Добавьте версии продукта</h5>
-                    </div>
-                {% elif not perms.catalog.moderating_products %}
-                    <div class="card border-warning mx-2 mb-5">
-                    <div class="card-header text-bg-warning py-1">
-                            <h5>Добавьте версии продукта</h5>
-                    </div>
-                {% endif %}
-                    <div class="card-body">
-                        <div class="formset">
-                            <div class="form-error text-danger"><strong>{{ form.error_status }}</strong></div>
-                             <div class="form-error text-danger">{% cleanversionerror formset.errors %}</div>
-                        {{ formset.management_form }}
-                            {% for form in formset.forms %}
-                                <div class="formset_row row my-3">
-                                    {% for field in form.visible_fields %}
-                                            {% if not request|is_mobile %}
-                                            <div class="formset-col {% if forloop.counter == 1 %}col-2">
-                                                                    {% elif forloop.counter == 2 %}col-8">
-                                                                    {% elif forloop.counter == 3 %}col-2">
-                                                                    {% endif %}
-                                            {% elif request|is_mobile %}
-                                            <div class="formset-col {% if forloop.counter == 1 %}col-3">
-                                                                    {% elif forloop.counter == 2 %}col-6">
-                                                                    {% elif forloop.counter == 3 %}col-3">
-                                                                    {% endif %}
-                                            {% endif %}
-                                                {% if forloop.first %}
-                                                    {% for hidden in form.hidden_fields %}
-                                                        {{ hidden }}
-                                                    {% endfor %}
-                                                {% endif %}
-                                                {% if not forloop.last %}
-                                                    <p class="mb-0">{{ field.label }}</p>
-                                                {% endif %}
-                                            {% if perms.catalog.moderating_products %}
-                                                    {% if field.label == 'Удалить' %}
-                                                        {{ field.hidden }}
-                                                    {% else %}
-                                                        {{ field }}
-                                                    {% endif %}
-                                                {% else %}
-                                                {{ field }}
-                                            {% endif %}
-                                                <span class="helptext">{{ field.help_text }}</span>
-                                            </div>
-                                    {% endfor %}
-                                </div>
-                           {% endfor %}
-                        </div>
+                <div class="card-body">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="card-footer text-center border-0 px-0">
+                        <button class="btn btn-outline-primary w-50" type="submit">
+                            <strong>Сохранить</strong>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+        <div class="col-lg-7 col-md-12 col-sm-12">
+        {% if perms.catalog.moderating_products and none_versions %}
+            <div class="card border-warning my-5">
+                <div class="card-header text-bg-warning">
+                        <h5>Версии продукта</h5>
+                </div>
+            {% elif not perms.catalog.moderating_products %}
+                <div class="card border-warning mx-2 mb-5 mt-5">
+                <div class="card-header text-bg-warning py-1">
+                        <h5>Версии продукта</h5>
+                </div>
+            {% endif %}
+                <div class="card-body">
+                    <div class="formset">
+                        <div class="form-error text-danger">
+                            <strong>{{ form.error_status }}</strong>
+                        </div>
+                         <div class="form-error text-danger">{% cleanversionerror formset.errors %}
+                         </div>
+                    {{ formset.management_form }}
+                        {% for form in formset.forms %}
+                            <div class="formset_row row my-3">
+                                {% for field in form.visible_fields %}
+                                        {% if not request|is_mobile %}
+                                        <div class="formset-col {% if forloop.counter == 1 %}col-2
+                                                                {% elif forloop.counter == 2 %}col-8
+                                                                {% elif forloop.counter == 3 %}col-2
+                                                                {% endif %}">
+                                        {% elif request|is_mobile %}
+                                        <div class="formset-col {% if forloop.counter == 1 %}col-3
+                                                                {% elif forloop.counter == 2 %}col-6
+                                                                {% elif forloop.counter == 3 %}col-3
+                                                                {% endif %}">
+                                        {% endif %}
+                                            {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {% if not forloop.last %}
+                                                <p class="mb-0">{{ field.label }}</p>
+                                            {% endif %}
+                                        {% if perms.catalog.moderating_products %}
+                                                {% if field.label == 'Удалить' %}
+                                                    {{ field.hidden }}
+                                                {% else %}
+                                                    {{ field }}
+                                                {% endif %}
+                                            {% else %}
+                                            {{ field }}
+                                        {% endif %}
+                                            <span class="helptext">{{ field.help_text }}</span>
+                                        </div>
+                                {% endfor %}
+                            </div>
+                       {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 {% if not perms.catalog.moderating_products %}
 

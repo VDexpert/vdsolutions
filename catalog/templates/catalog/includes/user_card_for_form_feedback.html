@@ -4,21 +4,21 @@
 <div class="card mb-0 pb-0">
     <div class="card-header text-bg-warning"><strong>Разработчик: </strong>{{ object.user.first_name }} {{ object.user.last_name }}
     </div>
-    <div class="row g-0">
+    <div class="row g-0 my-0 py-0">
         <div class="col-6">
             {% if not object.user.avatar %}
                 {% if object.user.gender == 'женский' %}
-                    <img class="img-fluid" src="{% static 'img/womannoimage.png' %}">
+                    <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/womannoimage.png' %}">
                 {% else %}
-                    <img class="img-fluid" src="{% static 'img/usernoimage.jpg' %}">
+                    <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/usernoimage.jpg' %}">
                 {% endif %}
             {% elif object.user.avatar %}
-                <img class="img-fluid" src="{{ object.user.avatar.url }}">
+                <img class="img-fluid" alt="Фото пользователя" src="{{ object.user.avatar.url }}">
             {% endif %}
         </div>
         <div class="col-6 text-start">
-            <div class="card-body py-0">
-                <div class="card-text"><p><strong>Стек: </strong>{{ object.user.stack|truncatechars:58 }}</p></div>
+            <div class="card-body py-0 mb-0">
+                <span><strong>Стек: </strong>{{ object.user.stack|truncatechars:70 }})</span>
             </div>
         </div>
     </div>

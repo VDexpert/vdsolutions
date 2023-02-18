@@ -25,31 +25,38 @@
 }
 
 .post-white-link {
-         color: #ffffff;;
+    color: #ffffff;
+    text-decoration: unset;
 }
 
 .post-white-link:hover {
-        color: yellow;
+    color: yellow;
 }
 
 a.white-link {
-         color: #ffffff;;
+    color: #ffffff;;
 }
-
 a.white-link:hover {
     color: yellow;
     text-decoration: unset;
+}
+
+a.prod-white-link {
+    color: #ffffff;
+    text-decoration: unset;
+}
+a.prod-white-link:hover {
+    color: yellow;
+    text-decoration: underline;
    }
 
 a.dark-link {
     color: #000000;
 }
-
 a.dark-link:hover {
     color: blue;
     text-decoration: unset;
-   }
-
+}
 
 ul.errorlist li  {
   color: red;
@@ -66,4 +73,9 @@ a.add-row {
 
 .td-table-info {
   background-color: #cff4fc;
+}
+
+.table-text-break {
+    word-wrap: break-word;
+    word-break: break-all;
 }

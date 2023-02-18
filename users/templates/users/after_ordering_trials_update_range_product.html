@@ -4,29 +4,33 @@
 
 {% block content %}
 
-    <head>
-      <title>Спасибо за заказа PushTop!</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    </head>
+<head>
+  <title>Спасибо за заказа PushTop!</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 
-    <div style="min-height:50vh" class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h3 class="display-4">Спасибо за заказ PushTop!</h3>
-        <div class="row">
-            <div class="col-lg-3 col-md-12 col-sm-12"></div>
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <p class="lead">В ближайшее время с Вами свяжутся наши менеджеры и ответят на все Ваши вопросы.
-                    Желаем Вам хорошего дня и много заказов!</p>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                    {% if not request.META.HTTP_REFERER %}
-                        <a class="p-2 btn btn-outline-primary {% if not request|is_mobile %}w-50{% else %}w-75{% endif %}" href="{% url 'users:user_products' %}"><strong>Вернуться в профиль</strong></a><br>
-                    {% else %}
-                        <a class="p-2 btn btn-outline-primary {% if not request|is_mobile %}w-50{% else %}w-75{% endif %}" href="{% url 'users:user_products' %}"><strong>Вернуться назад</strong></a><br>
-                    {% endif %}
-                    </div>
+<div style="min-height:50vh" class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h3 class="display-4">Спасибо за заказ PushTop!</h3>
+    <div class="row">
+        <div class="col-lg-3 col-md-12 col-sm-12"></div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <p class="lead">В ближайшее время с Вами свяжутся наши менеджеры и ответят на все Ваши вопросы.
+                Желаем Вам хорошего дня и много заказов!</p>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                {% if not request.META.HTTP_REFERER %}
+                    <a class="p-2 btn btn-outline-primary {% if not request|is_mobile %}w-50{% else %}w-75{% endif %}" href="{% url 'users:user_products' %}">
+                        <strong>Вернуться в профиль</strong>
+                    </a><br>
+                {% else %}
+                    <a class="p-2 btn btn-outline-primary {% if not request|is_mobile %}w-50{% else %}w-75{% endif %}" href="{% url 'users:user_products' %}">
+                        <strong>Вернуться назад</strong>
+                    </a><br>
+                {% endif %}
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 {% endblock %}

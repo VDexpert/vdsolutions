@@ -3,34 +3,35 @@
 
 {% block content %}
 
-    <head>
-      <title>PushTop продукта</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    </head>
+<head>
+  <title>PushTop продукта</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 
-    <div style="min-height:50vh" class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h3 class="display-4">Ваш продукт PushTop!</h3>
-        <div class="row">
-            <div class="col-lg-3 col-md-12 col-sm-12"></div>
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <p class="lead">Текущее количество попыток пакета апдейта рейтинга PushTop любого Вашего продукта:
-                {% if users.trials_update_range_prod != 0 %}{{ user.trials_update_range_prod }}. Желаем Вам хорошего дня и много заказов!
-                    {% else %}
-                    0! Чтобы поднимать продукт в ТОП еще раз, необходимо будет оплатить данную услугу в соответствии с тарифом нашего портала.
-                    Желаем Вам хорошего дня и много заказов!
-                {% endif %}</p>
-             <form method="post">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                    <a class="p-2 btn btn-outline-success {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:user_products' %}"><strong>В профиль</strong></a>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                        <a class="p-2 btn btn-outline-primary {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:home' %}"><strong>На главную</strong></a>
-                    </div>
+<div style="min-height:50vh" class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h3 class="display-4">Ваш продукт PushTop!</h3>
+    <div class="row">
+        <div class="col-lg-3 col-md-12 col-sm-12">
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <p class="lead">Текущее количество попыток пакета апдейта рейтинга PushTop любого Вашего продукта:
+            {% if users.trials_update_range_prod != 0 %}{{ user.trials_update_range_prod }}. Желаем Вам хорошего дня и много заказов!
+                {% else %}
+                0! Чтобы поднимать продукт в ТОП еще раз, необходимо будет оплатить данную услугу в соответствии с тарифом нашего портала.
+                Желаем Вам хорошего дня и много заказов!
+            {% endif %}</p>
+         <form method="post">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                <a class="p-2 btn btn-outline-success {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:user_products' %}"><strong>В профиль</strong></a>
                 </div>
-              </form>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                    <a class="p-2 btn btn-outline-primary {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:home' %}"><strong>На главную</strong></a>
+                </div>
             </div>
+          </form>
         </div>
     </div>
+</div>
 
 {% endblock %}

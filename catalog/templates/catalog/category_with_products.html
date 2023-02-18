@@ -14,13 +14,18 @@
     </head>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">{% if object.category_h1_for_products %} {{ object.category_h1_for_products }} {% else %} IT-продукты категории "{{ object.category_name }}" {% endif %}</h1>
+    <h1 class="display-4">{% if object.category_h1_for_products %} {{ object.category_h1_for_products }}
+                            {% else %} IT-продукты категории "{{ object.category_name }}"
+                            {% endif %}
+    </h1>
     <div class="row">
         <div class="col-lg-3 col-md-12 col-sm-12"></div>
         <div class="col-lg-6 col-md-12 col-sm-12">
             <p class="lead">{% if object.annotation_for_products %}
-                            {% autoescape off %}{{ object.annotation_for_products }}{% endautoescape %}
-                            {% endif %}</p>
+                                {% autoescape off %}{{ object.annotation_for_products }}
+                                {% endautoescape %}
+                            {% endif %}
+            </p>
         </div>
     </div>
 </div>
@@ -43,7 +48,9 @@
             <div class="col-lg-4 col-md-5 col-sm-12 {% translittag object.category %}">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header text-center text-bg-dark">
-                        <h4 class="my-0 font-weight-normal">{{ object.product_name|truncatechars:40 }}</h4>
+                        <a class="prod-white-link">
+                            <h4 class="my-0 font-weight-normal">{{ object.product_name|truncatechars:40 }}</h4>
+                        </a>
                     </div>
                     <div class="card-body text-bg-warning">
                         <h1 class="card-title pricing-card-title">$ {{ object.unit_price }}</h1>
@@ -52,7 +59,11 @@
 {#                                <p>{% getversion object.pk %}</p>#}
                     </div>
                     <div class="card-footer text-bg-warning text-center">
-                        <div class="col-12"><a class="btn btn-primary w-50" href="{{ object.get_absolute_url }}"><strong>Подробнее</strong></a></div>
+                        <div class="col-12">
+                            <a class="btn btn-primary w-50" href="{{ object.get_absolute_url }}">
+                                <strong>Подробнее</strong>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

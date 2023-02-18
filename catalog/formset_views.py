@@ -135,7 +135,7 @@ class ProductWithVersionUpdateView(UpdateView):
         active_versions = len([x for x in form.data.values() if x == 'активно'])
 
         if active_versions > 1:
-            form.error_status = 'Необходимо, чтобы только одна версия Вашей программы была активной'
+            form.error_status = 'Необходимо, чтобы только одна версия Вашей программы была релизной'
 
             return self.render_to_response(self.get_context_data(form=form))
 

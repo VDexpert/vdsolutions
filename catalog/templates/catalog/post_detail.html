@@ -5,99 +5,125 @@
 
 {% block content %}
 
-    <head>
-      <title>{{ object.title|truncatechars:70 }}</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    </head>
+<head>
+  <title>{{ object.title|truncatechars:70 }}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 
-    {% if object.banned == 'заблокировано модератором' and not perms.catalog.management_posts %}
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h3 class="display-4">Статья заблокирована модератором</h3>
-        <div class="row">
-            <div class="col-lg-3 col-md-12 col-sm-12"></div>
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <p class="lead">Статья '{{ object.title }}' заблокирована по правилам нашего портала.
-                Она будет разблокирована и доступна для посетителей сайта после устранения разработчиком нюансов,
-                из-за которых статья была забанена</p>
-            </div>
+{% if object.banned == 'заблокировано модератором' and not perms.catalog.management_posts %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h3 class="display-4">Статья заблокирована модератором</h3>
+    <div class="row">
+        <div class="col-lg-3 col-md-12 col-sm-12"></div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <p class="lead">Статья '{{ object.title }}' заблокирована по правилам нашего портала.
+            Она будет разблокирована и доступна для посетителей сайта после устранения разработчиком нюансов,
+            из-за которых статья была забанена</p>
         </div>
     </div>
+</div>
 
-    {% else %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-12 col-sm-12">
-                <div class="card mb-3 border-warning  mx-1">
-                    <img  class="card-img-top" src="{% if object.picture %}{{ object.picture.url }}{% else %}{% static "img/post-no-image.jpg" %}{% endif %}" alt="...">
-                    <div class="card-body">
-                        <h1 class="card-title">{{ object.title }}</h1>
-                        <p class="card-text"><small class="text-muted">Дата публикации {{ object.create_at.date }}
-                            &nbsp;&nbsp;&nbsp;&nbsp;<img src="{% static 'img/eye.svg' %}">  {{ object.count_views }}</small></p>
-                        {% if user.is_authenticated and object.user.pk == user.pk or perms.catalog.management_posts %}
-                            <p class="card-text"><small class="text-muted">Изменено: {{ object.change_at }}</small></p>
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-12 col-sm-12">
+            <div class="card border-warning mx-1 my-5">
+                <img  class="card-img-top" src="{% if object.picture %}{{ object.picture.url }}
+                                                {% else %}{% static "img/post-no-image.jpg" %}
+                                                {% endif %}" alt="...">
+
+                <div class="card-body">
+                    <h1 class="card-title">{{ object.title|linebreaks }}</h1>
+                    <p class="card-text">
+                        <small class="text-muted">Дата публикации {{ object.create_at.date }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="{% static 'img/eye.svg' %}">  {{ object.count_views }}
+                        </small>
+                    </p>
+                    {% if user.is_authenticated and object.user.pk == user.pk or perms.catalog.management_posts %}
+                        <p class="card-text">
+                            <small class="text-muted">Изменено: {{ object.change_at }}</small>
+                        </p>
+                    {% endif %}
+                    <p class="card-text">{% autoescape off %}{{ object.content|linebreaks }}{% endautoescape %}
+                    </p>
+                </div>
+                {% if user.is_authenticated and object.user.pk == user.pk or perms.catalog.management_posts %}
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <a class="p-1 btn btn-outline-primary {% if not request|is_mobile %}w-75{% else %}w-100
+                                                                    {% endif %}" href="{% url 'catalog:update_post' object.pk %}">
+                                <strong>Изменить</strong>
+                            </a>
+                        </div>
+                        {% if not perms.catalog.management_posts  %}
+                        <div class="col-6 text-center">
+                            <a class="p-1 btn btn-outline-danger {% if not request|is_mobile %}w-75
+                                                                    {% else %}w-100
+                                                                    {% endif %}" href="{% url 'catalog:delete_post' object.pk %}">
+                                <strong>Удалить</strong>
+                            </a>
+                        </div>
                         {% endif %}
-                        <p class="card-text">{% autoescape off %}{{ object.content|linebreaks }}{% endautoescape %}</p>
-                        {% if user.is_authenticated and object.user.pk == user.pk or perms.catalog.management_posts %}
-                        <div class="container">
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-6 text-center">
-                                        <a class="p-1 btn btn-outline-primary {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:update_post' object.pk %}"><strong>Изменить</strong></a>
-                                    </div>
-                                    {% if not perms.catalog.management_posts  %}
-                                    <div class="col-6 text-center">
-                                        <a class="p-1 btn btn-outline-danger {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'catalog:delete_post' object.pk %}"><strong>Удалить</strong></a>
-                                    </div>
-                                    {% endif %}
-                                    {% if perms.catalog.management_posts %}
-                                    <div class="col-6 text-center">
-                                    {% if object.banned == 'одобрено модератором' %}
-                                        <a class="p-1 btn btn-outline-danger {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:post_ban' object.pk %}"><strong>Забанить</strong></a>
-                                    {% else %}
-                                        <a class="p-1 btn btn-outline-success {% if not request|is_mobile %}w-75{% else %}w-100{% endif %}" href="{% url 'users:post_ban' object.pk %}"><strong>Разбанить</strong></a>
-                                    {% endif %}
-                                    </div>
-                                    {% endif %}
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-2 col-md-1 col-sm-12">
-                                    </div>
-                                    <div class="col-lg-8 col-md-10 col-sm-12">
-                                    <p><strong>Изменяя публикацию, смотрите, как она отражается на странице блога
-                                        - это поможет сделать ее более привлекательной для посетителей портала</strong></p>
-                                    </div>
-                                </div>
-                            </div>
+                        {% if perms.catalog.management_posts %}
+                        <div class="col-6 text-center">
+                        {% if object.banned == 'одобрено модератором' %}
+                            <a class="p-1 btn btn-outline-danger {% if not request|is_mobile %}w-75
+                                                                    {% else %}w-100
+                                                                    {% endif %}" href="{% url 'users:post_ban' object.pk %}">
+                                <strong>Забанить</strong>
+                            </a>
+                        {% else %}
+                            <a class="p-1 btn btn-outline-success
+                            {% if not request|is_mobile %}w-75
+                            {% else %}w-100{% endif %}" href="{% url 'users:post_ban' object.pk %}">
+                                <strong>Разбанить</strong>
+                            </a>
+                        {% endif %}
                         </div>
                         {% endif %}
                     </div>
-                </div>
-            </div>
-            {% if not user.is_authenticated or not user.email == object.user.email %}
-            <div class="col-lg-4 col-md-12 col-sm-12">
-                <div class="card mb-4 box-shadow text-center border-warning mx-1">
-                {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
-                    {% include 'catalog/includes/user_card_for_form_feedback.html' %}
-                {% endif %}
-                <div class="card-header text-bg-warning py-1">
-                    <h3 class="my-0 font-weight-normal">Задать вопрос автору</h3>
-                </div>
-                <div class="card-body mx-3">
-                    <form method="post" action="" class="form-floating">
-                        {% csrf_token %}
-                        <input type="hidden" name="post" value="{{ object.title }}">
-                        <input type="hidden" name="post_owner" value="{{ object.user.email }}">
-                        {{ form.as_p }}
-                        <div class="card-footer border-0 px-0">
-                            <button type="submit" class="btn btn-lg btn-block btn-outline-success w-75"><strong>Отправить</strong></button>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-1 col-sm-12">
                         </div>
-                    </form>
+                        <div class="col-lg-8 col-md-10 col-sm-12">
+                        <p>
+                            <strong>Изменяя публикацию, смотрите, как она отражается на странице блога
+                            - это поможет сделать ее более привлекательной для посетителей портала</strong>
+                        </p>
+                        </div>
+                    </div>
                 </div>
+                {% endif %}
             </div>
-            {% endif %}
         </div>
+        {% if not user.is_authenticated or not user.email == object.user.email %}
+        <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="card mb-4 box-shadow text-center border-warning mx-1 mt-5">
+            {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
+                {% include 'catalog/includes/user_card_for_form_feedback.html' %}
+            {% endif %}
+            <div class="card-header text-bg-warning py-1">
+                <h3 class="my-0 font-weight-normal">Задать вопрос автору</h3>
+            </div>
+            <div class="card-body mx-3">
+                <form method="post" action="" class="form-floating">
+                    {% csrf_token %}
+                    <input type="hidden" name="post" value="{{ object.title }}">
+                    <input type="hidden" name="post_owner" value="{{ object.user.email }}">
+                    {{ form.as_p }}
+                    <div class="card-footer border-0 px-0">
+                        <button type="submit" class="btn btn-outline-success w-75">
+                            <strong>Отправить</strong>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
     </div>
-    </div>
-    {% endif %}
+</div>
+</div>
+{% endif %}
 
 {% endblock %}
