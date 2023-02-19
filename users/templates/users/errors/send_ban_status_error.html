@@ -2,21 +2,24 @@
 
 {% block content %}
 
-    <div style="min-height:50vh" class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h3 class="display-4">Что-то пошло не так :(</h3>
+<div style="min-height:50vh" class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h3 class="display-4">Что-то пошло не так :(</h3>
+    <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-12 col-sm-12"></div>
+            <div class="col-lg-3 col-md-12 col-sm-12">
+            </div>
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <p class="lead">Возникла неизвестная ошибка и мы не смогли отправить разработчику письмо об изменении бан-статуса.
                 Уведомите об этом технического специалиста и быстро разберется с этим. Бан-статус успешно обновлен, но Вам необходимо уведомить об этом разработчика.
                 Пожалуйста, напишите ему об этом на почту.</p>
                 {% if perms.catalog.moderating_products %}
-                    <a class="p-2 btn btn-outline-success" href="{% url 'users:user_products' %}"><strong>В личный кабинет</strong></a><br>
+                    <a class="p-2 btn btn-outline-success px-3" href="{% url 'users:user_products' %}"><strong>В личный кабинет</strong></a><br>
                 {% elif perms.catalog.management_posts %}
-                    <a class="p-2 btn btn-outline-success" href="{% url 'users:user_posts' %}"><strong>В личный кабинет</strong></a><br>
+                    <a class="p-2 btn btn-outline-success px-3" href="{% url 'users:user_posts' %}"><strong>В личный кабинет</strong></a><br>
                 {% endif %}
             </div>
         </div>
     </div>
+</div>
 
 {% endblock %}

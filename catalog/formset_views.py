@@ -118,7 +118,7 @@ class ProductWithVersionUpdateView(UpdateView):
         context_data = super().get_context_data(**kwargs)
         count_versions = Version.objects.all().filter(product=self.object.pk).count()
         FormSet = inlineformset_factory(self.model, Version, form=VersionForm, extra=1000,
-                                        max_num=count_versions + 5 if not self.request.user.has_perm('catalog.moderating_products') else 0)
+                                        max_num=count_versions + 6 if not self.request.user.has_perm('catalog.moderating_products') else 0)
 
         if self.request.method == 'POST':
             formset = FormSet(self.request.POST, instance=self.object)
@@ -126,6 +126,7 @@ class ProductWithVersionUpdateView(UpdateView):
             formset = FormSet(instance=self.object)
         context_data['formset'] = formset
         context_data['exist_versions'] = False if not count_versions else True
+        context_data['count_versions'] = count_versions
 
         return context_data
 
