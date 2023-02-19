@@ -71,7 +71,7 @@ class ProductCreateWithVersionView(CreateView):
             self.object.slug = translit.do(self.object.product_name)
             self.object.change_range_prod_at = timezone.now()
             origin_description = re.sub(r"<[^>]+>", "", self.object.description, flags=re.S)
-            self.object.prod_annotation = origin_description[:150]
+            self.object.prod_annotation = origin_description[:200]
             self.object.save()
             id_category = form.data['category']
             category = Category.objects.all().get(id=id_category)
@@ -125,7 +125,7 @@ class ProductWithVersionUpdateView(UpdateView):
         else:
             formset = FormSet(instance=self.object)
         context_data['formset'] = formset
-        context_data['none_versions'] = False if not count_versions else True
+        context_data['exist_versions'] = False if not count_versions else True
 
         return context_data
 
@@ -143,7 +143,7 @@ class ProductWithVersionUpdateView(UpdateView):
             self.object = form.save()
             self.object.slug = translit.do(self.object.product_name)
             origin_description = re.sub(r"<[^>]+>", "", self.object.description, flags=re.S)
-            self.object.prod_annotation = origin_description[:150]
+            self.object.prod_annotation = origin_description[:200]
             self.object.save()
 
             if formset.is_valid():

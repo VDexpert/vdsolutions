@@ -14,15 +14,15 @@
 
 <form method="post" enctype="multipart/form-data">
     <div class="row">
-    {% if perms.catalog.moderating_products and not none_versions %}
-        <div class="col-lg-3 col-md-2 col-sm-12"><p>&nbsp;</p>
+    {% if perms.catalog.moderating_products and not exist_versions %}
+        <div class="col-3 col-md-2 col-sm-12"><p>&nbsp;</p>
         </div>
          <div class="col-lg-6 col-md-8 col-sm-12">
     {% else %}
         <div class="col-lg-5 col-md-12 col-sm-12">
     {% endif %}
-            <div class="card box-shadow border-warning mx-1 mt-5">
-                <div class="card-header text-bg-warning py-1 text-center">
+            <div class="card box-shadow border-warning mx-md-5 mt-5 mx-2 {% if perms.catalog.moderating_products and not exist_versions %}mb-5{% endif %}">
+                <div class="card-header text-bg-warning py-1 text-center px-0">
                     {% if object.get_absolute_url %}
                 <h3>Редактирование продукта</h3>
                         {% else %}
@@ -41,13 +41,13 @@
             </div>
         </div>
         <div class="col-lg-7 col-md-12 col-sm-12">
-        {% if perms.catalog.moderating_products and none_versions %}
-            <div class="card border-warning my-5">
+        {% if perms.catalog.moderating_products and exist_versions %}
+            <div class="card border-warning mb-5 mt-3 mx-md-5 mx-1">
                 <div class="card-header text-bg-warning">
                         <h5>Версии продукта</h5>
                 </div>
             {% elif not perms.catalog.moderating_products %}
-                <div class="card border-warning mx-2 mb-5 mt-5">
+                <div class="card border-warning mb-5 mt-3 mx-md-5 mx-2">
                 <div class="card-header text-bg-warning py-1">
                         <h5>Версии продукта</h5>
                 </div>
@@ -69,7 +69,7 @@
                                                                 {% elif forloop.counter == 3 %}col-2
                                                                 {% endif %}">
                                         {% elif request|is_mobile %}
-                                        <div class="formset-col {% if forloop.counter == 1 %}col-3
+                                        <div class="formset-col px-1 {% if forloop.counter == 1 %}col-3
                                                                 {% elif forloop.counter == 2 %}col-6
                                                                 {% elif forloop.counter == 3 %}col-3
                                                                 {% endif %}">

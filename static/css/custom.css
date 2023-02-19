@@ -34,7 +34,7 @@
 }
 
 a.white-link {
-    color: #ffffff;;
+    color: #ffffff;
 }
 a.white-link:hover {
     color: yellow;
@@ -47,7 +47,6 @@ a.prod-white-link {
 }
 a.prod-white-link:hover {
     color: yellow;
-    text-decoration: underline;
    }
 
 a.dark-link {
@@ -55,6 +54,11 @@ a.dark-link {
 }
 a.dark-link:hover {
     color: blue;
+    text-decoration: unset;
+}
+
+a.dark-link-profile-header {
+    color: #000000;
     text-decoration: unset;
 }
 
@@ -78,4 +82,8 @@ a.add-row {
 .table-text-break {
     word-wrap: break-word;
     word-break: break-all;
+}
+
+.text-wrap-auto {
+    hyphens: auto;
 }

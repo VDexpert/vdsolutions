@@ -10,7 +10,7 @@
                 {% if object.user.gender == 'женский' %}
                     <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/womannoimage.png' %}">
                 {% else %}
-                    <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/usernoimage.jpg' %}">
+                    <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/usernoimage.png' %}">
                 {% endif %}
             {% elif object.user.avatar %}
                 <img class="img-fluid" alt="Фото пользователя" src="{{ object.user.avatar.url }}">

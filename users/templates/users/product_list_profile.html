@@ -9,21 +9,21 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
 
-{% if not request|is_mobile %}
+{% if request|is_pc %}
 
 <div class="container">
     <div class="row">
 
         {% include 'users/includes/menu_profile.html' %}
 
-        <div class="col-lg-9 col-md-12 col-sm-12">
+        <div class="col-9">
             <div class="card border-0 mb-5 mt-5">
                 <div class="card-header text-center px-0 py-0">
                     <div class="row text-bg-success px-0 mx-0">
                         {% if not object_list %}
                         <h5 class="text-center text-light">Добавьте продукты, чтобы начать собирать заказы</h5>
                         {% endif %}
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-6">
                             <nav class="nav flex-column">
                                 <ul class="nav nav-tabs pt-2 pb-0">
                                     {% if not perms.catalog.management_posts or not perms.catalog.management_category %}
@@ -48,7 +48,7 @@
                                 </ul>
                             </nav>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-6">
                             {% if not perms.catalog.moderating_products %}
                             <a class="p-1 btn btn-outline-light w-75 my-2" href="{% url 'catalog:create_product' %}">
                                 <strong>Добавить продукт</strong>
@@ -58,34 +58,39 @@
                     </div>
                 </div>
                 {% if object_list %}
-              <div class="card-body px-0 py-0">
-                <table class="table table-striped table-info mb-0">
-                    <thead>
-                        <tr class="text-center">
-                            <th class="col-3" scope="col">Наименование</th>
-                            <th class="col-4" scope="col">Аннотация</th>
-                            <th class="col-3" scope="col">Категория</th>
-                            <th class="col-2" scope="col">Статус</th>
-                            <th class="col-1" scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="card-body px-0 py-0">
+                    <table class="table table-striped table-info mb-0">
+                        <thead>
+                            <tr class="text-center">
+                                <th class="col-3" scope="col">Наименование</th>
+                                <th class="col-7" scope="col">Аннотация</th>
+                                <th class="col-2" scope="col">Категория</th>
+                                <th class="col-1" scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {% for object in object_list %}
                             <tr class="{% if object.banned == 'заблокировано модератором' %}table-dark
                                         {% elif object.status == 'не опубликовано' %}table-light
                                         {% else %}table-info
                                         {% endif %}">
-
-                                <td class="table-text-break">
+                                <td>
                                     <a class="{% if object.banned == 'заблокировано модератором' %}white-link
                                                 {% else %}dark-link{% endif %}" href="{{ object.get_absolute_url }}">
-                                        {{ object.product_name }}
+                                        <p class="table-text-break">{{ object.product_name }}</p>
                                     </a>
+                                    {% if object.banned == 'заблокировано модератором' %}
+                                        <p class="text-warning text-wrap-auto">
+                                            <strong>Забанено по правилам портала</strong>
+                                        </p>
+                                    {% elif object.status == 'не опубликовано' %}
+                                        <p class="text-danger">
+                                            <strong>{{ object.status }}</strong>
+                                        </p>
+                                    {% endif %}
                                 </td>
-
                                 <td class="table-text-break">{{ object.prod_annotation }}
                                 </td>
-
                                 <td>
                                     <a class="{% if object.banned == 'заблокировано модератором' %}white-link
                                                 {% else %}dark-link
@@ -93,53 +98,40 @@
                                         {{ object.category }}
                                     </a>
                                 </td>
-
-                                <td>{% if object.banned == 'заблокировано модератором' %}
-                                        <p class="text-warning">
-                                            <strong>Забанено по правилам портала</strong>
-                                        </p>
-                                    {% elif object.status == 'не опубликовано' %}
-                                        <p class="text-danger">
-                                            <strong>{{ object.status }}</strong>
-                                        </p>
-                                    {% else %}{{ object.status }}
-                                    {% endif %}
-                                </td>
                                 <td>
-                                    <div class="row">
-                                        <div class="col-12 mb-2">
-                                            <a class="img-fluid" href="{% url 'catalog:update_product' object.pk %}">
-                                                <img src="{% static "img/update.png" %}" title="Редактировать продукт">
-                                            </a>
-                                        </div>
-                                        {% if not perms.catalog.moderating_products %}
-                                        <div class="col-12 mb-2">
-                                            <a class="img-fluid" href="{% url 'catalog:delete_product' object.pk %}">
-                                                <img src="{% static "img/delete.png" %}" title="Удалить продукт">
-                                            </a>
-                                        </div>
-                                        {% endif %}
+                                    <a href="{% url 'catalog:update_product' object.pk %}">
+                                       <img class="mb-2" src="{% static "img/update.png" %}" title="Редактировать продукт">
+                                    </a>
+                                    {% if not perms.catalog.moderating_products %}
+                                        <a href="{% url 'catalog:delete_product' object.pk %}">
+                                           <img src="{% static "img/delete.png" %}" title="Удалить продукт">
+                                        </a>
+                                    {% endif %}
                                 {% if perms.catalog.moderating_products %}
                                     {% if object.banned == 'одобрено модератором' %}
-                                    <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}">
-                                        <img src="{% static "img/banned-on.png" %}" title="Забанить продукт">
-                                    </a>
+                                        <div class="col-6">
+                                            <a href="{% url 'users:product_ban' object.pk %}">
+                                                <img src="{% static "img/banned-on.png" %}" title="Забанить продукт">
+                                            </a>
+                                        </div>
                                     {% else %}
-                                    <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}">
-                                        <img src="{% static "img/banned-off.png" %}" title="Разбанить продукт">
-                                    </a>
+                                        <div class="col-6">
+                                            <a href="{% url 'users:product_ban' object.pk %}">
+                                                <img src="{% static "img/banned-off.png" %}" title="Разбанить продукт">
+                                            </a>
+                                        </div>
                                     {% endif %}
                                 {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-              </div>
-        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 {% elif request|is_mobile %}
@@ -190,11 +182,11 @@
                             {% elif object.status == 'не опубликовано' %}table-light
                             {% else %}table-info{% endif %}">
 
-                    <td class="col-8 table-text-break">
+                    <td class="col-8">
                         <a class="{% if object.banned == 'заблокировано модератором' %}white-link
                                     {% else %}dark-link
                                     {% endif %}" href="{{ object.get_absolute_url }}">
-                            {{ object.product_name }}
+                            <p class="table-text-break">{{ object.product_name }}</p>
                         </a>
                         {% if object.banned == 'заблокировано модератором' %}
                             <p class="text-warning"><strong>Забанено по правилам портала</strong>
@@ -209,24 +201,24 @@
                         <div class="row">
                             <div class="col-6">
                                 <a class="img-fluid" href="{% url 'catalog:update_product' object.pk %}">
-                                    <img class="img-fluid" src="{% static "img/update.png" %}" title="Редактировать продукт">
+                                    <img src="{% static "img/update.png" %}" title="Редактировать продукт">
                                 </a>
                             </div>
                             {% if not perms.catalog.moderating_products %}
                             <div class="col-6">
                                 <a class="img-fluid" href="{% url 'catalog:delete_product' object.pk %}">
-                                    <img class="img-fluid" src="{% static "img/delete.png" %}" title="Удалить продукт">
+                                    <img src="{% static "img/delete.png" %}" title="Удалить продукт">
                                 </a>
                             </div>
                             {% endif %}
                     {% if perms.catalog.moderating_products %}
                         <div class="col-6">
                             {% if object.banned == 'одобрено модератором' %}
-                            <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}">
+                            <a href="{% url 'users:product_ban' object.pk %}">
                                 <img class="img-fluid" src="{% static "img/banned-on.png" %}" title="Забанить продукт">
                             </a>
                             {% else %}
-                            <a class="img-fluid" href="{% url 'users:product_ban' object.pk %}">
+                            <a href="{% url 'users:product_ban' object.pk %}">
                                 <img class="img-fluid" src="{% static "img/banned-off.png" %}" title="Разбанить продукт">
                             </a>
                             {% endif %}
@@ -241,7 +233,125 @@
 {% endif %}
 </div>
 
+{% elif request|is_tablet %}
+
+    {% include 'users/includes/menu_profile_for_tablet.html' %}
+
+<div class="card border-0 mb-5 mt-2 mx-5 px-3">
+    <div class="card-header text-center px-0 py-0">
+        <div class="row text-bg-success px-0 mx-0">
+            {% if not object_list %}
+            <h5 class="text-center text-light">Добавьте продукты, чтобы начать собирать заказы</h5>
+            {% endif %}
+            <div class="col-8">
+                <nav class="nav flex-column">
+                    <ul class="nav nav-tabs pt-2 pb-0">
+                        {% if not perms.catalog.management_posts or not perms.catalog.management_category %}
+                          <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'users:user_products' %}">
+                                {% if perms.catalog.moderating_products %}
+                                    <strong>Продукты</strong>
+                                {% else %}<strong>Мои продукты</strong>
+                                {% endif %}
+                            </a>
+                          </li>
+                        {% endif %}
+                        {% if not perms.catalog.moderating_products %}
+                          <li class="nav-item">
+                            <a class="nav-link white-link" href="{% url 'users:user_posts' %}"
+                                     {% if not perms.catalog.management_posts %}>Мои публикации
+                                     {% else %}Публикации
+                                     {% endif %}
+                            </a>
+                          </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-4">
+                {% if not perms.catalog.moderating_products %}
+                <a class="p-1 btn btn-outline-light w-100 mt-1" href="{% url 'catalog:create_product' %}">
+                    <strong><img class="img-fluid" src="{% static "img/plusblack.png" %}"> Продукт</strong>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if object_list %}
+    <div class="card-body px-0 py-0">
+        <table class="table table-striped table-info mb-0">
+            <thead>
+                <tr class="text-center">
+                    <th class="col-3" scope="col">Наименование</th>
+                    <th class="col-7" scope="col">Аннотация</th>
+                    <th class="col-2" scope="col">Категория</th>
+                    <th class="col-1" scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr class="{% if object.banned == 'заблокировано модератором' %}table-dark
+                            {% elif object.status == 'не опубликовано' %}table-light
+                            {% else %}table-info
+                            {% endif %}">
+                    <td>
+                        <a class="{% if object.banned == 'заблокировано модератором' %}white-link
+                                    {% else %}dark-link{% endif %}" href="{{ object.get_absolute_url }}">
+                            <p class="table-text-break">{{ object.product_name }}</p>
+                        </a>
+                        {% if object.banned == 'заблокировано модератором' %}
+                            <p class="text-warning text-wrap-auto">
+                                <strong>Забанено по правилам портала</strong>
+                            </p>
+                        {% elif object.status == 'не опубликовано' %}
+                            <p class="text-danger">
+                                <strong>{{ object.status }}</strong>
+                            </p>
+                        {% endif %}
+                    </td>
+                    <td class="table-text-break">{{ object.prod_annotation }}
+                    </td>
+                    <td>
+                        <a class="{% if object.banned == 'заблокировано модератором' %}white-link
+                                    {% else %}dark-link
+                                    {% endif %}" href="{% url 'catalog:category_with_products' object.category.slug %}">
+                            {{ object.category }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'catalog:update_product' object.pk %}">
+                           <img class="mb-2" src="{% static "img/update.png" %}" title="Редактировать продукт">
+                        </a>
+                        {% if not perms.catalog.moderating_products %}
+                            <a href="{% url 'catalog:delete_product' object.pk %}">
+                               <img src="{% static "img/delete.png" %}" title="Удалить продукт">
+                            </a>
+                        {% endif %}
+                    {% if perms.catalog.moderating_products %}
+                        {% if object.banned == 'одобрено модератором' %}
+                            <div class="col-6">
+                                <a href="{% url 'users:product_ban' object.pk %}">
+                                    <img src="{% static "img/banned-on.png" %}" title="Забанить продукт">
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="col-6">
+                                <a href="{% url 'users:product_ban' object.pk %}">
+                                    <img src="{% static "img/banned-off.png" %}" title="Разбанить продукт">
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% endif %}
+</div>
+
+{% endif %}
 
     <script>src="{% static 'js/bootstrap.min.js' %}"</script>
 

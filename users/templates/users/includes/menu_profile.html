@@ -1,12 +1,12 @@
 {% load static %}
 
-<div class="col-lg-3 col-md-12 col-sm-12">
-    <div class="card border-warning my-5">
+<div class="col-3">
+    <div class="card border-warning my-5 td-table-info">
         {% if not user.avatar %}
             {% if user.gender == 'женский' %}
                 <img src="{% static 'img/womannoimage.png' %}" class="card-img-top">
             {% else %}
-                <img src="{% static 'img/usernoimage.jpg' %}" class="card-img-top">
+                <img src="{% static 'img/usernoimage.png' %}" class="card-img-top">
             {% endif %}
         {% elif user.avatar %}
             <img src="{{ user.avatar.url }}" class="card-img-top">
@@ -20,25 +20,28 @@
             </div>
         {% endif %}
     {% if not user.first_name or not user.last_name or not user.phone or not user.country or not user.stack %}
-      <div class="card-header text-center text-bg-danger">
-          <p>Заполните профиль - это повысит доверие посетителей Skystore</p></div>
+      <div class="card-header text-center text-bg-danger py-1">
+          <span>Заполните профиль - это повысит доверие посетителей Skystore</span>
+      </div>
         {% elif not user.avatar %}
-        <div class="card-header text-center text-bg-danger">
-            <p>Загрузите фото - это повысит доверие посетителей Skystore</p></div>
+        <div class="card-header text-center text-bg-danger py-1">
+            <span>Загрузите фото - это повысит доверие посетителей Skystore</span>
+        </div>
     {% endif %}
     {% endif %}
-    <div class="card-header td-table-info border-1 mx-0">
+    <div class="card-header td-table-info border-1 mx-0 px-2">
         <div class="container px-0">
             <strong>{% if not user.first_name or not user.last_name %}
                     <span class="text-danger">Укажите</span>
                     {% endif %}
                         {% if user.first_name %}{{ user.first_name }}
                         {% else %}<span class="text-danger">имя</span>{% endif %}
-                        {% if user.last_name %}{{ user.last_name }}{% else %}<span class="text-danger">фамилию</span>{% endif %}
+                        {% if user.last_name %}{{ user.last_name }}{% else %}<span class="text-danger">фамилию</span>
+                        {% endif %}
         </strong>
         </div>
     </div>
-    <div class="card-header td-table-info border-1 mx-0">
+    <div class="card-header td-table-info border-1 mx-0 px-2">
         <div class="container px-0">
             {% if not user.stack %}
                 <strong><span class="text-danger">Стэк не указан</span></strong>
@@ -87,8 +90,9 @@
         </p>
       <div class="card-footer text-bg-warning text-center">
          <a class="p-1 btn btn-outline-dark w-75" href="{% url 'users:edit_profile' %}">
-             <strong><img class="img-fluid" src="{% static 'img/pencil.png' %}"> профиль</strong>
+             <img class="img-fluid" src="{% static 'img/pencil.png' %}"><strong> профиль</strong>
          </a>
       </div>
     </div>
 </div>
+

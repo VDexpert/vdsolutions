@@ -27,7 +27,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-md-12 col-sm-12">
-            <div class="card border-warning mx-1 my-5">
+            <div class="card border-warning mx-1 mt-lg-5 mt-5 mb-lg-5 mb-md-0 mb-3">
                 <img  class="card-img-top" src="{% if object.picture %}{{ object.picture.url }}
                                                 {% else %}{% static "img/post-no-image.jpg" %}
                                                 {% endif %}" alt="...">
@@ -99,25 +99,31 @@
         </div>
         {% if not user.is_authenticated or not user.email == object.user.email %}
         <div class="col-lg-4 col-md-12 col-sm-12">
-            <div class="card mb-4 box-shadow text-center border-warning mx-1 mt-5">
-            {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
-                {% include 'catalog/includes/user_card_for_form_feedback.html' %}
-            {% endif %}
-            <div class="card-header text-bg-warning py-1">
-                <h3 class="my-0 font-weight-normal">Задать вопрос автору</h3>
-            </div>
-            <div class="card-body mx-3">
-                <form method="post" action="" class="form-floating">
-                    {% csrf_token %}
-                    <input type="hidden" name="post" value="{{ object.title }}">
-                    <input type="hidden" name="post_owner" value="{{ object.user.email }}">
-                    {{ form.as_p }}
-                    <div class="card-footer border-0 px-0">
-                        <button type="submit" class="btn btn-outline-success w-75">
-                            <strong>Отправить</strong>
-                        </button>
-                    </div>
-                </form>
+            <div class="row">
+                <div class="col-md-3 col-lg-12">
+                </div>
+                <div class="col-md-6 col-lg-12">
+                    <div class="card mb-5 box-shadow text-center border-warning mx-1 mt-lg-5 mt-md-3">
+                        {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
+                            {% include 'catalog/includes/user_card_for_form_feedback.html' %}
+                        {% endif %}
+                        <div class="card-header text-bg-warning py-1">
+                            <h3 class="my-0 font-weight-normal">Задать вопрос автору</h3>
+                        </div>
+                        <div class="card-body mx-3">
+                            <form method="post" action="" class="form-floating">
+                                {% csrf_token %}
+                                <input type="hidden" name="post" value="{{ object.title }}">
+                                <input type="hidden" name="post_owner" value="{{ object.user.email }}">
+                                {{ form.as_p }}
+                                <div class="card-footer border-0 px-0">
+                                    <button type="submit" class="btn btn-outline-success w-75">
+                                        <strong>Отправить</strong>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
             </div>
         </div>
         {% endif %}

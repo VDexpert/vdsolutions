@@ -1,0 +1,87 @@
+{% load static %}
+
+<div class="card mb-4 box-shadow border-0 mx-5 mt-5 px-0">
+    <div class="card-body py-0">
+        <table class="table table-info my-0">
+            <tr>
+                <td class="border-0">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <a class="dark-link-profile-header" href="{% url 'users:edit_profile' %}">
+                                <img class="img-fluid mb-1" src="{% static 'img/pencilsmall.png' %}"> Профиль
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a class="dark-link-profile-header" href="{% url 'users:change_password' %}">
+                                <img class="img-fluid" src="{% static 'img/passwordsmall.png' %}"> Пароль
+                            </a>
+                        </div>
+                    </div>
+                </td>
+                <td><strong>Email:</strong>&nbsp;{{ user.email }}</td>
+            </tr>
+            <tr>
+                <td class="px-0 py-0" rowspan="5" style="width: 260px">
+                    {% if not user.avatar %}
+                        {% if user.gender == 'женский' %}
+                            <img class="img-fluid" src="{% static 'img/womannoimage.png' %}">
+                        {% else %}
+                            <img class="img-fluid" src="{% static 'img/usernoimage.png' %}">
+                        {% endif %}
+                    {% elif user.avatar %}
+                        <img class="img-fluid" src="{{ user.avatar.url }}">
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td class="{% if not user.first_name or not user.last_name %}table-danger{% endif %}">
+                            {% if not user.first_name or not user.last_name %}<strong><span>Укажите</span></strong>{% endif %}
+                            {% if user.first_name %}{{ user.first_name }}{% else %}<strong><span>имя</span></strong>{% endif %}
+                            {% if user.last_name %}{{ user.last_name }}{% else %}<strong><span>фамилию</span></strong>{% endif %}
+                </td>
+            </tr>
+            </tr>
+
+            <tr>
+                <td class="{% if not user.phone %}table-danger{% endif %}">
+                            {% if not user.phone %}Телефон не указан
+                            {% else %}<strong>Телефон: </strong>{{ user.phone }}
+                            {% endif %}
+                </td>
+            </tr>
+
+             <tr>
+                <td class="{% if not user.country %}table-danger{% endif %}">
+                            {% if not user.country %}Страна не указана
+                            {% else %}<strong>Страна: </strong>{{ user.country }}
+                            {% endif %}
+                </td>
+             </tr>
+
+             <tr>
+                 <td class="table-text-break pb-0 {% if not user.stack %}table-danger{% endif %}">
+                                            {% if not user.stack %}Стэк не указан
+                                            {% else %}<span><strong>Стэк: </strong>{{ user.stack }}</span>
+                                            {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+{% if not perms.catalog.moderating_products and not perms.catalog.management_category and not perms.catalog.management_posts %}
+    {% if not user.first_name or not user.last_name or not user.phone or not user.country or not user.stack %}
+        <div class="card-footer text-bg-danger text-center mx-3">
+            <span>Заполните профиль - это повысит доверие посетителей Skystore</span>
+        </div>
+        {% elif not user.avatar %}
+        <div class="card-footer text-bg-danger text-center mx-3">
+            <span>Загрузите фото - это повысит доверие посетителей Skystore</span>
+        </div>
+    {% endif %}
+{% endif %}
+    <div class="card-footer text-bg-warning text-center mx-3">
+         <a class="btn btn-lg btn-block btn-outline-dark w-50" href="{% url 'users:order_trials' %}">
+                <strong>Заказать PushTop</strong>
+         </a>
+    </div>
+</div>
+
