@@ -19,7 +19,8 @@
                 </div>
                 <div class="card-body">
                     {% if object.banned == 'одобрено модератором' %}
-                    <p>Хотите забанить статью? "{{ object.title }}"? Руководствуйтесь политикой компании</p>
+                    <p>Хотите забанить статью? "{{ object.title }}"?
+                        Принимая решение, руководствуйтесь исключительно политикой компании.</p>
                         <p><strong>После бана статья будет доступна только Вам</strong></p>
                     {% else %}
                         <p>Разрешайте публикацию статьи "{{ object.title }}", если разработчик устранил
@@ -31,9 +32,11 @@
                             <input type="hidden" name="reason_ban" value="Спасибо, что прислушались к нашим требованиям">
                             <div class="mx-2">{{ form.banned.errors }}
                             </div>
-                            <label class="form-label text-success" for="id_banned">
-                                <strong>Разбанить публикацию?</strong>
-                            </label>
+                            <div class="px-2">
+                                <label class="form-label text-success" for="id_banned">
+                                    <strong>Разбанить публикацию?</strong>
+                                </label>
+                            </div>
                             <div class="mb-4 px-2">{{ form.banned }}
                             </div>
                         {% endif %}
@@ -41,34 +44,40 @@
                         {% if object.banned == 'одобрено модератором' %}
                             <div class="mx-2">{{ form.banned.errors }}
                             </div>
-                            <label class="form-label text-danger" for="id_banned">
-                                <strong>Забанить публикацию?</strong>
-                            </label>
+                            <div class="px-2">
+                                <label class="form-label text-danger" for="id_banned">
+                                    <strong>Забанить публикацию?</strong>
+                                </label>
+                            </div>
                             <div class="mb-4 px-2">{{ form.banned }}
                             </div>
                             <div class="mx-3">{{ form.reason_ban.errors }}
                             </div>
-                            <label class="form-label small" for="id_reason_bun">{{ form.reason_ban.label }}</label>
+                            <div class="px-2">
+                                <label class="form-label small" for="id_reason_bun">{{ form.reason_ban.label }}</label>
+                            </div>
                             <div class="px-2">{{ form.reason_ban }}
                             </div>
-                            <div class="mb-4 helptext">{{ form.reason_ban.help_text }}</div>
+                            <div class="mx-3">
+                                <span class="mb-4 helptext">{{ form.reason_ban.help_text }}</span>
+                            </div>
                         {% endif %}
-                        <div class="card-footer border-0 px-0 py-0 bg-transparent">
+                        <div class="card-footer border-0 px-0 py-0 bg-transparent mt-4 text-center">
                             <div class="row">
                                     <div class="col-6">
-                                        <button class="btn btn-outline-success w-100" type="submit">
+                                        <button class="btn btn-outline-success w-75" type="submit">
                                             <strong>Сохранить</strong>
                                         </button>
                                     </div>
                                 {% if request.META.HTTP_REFERER %}
                                     <div class="col-6">
-                                        <a class="btn btn-outline-primary w-100" href="{{ request.META.HTTP_REFERER }}">
+                                        <a class="btn btn-outline-primary w-75" href="{{ request.META.HTTP_REFERER }}">
                                             <strong>Отмена</strong>
                                         </a>
                                     </div>
                                 {% else %}
                                     <div class="col-6">
-                                        <a class="btn btn-outline-primary w-100" href="{% url 'users:user_posts' %}">
+                                        <a class="btn btn-outline-primary w-75" href="{% url 'users:user_posts' %}">
                                             <strong>Отмена</strong>
                                         </a>
                                     </div>
