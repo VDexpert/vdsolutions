@@ -4,7 +4,7 @@
     <div class="card-header text-bg-warning mt-5">
         <div class="row">
             <div class="col-10">
-                 <strong>{{ user.email|truncatechars:21 }}</strong><br><strong>{% if not user.first_name or not user.last_name %}<span class="text-danger">Укажите</span>{% endif %}
+                 <strong>{{ user.email|truncatechars:20 }}</strong><br><strong>{% if not user.first_name or not user.last_name %}<span class="text-danger">Укажите</span>{% endif %}
                 {% if user.first_name %}{{ user.first_name }}{% else %}<span class="text-danger">имя</span>{% endif %}
                 {% if user.last_name %}{{ user.last_name }}{% else %}<span class="text-danger">фамилию</span>{% endif %}</strong>
             </div>

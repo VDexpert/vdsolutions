@@ -30,7 +30,7 @@
 }
 
 .post-white-link:hover {
-    color: yellow;
+    color: #ffc107;
 }
 
 a.white-link {
@@ -46,7 +46,7 @@ a.prod-white-link {
     text-decoration: unset;
 }
 a.prod-white-link:hover {
-    color: yellow;
+    color: #ffc107;
    }
 
 a.dark-link {

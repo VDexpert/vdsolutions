@@ -48,7 +48,7 @@
             <div class="col-lg-4 col-md-6 col-sm-12 {% translittag object.category %}">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header text-center text-bg-dark">
-                        <a class="prod-white-link">
+                        <a class="prod-white-link" href="{{ object.get_absolute_url }}">
                             <h4 class="my-0 font-weight-normal">{{ object.product_name|truncatechars:35 }}</h4>
                         </a>
                     </div>
