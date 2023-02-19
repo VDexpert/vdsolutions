@@ -176,11 +176,11 @@
                 <div class="col-12 px-0">
                     {% if not perms.catalog.management_posts and not perms.content.management_category %}
                         <a class="p-1 btn btn-outline-light w-50 my-2" href="{% url 'catalog:create_post' %}">
-                            <img class="img-fluid" src="{% static "img/plus.png" %}"> Публикация
+                            <img class="img-fluid" src="{% static "img/plusblack.png" %}"> Публикация
                         </a>
                     {% else %}
                         <a class="p-1 btn btn-outline-light w-50 my-2" href="{% url 'catalog:update_blog' %}">
-                            <img class="img-fluid" src="{% static "img/updateblog.png" %}"> Блог
+                            <img class="img-fluid" src="{% static "img/pencilsmall.png" %}"> Блог
                         </a>
                     {% endif %}
                 </div>
