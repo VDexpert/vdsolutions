@@ -1,7 +1,8 @@
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-from catalog.models import Product, Post, Category
+from catalog.models import Product, Post
+import re
 
 register = template.Library()
 
@@ -58,3 +59,27 @@ def customtruncatechars(content, autoescape=False):
         esc = lambda x: x
 
     return mark_safe(esc(content[:200] + '...'))
+
+
+@register.filter(needs_autoescape=True)
+def checkuseragenttablet(user_agent, autoescape=True):
+    target_agent = ['ipad', 'tablet', 'tab', 'pad']
+
+    if autoescape:
+        esc = conditional_escape
+    else:
+        esc = lambda x: x
+
+    return True if len([x for x in target_agent if re.findall(x, esc(user_agent.lower()))]) else False
+
+
+@register.filter(needs_autoescape=True)
+def checkuseragentphone(user_agent, autoescape=True):
+    target_agent = ['iphone', 'mobile', 'phone']
+
+    if autoescape:
+        esc = conditional_escape
+    else:
+        esc = lambda x: x
+
+    return True if len([x for x in target_agent if re.findall(x, esc(user_agent.lower()))]) else False
