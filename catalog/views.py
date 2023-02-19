@@ -7,7 +7,6 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from catalog.auxfunc import translit
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.core.cache import cache
 
 
 class ProductHomeListView(ListView):
@@ -17,7 +16,7 @@ class ProductHomeListView(ListView):
     paginate_orphans = 3
 
     def get_queryset(self):
-        return super().get_queryset().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором').order_by('-create_at', '-absolute_top', '-id')
+        return super().get_queryset().filter(status=Product.STATUS_ACTIVE, banned=Product.BANNED_FALSE).order_by('-create_at', '-absolute_top', '-id')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -89,7 +88,7 @@ class CategoryWithProductsDetailView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        products_category = Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned='одобрено модератором', category=self.object.pk).order_by('-create_at', '-absolute_top', '-id')
+        products_category = Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned=Product.BANNED_FALSE, category=self.object.pk).order_by('-create_at', '-absolute_top', '-id')
         paginator = Paginator(products_category, 12)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
