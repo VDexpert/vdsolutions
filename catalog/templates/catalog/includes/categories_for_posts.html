@@ -2,7 +2,7 @@
 
 <div class="filter">
   {% for object in categories %}
-    <a href="{% url 'catalog:category_with_posts' object.slug %}">
+    <a style="text-decoration: unset" href="{% url 'catalog:category_with_posts' object.slug %}">
         <button class="button text-bg-primary my-1 mx-1">{{ object.category_name }}</button>
     </a>
   {% endfor %}
