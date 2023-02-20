@@ -29,22 +29,21 @@
         </div>
     {% endif %}
     {% endif %}
-    <div class="card-header td-table-info border-1 mx-0 px-2">
-        <div class="container px-0">
-            <strong>{% if not user.first_name or not user.last_name %}
-                    <span class="text-danger">Укажите</span>
-                    {% endif %}
-                        {% if user.first_name %}{{ user.first_name }}
-                        {% else %}<span class="text-danger">имя</span>{% endif %}
-                        {% if user.last_name %}{{ user.last_name }}{% else %}<span class="text-danger">фамилию</span>
-                        {% endif %}
-        </strong>
+    <div class="card-header td-table-info border-1 mx-0 px-2 {% if not user.first_name or not user.last_name %}td-table-danger{% endif %}">
+        <div class="container px-0 text-center">
+            {% if not user.first_name or not user.last_name %}
+             <strong><span>Укажите</span> </strong>
+            {% endif %}
+            {% if user.first_name %}{{ user.first_name }}
+            {% else %} <strong><span>имя</span> </strong>{% endif %}
+            {% if user.last_name %}{{ user.last_name }}{% else %} <strong><span>фамилию</span> </strong>
+            {% endif %}
         </div>
     </div>
-    <div class="card-header td-table-info border-1 mx-0 px-2">
+    <div class="card-header td-table-info border-1 mx-0 px-2 {% if not user.stack %}td-table-danger{% endif %}">
         <div class="container px-0">
             {% if not user.stack %}
-                <strong><span class="text-danger">Стэк не указан</span></strong>
+                <strong><span>Стэк не указан</span></strong>
             {% else %}<span><strong>Стэк: </strong>{{ user.stack }}</span>
             {% endif %}
           </div>
@@ -66,8 +65,8 @@
                 </tr>
                 <tr>
                     <td class="col-3">Тел:</td>
-                    <td class="col-9 {% if not user.phone %}table-danger{% endif %}">
-                        {% if not user.phone %}Не указано
+                    <td class="col-9 {% if user.phone == 'None' %}table-danger{% endif %}">
+                        {% if user.phone == 'None' %}Не указано
                         {% else %}{{ user.phone }}
                         {% endif %}
                     </td>
@@ -95,4 +94,3 @@
       </div>
     </div>
 </div>
-

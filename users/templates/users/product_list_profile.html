@@ -162,8 +162,8 @@
                         {% if not perms.catalog.moderating_products %}
                           <li class="nav-item">
                             <a class="nav-link white-link" href="{% url 'users:user_posts' %}"
-                                     {% if not perms.catalog.management_posts %}>Мои публикации
-                                     {% else %}Публикации
+                                     {% if not perms.catalog.management_posts %}>Мои статьи
+                                     {% else %}Статьи
                                      {% endif %}
                             </a>
                           </li>
@@ -298,7 +298,7 @@
         <tbody>
             {% for object in object_list %}
 
-                <tr class="col-6 {% if object.banned == 'заблокировано модератором' %}table-dark
+                <tr class="{% if object.banned == 'заблокировано модератором' %}table-dark
                             {% elif object.status == 'не опубликовано' %}table-light
                             {% else %}table-info{% endif %}">
 
@@ -318,16 +318,16 @@
                     </td>
 
                     <td class="col-4">
-                        <div class="row">
+                        <div class="row text-end">
                             <div class="col-6">
                                 <a class="img-fluid" href="{% url 'catalog:update_product' object.pk %}">
-                                    <img src="{% static "img/update.png" %}" title="Редактировать продукт">
+                                    <img class="img-fluid" src="{% static "img/update.png" %}" title="Редактировать продукт">
                                 </a>
                             </div>
                             {% if not perms.catalog.moderating_products %}
                             <div class="col-6">
                                 <a class="img-fluid" href="{% url 'catalog:delete_product' object.pk %}">
-                                    <img src="{% static "img/delete.png" %}" title="Удалить продукт">
+                                    <img class="img-fluid" src="{% static "img/delete.png" %}" title="Удалить продукт">
                                 </a>
                             </div>
                             {% endif %}

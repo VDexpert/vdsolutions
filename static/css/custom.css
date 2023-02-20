@@ -79,6 +79,10 @@ a.add-row {
   background-color: #cff4fc;
 }
 
+.td-table-danger {
+    background-color: #f8d7da;
+}
+
 .table-text-break {
     word-wrap: break-word;
     word-break: break-all;

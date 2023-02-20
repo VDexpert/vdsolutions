@@ -161,8 +161,8 @@
                           <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'users:user_posts' %}">
                                 {% if not perms.catalog.management_posts and not perms.content.management_category %}
-                                    <strong>Мои публикации</strong>
-                                {% else %}<strong>Публикации</strong>
+                                    <strong>Мои статьи</strong>
+                                {% else %}<strong>Статьи</strong>
                                 {% endif %}
                             </a>
                           </li>
@@ -177,7 +177,7 @@
                 <div class="col-4">
                     {% if not perms.catalog.management_posts and not perms.content.management_category %}
                     <a class="p-1 btn btn-outline-light w-100 mt-1" href="{% url 'catalog:create_post' %}">
-                        <strong><img class="img-fluid" src="{% static "img/plusblack.png" %}"> Публикация</strong>
+                        <strong><img class="img-fluid" src="{% static "img/plusblack.png" %}"> Статья</strong>
                     </a>
                     {% else %}
                     <a class="p-1 btn btn-outline-light w-100 mt-1" href="{% url 'catalog:update_blog' %}">
@@ -314,7 +314,7 @@
         <table class="table table-striped table-info mb-0 pb-0">
             <tbody>
                 {% for object in object_list %}
-                    <tr class="col-12 {% if object.banned == 'заблокировано модератором' %}table-dark
+                    <tr class="{% if object.banned == 'заблокировано модератором' %}table-dark
                                 {% elif object.status == 'не опубликовано' %}table-light
                                 {% else %}table-info{% endif %}">
 
@@ -333,7 +333,7 @@
                         </td>
 
                         <td class="col-4">
-                            <div class="row">
+                            <div class="row text-end">
                                 <div class="col-6">
                                     <a class="img-fluid" href="{% url 'catalog:update_post' object.pk %}">
                                         <img src="{% static "img/update.png" %}" title="Редактировать статью">

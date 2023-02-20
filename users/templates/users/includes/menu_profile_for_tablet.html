@@ -2,11 +2,11 @@
 
 <div class="card mb-4 box-shadow border-0 mx-5 mt-5 px-0">
     <div class="card-body py-0">
-        <table class="table table-info my-0">
-            <tr>
+        <table class="table my-0">
+            <tr class="text-bg-warning">
                 <td class="border-0">
                     <div class="row text-center">
-                        <div class="col-6">
+                        <div class="col-6 px-0">
                             <a class="dark-link-profile-header" href="{% url 'users:edit_profile' %}">
                                 <img class="img-fluid mb-1" src="{% static 'img/pencilsmall.png' %}"> Профиль
                             </a>
@@ -20,8 +20,8 @@
                 </td>
                 <td><strong>Email:</strong>&nbsp;{{ user.email }}</td>
             </tr>
-            <tr>
-                <td class="px-0 py-0" rowspan="5" style="width: 260px">
+            <tr class="table-info">
+                <td class="px-0 py-0" rowspan="6" style="width: 260px">
                     {% if not user.avatar %}
                         {% if user.gender == 'женский' %}
                             <img class="img-fluid" src="{% static 'img/womannoimage.png' %}">
@@ -33,24 +33,31 @@
                     {% endif %}
                 </td>
             </tr>
-            <tr>
+            <tr class="table-info text-center">
                 <td class="{% if not user.first_name or not user.last_name %}table-danger{% endif %}">
                             {% if not user.first_name or not user.last_name %}<strong><span>Укажите</span></strong>{% endif %}
                             {% if user.first_name %}{{ user.first_name }}{% else %}<strong><span>имя</span></strong>{% endif %}
                             {% if user.last_name %}{{ user.last_name }}{% else %}<strong><span>фамилию</span></strong>{% endif %}
                 </td>
             </tr>
+
+            <tr class="table-info">
+                <td class="{% if not user.gender %}table-danger{% endif %}">
+                    {% if not user.gender %}Пол не указан
+                    {% else %}<strong>Пол: </strong>{{ user.gender }}
+                    {% endif %}
+                </td>
             </tr>
 
-            <tr>
-                <td class="{% if not user.phone %}table-danger{% endif %}">
-                            {% if not user.phone %}Телефон не указан
+            <tr class="table-info">
+                <td class="{% if user.phone == 'None' %}table-danger{% endif %}">
+                            {% if user.phone == 'None' %}Телефон не указан
                             {% else %}<strong>Телефон: </strong>{{ user.phone }}
                             {% endif %}
                 </td>
             </tr>
 
-             <tr>
+             <tr class="table-info">
                 <td class="{% if not user.country %}table-danger{% endif %}">
                             {% if not user.country %}Страна не указана
                             {% else %}<strong>Страна: </strong>{{ user.country }}
@@ -58,7 +65,7 @@
                 </td>
              </tr>
 
-             <tr>
+             <tr class="table-info">
                  <td class="table-text-break pb-0 {% if not user.stack %}table-danger{% endif %}">
                                             {% if not user.stack %}Стэк не указан
                                             {% else %}<span><strong>Стэк: </strong>{{ user.stack }}</span>
@@ -84,4 +91,3 @@
          </a>
     </div>
 </div>
-

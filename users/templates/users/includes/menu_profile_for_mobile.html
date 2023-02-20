@@ -3,17 +3,17 @@
 <div class="card mb-4 box-shadow border-0 mx-3">
     <div class="card-header text-bg-warning mt-5">
         <div class="row">
-            <div class="col-10">
-                 <strong>{{ user.email|truncatechars:20 }}</strong><br><strong>{% if not user.first_name or not user.last_name %}<span class="text-danger">Укажите</span>{% endif %}
-                {% if user.first_name %}{{ user.first_name }}{% else %}<span class="text-danger">имя</span>{% endif %}
-                {% if user.last_name %}{{ user.last_name }}{% else %}<span class="text-danger">фамилию</span>{% endif %}</strong>
+            <div class="col-9">
+                 <strong>{{ user.email|truncatechars:20 }}</strong>
             </div>
-            <div class="col-2">
+            <div class="col-1 px-0">
                 <a class="img-fluid" href="{% url 'users:edit_profile' %}">
-                        <img class="img-fluid mb-1" src="{% static 'img/pencil.png' %}">
+                        <img src="{% static 'img/pencilsmall.png' %}">
                 </a>
+            </div>
+            <div class="col-1">
                 <a class="img-fluid" href="{% url 'users:change_password' %}">
-                      <img class="img-fluid" src="{% static 'img/password.png' %}">
+                      <img src="{% static 'img/passwordsmall.png' %}">
                 </a>
             </div>
         </div>
@@ -21,6 +21,13 @@
     <div class="card-body px-0 py-0">
         <table class="table table-striped table-info my-0">
             <tbody>
+                <tr class="text-center {% if not user.first_name or not user.last_name %}table-danger{% endif %}">
+                    <td>
+                        {% if not user.first_name or not user.last_name %} <strong><span>Укажите</span></strong>{% endif %}
+                        {% if user.first_name %}{{ user.first_name }}{% else %} <strong><span>имя</span></strong>{% endif %}
+                        {% if user.last_name %}{{ user.last_name }}{% else %}<strong><span>фамилию</span></strong>{% endif %}
+                    </td>
+                </tr>
                 <tr>
                     <td class="{% if not user.gender %}table-danger{% endif %}">
                         {% if not user.gender %}Пол не указан
@@ -29,8 +36,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="{% if not user.phone %}table-danger{% endif %}">
-                        {% if not user.phone %}Телефон не указан
+                    <td class="{% if user.phone == 'None' %}table-danger{% endif %}">
+                        {% if user.phone == 'None' %}Телефон не указан
                         {% else %}<strong>Телефон: </strong>{{ user.phone }}
                         {% endif %}
                     </td>
@@ -46,7 +53,7 @@
                     <td class="table-text-break {% if not user.stack %}table-danger{% endif %}">
                         {% if not user.stack %}Стэк не указан
                         {% else %}
-                            <span><strong>Стэк: {{ user.stack }}</strong></span>
+                            <span><strong>Стэк: </strong>{{ user.stack }}</span>
                         {% endif %}
                     </td>
                  </tr>
@@ -72,4 +79,3 @@
         {% endif %}
 {% endif %}
 </div>
-
