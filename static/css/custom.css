@@ -91,3 +91,7 @@ a.add-row {
 .text-wrap-auto {
     hyphens: auto;
 }
+
+.main-menu-desktop {
+    flex-grow: 1;
+}

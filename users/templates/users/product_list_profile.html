@@ -17,14 +17,14 @@
 
         {% include 'users/includes/menu_profile.html' %}
 
-        <div class="col-9">
+        <div class="col-lg-9 col-md-12 col-12">
             <div class="card border-0 mb-5 mt-5">
                 <div class="card-header text-center px-0 py-0">
                     <div class="row text-bg-success px-0 mx-0">
                         {% if not object_list %}
                         <h5 class="text-center text-light">Добавьте продукты, чтобы начать собирать заказы</h5>
                         {% endif %}
-                        <div class="col-6">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
                             <nav class="nav flex-column">
                                 <ul class="nav nav-tabs pt-2 pb-0">
                                     {% if not perms.catalog.management_posts or not perms.catalog.management_category %}
@@ -49,7 +49,7 @@
                                 </ul>
                             </nav>
                         </div>
-                        <div class="col-6">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
                             {% if not perms.catalog.moderating_products %}
                             <a class="p-1 btn btn-outline-light w-75 my-2" href="{% url 'catalog:create_product' %}">
                                 <strong>Добавить продукт</strong>

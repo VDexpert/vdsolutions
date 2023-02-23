@@ -4,21 +4,21 @@
 <div class="card mb-0 pb-0">
     <div class="card-header text-bg-warning"><strong>Разработчик: </strong>{{ object.user.first_name }} {{ object.user.last_name }}
     </div>
-    <div class="row g-0 my-0 py-0">
-        <div class="col-6">
-            {% if not object.user.avatar %}
-                {% if object.user.gender == 'женский' %}
-                    <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/womannoimage.png' %}">
-                {% else %}
-                    <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/usernoimage.png' %}">
+    <div class="card-body px-0 py-0">
+        <div class="container row g-0 py-0 text-body">
+            <div class="col-xl-6 col-lg-12 col-md-7 col-sm-7 col-7">
+                {% if not object.user.avatar %}
+                    {% if object.user.gender == 'женский' %}
+                        <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/womannoimage.png' %}">
+                    {% else %}
+                        <img class="img-fluid" alt="Заглушка для аватарки" src="{% static 'img/usernoimage.png' %}">
+                    {% endif %}
+                {% elif object.user.avatar %}
+                    <img class="img-fluid" alt="Фото пользователя" src="{{ object.user.avatar.url }}">
                 {% endif %}
-            {% elif object.user.avatar %}
-                <img class="img-fluid" alt="Фото пользователя" src="{{ object.user.avatar.url }}">
-            {% endif %}
-        </div>
-        <div class="col-6 text-start">
-            <div class="card-body py-0 mb-0">
-                <span><strong>Стек: </strong>{{ object.user.stack|truncatechars:70 }})</span>
+            </div>
+            <div class="col-xl-6 col-lg-12 col-md-5 col-sm-5 col-5 text-start px-3 py-lg-1 pt-xl-4 pb-xl-0 py-md-5 py-sm-5 py-5">
+                <strong>Стек: </strong>{{ object.user.stack }})
             </div>
         </div>
     </div>

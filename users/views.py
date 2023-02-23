@@ -173,7 +173,7 @@ class ProductUserListView(ListView):
         if user.has_perm('catalog.moderating_products'):
             return super().get_queryset().order_by('-absolute_top', '-create_at', '-id')
 
-        return super().get_queryset().filter(user=self.request.user).order_by('-create_at', '-absolute_top', '-id')
+        return super().get_queryset().filter(user=self.request.user).order_by('-absolute_top', '-create_at', '-id')
 
 
 class PostUserListView(ListView):

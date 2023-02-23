@@ -24,46 +24,46 @@
 
 <main class="content">
     <div class="container">
-    <div class="card border-0">
-    <div class="card-header border-0 bg-transparent">
-        <div class="row">
-            <div class="col-lg-2 col-md-2 col-sm-12">
-                <h5><strong>Всего: {{ count_products }}</strong></h5>
-            </div>
-            <div class="col-lg-10 col-md-10 col-sm-12 text-start mb-3">
-            {% include 'catalog/includes/categories_for_products.html' %}
-            </div>
-         </div>
-    </div>
-    <div class="row align-items-center">
-        {% for object in object_list %}
-        <div class="col-lg-4 col-md-6 col-sm-12 {% translittag object.category %}">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header text-center text-bg-dark">
-                    <a class="prod-white-link" href="{{ object.get_absolute_url }}">
-                        <h4 class="my-0 font-weight-normal">{{ object.product_name|truncatechars:35 }}</h4>
-                    </a>
+        <div class="card border-0">
+        <div class="card-header border-0 bg-transparent">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-12">
+                    <h5><strong>Всего: {{ count_products }}</strong></h5>
                 </div>
-                <div class="card-body text-bg-warning">
-                    <h2 class="card-title pricing-card-title">$ {{ object.unit_price }}</h2>
-                        <p class="card-text">{% autoescape off %}{{ object.prod_annotation }}...{% endautoescape %}
-                        </p>
-                        <p>Категория: {{ object.category }}
-                        </p>
-{#                                <p>{% getversion object.pk %}</p>#}
+                <div class="col-lg-10 col-md-10 col-sm-12 text-start mb-3">
+                {% include 'catalog/includes/categories_for_products.html' %}
                 </div>
-                <div class="card-footer text-bg-warning text-center">
-                    <div class="col-12">
-                        <a class="btn btn-primary w-50" href="{{ object.get_absolute_url }}">
-                            <strong>Подробнее</strong>
+             </div>
+        </div>
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-cols-1 align-items-center">
+            {% for object in object_list %}
+            <div class="col mb-4">
+                <div class="card box-shadow">
+                    <div class="card-header text-center text-bg-dark">
+                        <a class="prod-white-link" href="{{ object.get_absolute_url }}">
+                            <h4 class="my-0 font-weight-normal">{{ object.product_name|truncatechars:35 }}</h4>
                         </a>
+                    </div>
+                    <div class="card-body text-bg-warning">
+                        <h2 class="card-title pricing-card-title">$ {{ object.unit_price }}</h2>
+                            <p class="card-text">{% autoescape off %}{{ object.prod_annotation }}...{% endautoescape %}
+                            </p>
+                            <p>Категория: {{ object.category }}
+                            </p>
+    {#                                <p>{% getversion object.pk %}</p>#}
+                    </div>
+                    <div class="card-footer text-bg-warning text-center">
+                        <div class="col-12">
+                            <a class="btn btn-primary w-50" href="{{ object.get_absolute_url }}">
+                                <strong>Подробнее</strong>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
 
 {% include 'catalog/includes/pagination.html' %}
 

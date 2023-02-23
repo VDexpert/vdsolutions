@@ -100,9 +100,9 @@
         {% if not user.is_authenticated or not user.email == object.user.email %}
         <div class="col-lg-4 col-md-12 col-sm-12">
             <div class="row">
-                <div class="col-md-3 col-lg-12">
+                <div class="col-md-2 col-lg-12 col-12">
                 </div>
-                <div class="col-md-6 col-lg-12">
+                <div class="col-md-8 col-lg-12 col-12">
                     <div class="card mb-5 box-shadow text-center border-warning mx-1 mt-lg-5 mt-md-3">
                         {% if object.user.last_name and object.user.first_name and object.user.stack and object.user.phone and object.user.country %}
                             {% include 'catalog/includes/user_card_for_form_feedback.html' %}
@@ -117,7 +117,7 @@
                                 <input type="hidden" name="post_owner" value="{{ object.user.email }}">
                                 {{ form.as_p }}
                                 <div class="card-footer border-0 px-0 py-0 bg-transparent">
-                                    <button type="submit" class="btn btn-outline-success w-50">
+                                    <button type="submit" class="btn btn-outline-success w-50 px-0">
                                         <strong>Отправить</strong>
                                     </button>
                                 </div>
