@@ -100,9 +100,9 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'catalog:update_product' object.pk %}">
-                                       <img class="mb-2" src="{% static "img/update.png" %}" title="Редактировать продукт">
-                                    </a>
+                                        <a href="{% url 'catalog:update_product' object.pk %}">
+                                           <img class="mb-2" src="{% static "img/update.png" %}" title="Редактировать продукт">
+                                        </a>
                                     {% if not perms.catalog.moderating_products %}
                                         <a href="{% url 'catalog:delete_product' object.pk %}">
                                            <img src="{% static "img/delete.png" %}" title="Удалить продукт">
@@ -110,17 +110,13 @@
                                     {% endif %}
                                 {% if perms.catalog.moderating_products %}
                                     {% if object.banned == 'одобрено модератором' %}
-                                        <div class="col-6">
-                                            <a href="{% url 'users:product_ban' object.pk %}">
-                                                <img src="{% static "img/banned-on.png" %}" title="Забанить продукт">
-                                            </a>
-                                        </div>
+                                        <a href="{% url 'users:product_ban' object.pk %}">
+                                            <img src="{% static "img/banned-on.png" %}" title="Забанить продукт">
+                                        </a>
                                     {% else %}
-                                        <div class="col-6">
-                                            <a href="{% url 'users:product_ban' object.pk %}">
-                                                <img src="{% static "img/banned-off.png" %}" title="Разбанить продукт">
-                                            </a>
-                                        </div>
+                                        <a href="{% url 'users:product_ban' object.pk %}">
+                                            <img src="{% static "img/banned-off.png" %}" title="Разбанить продукт">
+                                        </a>
                                     {% endif %}
                                 {% endif %}
                                 </td>

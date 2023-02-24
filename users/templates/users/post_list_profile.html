@@ -94,7 +94,8 @@
                                 <td class="table-text-break">{% autoescape off %}{{ object.content|truncatechars_html:200 }}{% endautoescape %}
                                 </td>
 
-                                <td><a class="{% if object.banned == 'заблокировано модератором' %}white-link
+                                <td>
+                                    <a class="{% if object.banned == 'заблокировано модератором' %}white-link
                                                 {% else %}dark-link
                                                 {% endif %}" href="{% url 'catalog:category_with_posts' object.category.slug %}">
                                                     {{ object.category }}
@@ -102,17 +103,13 @@
                                 </td>
 
                                 <td>
-                                    <div class="row">
-                                        <div class="col-12 mb-2">
-                                            <a class="img-fluid" href="{% url 'catalog:update_post' object.pk %}">
-                                                <img src="{% static "img/update.png" %}" title="Редактировать статью">
-                                            </a>
-                                        </div>
-                                        <div class="col-12 mb-2">
-                                            {% if not perms.catalog.management_posts and not perms.content.management_category %}
-                                            <a class="img-fluid" href="{% url 'catalog:delete_post' object.pk %}">
-                                                <img src="{% static "img/delete.png" %}" title="Удалить статью">
-                                            </a>
+                                        <a class="img-fluid" href="{% url 'catalog:update_post' object.pk %}">
+                                            <img class="mb-2" src="{% static "img/update.png" %}" title="Редактировать статью">
+                                        </a>
+                                        {% if not perms.catalog.management_posts and not perms.content.management_category %}
+                                        <a class="img-fluid" href="{% url 'catalog:delete_post' object.pk %}">
+                                            <img src="{% static "img/delete.png" %}" title="Удалить статью">
+                                        </a>
                                         {% endif %}
                                         {% if perms.catalog.management_posts or perms.content.management_category %}
                                             {% if object.banned == 'одобрено модератором' %}
@@ -124,7 +121,6 @@
                                                 <img src="{% static "img/banned-off.png" %}" title="Разбанить статью">
                                             </a>
                                             {% endif %}
-                                        </div>
                                     </div>
                                     {% endif %}
                                 </td>
