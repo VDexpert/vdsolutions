@@ -1,3 +1,4 @@
+import os
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.paginator import Paginator
@@ -141,7 +142,6 @@ class ProductDetailView(DetailView):
         context = super().get_context_data()
         context['versions'] = Version.objects.all().filter(product=self.object.pk).order_by('-id')
         context['form'] = self.form
-        #context['object'] = self._cache_product()
 
         return context
 
@@ -402,4 +402,5 @@ def error_404(request, exception):
     context['page_title'] = '404'
     response = render(request, 'catalog/page_404.html', context=context)
     response.status_code = 404
+
     return response
