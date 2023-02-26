@@ -147,7 +147,7 @@ class ProductDetailView(DetailView):
 
     def post(self, form, *args, **kwargs):
         send_mail(
-            subject='''Вопрос по Вашему продукту от посетителя Skystore''',
+            subject='''Вопрос по Вашему продукту от посетителя VDsolutions''',
             message=f'''Продукт '{self.request.POST['product']}'
             \nИмя посетителя: {self.request.POST['name']}
             \nEmail посетителя: {self.request.POST['email']}
@@ -231,7 +231,7 @@ class PostDetailView(DetailView):
 
     def post(self, request, *args, **kwargs):
         send_mail(
-            subject='''Вопрос по Вашей статье от посетителя Skystore''',
+            subject='''Вопрос по Вашей статье от посетителя VDsolutions''',
             message=f'''Статья: '{self.request.POST['post']}'
                         \nИмя посетителя: {self.request.POST['name']}
                         \nEmail посетителя: {self.request.POST['email']}
@@ -362,7 +362,7 @@ class ContactsFormView(FormView):
 
     def form_valid(self, form):
         send_mail(
-            subject='''Обратная связь от посетителя Skystore в форме Контакты''',
+            subject='''Обратная связь от посетителя VDsolutions в форме Контакты''',
             message=f'''Имя посетителя: {form.data['name']}
             \nEmail посетителя: {form.data['email']}
             \nСообщение посетителя: {form.data['message']}''',
