@@ -66,15 +66,17 @@
     </div>
 
 {% include 'catalog/includes/pagination.html' %}
-
-<div class="row">
-    <div class="col-lg-2 col-md-12 col-sm-12"></div>
-    <div class="col-lg-8 col-md-12 col-sm-12">
-        {% if home.description %}
-            {% autoescape off %}{{ home.description }}{% endautoescape %}
-        {% endif %}
-    </div>
-</div>
+     <div class="container mb-5">
+        <div class="row">
+            <div class="col-lg-2 col-md-12 col-sm-12">
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                {% if home.description %}
+                    {% autoescape off %}{{ home.description }}{% endautoescape %}
+                {% endif %}
+            </div>
+        </div>
+     </div>
 </div>
 
 </main>

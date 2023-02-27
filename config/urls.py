@@ -40,6 +40,7 @@ urlpatterns = [
     path('', include('catalog.urls', namespace='catalog')),
     path('account/', include('users.urls',  namespace='users')),
     path('tinymce/', include('tinymce.urls')),
+    path('grappelli/', include('grappelli.urls')),
     re_path(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 

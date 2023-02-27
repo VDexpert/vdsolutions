@@ -41,7 +41,7 @@ class Contacts(models.Model):
     itin = models.CharField(max_length=20, verbose_name='ИНН', **NULLABLE,  help_text='До 20 символов')
     address = models.CharField(max_length=50, verbose_name='Адрес', **NULLABLE,  help_text='До 50 символов')
     phone = models.CharField(max_length=30, verbose_name='Телефон', **NULLABLE,  help_text='До 30 символов')
-    email = models.CharField(max_length=20, verbose_name='Email', **NULLABLE,  help_text='До 20 символов')
+    email = models.CharField(max_length=40, verbose_name='Email', **NULLABLE,  help_text='До 40 символов')
     meta_description = models.CharField(verbose_name='Метатэг Description', max_length=300, **NULLABLE,
                                         help_text='До 300 символов')
     meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE,
