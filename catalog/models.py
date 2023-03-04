@@ -75,8 +75,7 @@ class Product(models.Model):
     )
 
     user = models.ForeignKey(User, verbose_name='Продавец', on_delete=models.CASCADE, **NULLABLE)
-    product_name = models.CharField(max_length=90, verbose_name='Наименование', db_index=True, unique=True,
-                                    help_text='До 90 символов')
+    product_name = models.CharField(max_length=90, verbose_name='Наименование', db_index=True, unique=True, help_text='До 90 символов')
     slug = models.SlugField(max_length=90, verbose_name='URL',  db_index=True, unique=True, null=True)
     picture = models.ImageField(verbose_name='Фото', upload_to='products/', **NULLABLE, help_text='рекомендуемый размер - 2000*1000')
     category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория', db_index=True)
@@ -88,7 +87,6 @@ class Product(models.Model):
     confirm_update_range = models.CharField(choices=CONFIRMS, default=CONFIRM_TRUE, verbose_name='Поднять продукт в ТОП?', max_length=10)
     create_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     change_at = models.DateTimeField(verbose_name='Дата изменения', auto_now=True)
-
     change_range_prod = models.DateTimeField(verbose_name='Рейтинг изменен', **NULLABLE)
     absolute_top = models.IntegerField(verbose_name='Позиция в топе', default=0, **NULLABLE)
 

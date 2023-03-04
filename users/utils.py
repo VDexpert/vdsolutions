@@ -14,7 +14,7 @@ def send_email_for_verify(request, user):
         'token': token_generator.make_token(user),
     }
     message = render_to_string('users/mails/verify_email.html', context=context,)
-    email = EmailMessage('Завершение регистрации на сайте Skystore', message, to=[user.email],)
+    email = EmailMessage('Завершение регистрации на сайте VDsolutions', message, to=[user.email],)
 
     email.send()
 
@@ -28,6 +28,6 @@ def send_email_for_reset(request, email, new_password):
     }
 
     message = render_to_string('users/mails/password_reset_email.html', context=context,)
-    email = EmailMessage('Восстановление пароля на сайте Skystore', message, to=[email])
+    email = EmailMessage('Восстановление пароля на сайте VDsolutions', message, to=[email])
 
     email.send()

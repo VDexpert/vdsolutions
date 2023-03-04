@@ -21,7 +21,7 @@
   flex-shrink: 0;
 }
 
-.bg-preview {
+.bg-post-preview {
   filter: brightness(50%);
 }
 
@@ -48,7 +48,7 @@ a.prod-white-link {
 }
 a.prod-white-link:hover {
     color: #ffc107;
-   }
+}
 
 a.dark-link {
     color: #000000;

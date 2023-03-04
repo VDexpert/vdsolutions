@@ -9,7 +9,7 @@ app_name = CatalogConfig.name
 
 urlpatterns = [
     path('', ProductHomeListView.as_view(), name='home'),
-    path('contact/', ContactsFormView.as_view(), name='contacts'),
+    path('contacts/', ContactsFormView.as_view(), name='contacts'),
     path('category-<str:slug>/', CategoryWithProductsDetailView.as_view(), name='category_with_products'),
     path('category-<str:cat_slug>/<str:prod_slug>/', ProductDetailView.as_view(), name='product_detail'),
     path('create-category/', CategoryCreateView.as_view(), name='create_category'),
@@ -24,8 +24,8 @@ urlpatterns = [
     path('update-product/<int:pk>/', ProductWithVersionUpdateView.as_view(), name='update_product'),
     path('delete-product/<int:pk>/', ProductDeleteView.as_view(), name='delete_product'),
     path('page-not-found/', TemplateView.as_view(template_name='catalog/page_404.html'), name='double_404_page'),
-    path('thank-for-feedback/', TemplateView.as_view(template_name='catalog/after_feedback_page.html'), name='after_feedback'),
-    path('thank-for-ordering/', TemplateView.as_view(template_name='catalog/after_ordering_page.html'), name='after_ordering'),
+    path('thank-for-feedback/', TemplateView.as_view(template_name='catalog/service/after_feedback_page.html'), name='after_feedback'),
+    path('thank-for-ordering/', TemplateView.as_view(template_name='catalog/service/after_ordering_page.html'), name='after_ordering'),
     path('update-blog/', ChangeBlogUpdateView.as_view(), name='update_blog'),
 
 ]

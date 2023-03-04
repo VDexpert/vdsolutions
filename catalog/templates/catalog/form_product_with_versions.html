@@ -21,7 +21,7 @@
     {% else %}
         <div class="col-lg-5 col-md-12 col-sm-12">
     {% endif %}
-            <div class="card box-shadow border-warning mx-md-5 mt-5 mx-3 mx-lg-2 mb-md-3 mb-sm-3 mb-3 {% if perms.catalog.moderating_products and not exist_versions %}mb-5{% endif %}">
+            <div class="card box-shadow border-dark mx-md-5 mt-5 mx-3 mx-lg-2 mb-md-3 mb-sm-3 mb-3 {% if perms.catalog.moderating_products and not exist_versions %}mb-5{% endif %}">
                 <div class="card-header text-bg-warning py-1 text-center px-0">
                     {% if object.get_absolute_url %}
                 <h3>Редактирование продукта</h3>

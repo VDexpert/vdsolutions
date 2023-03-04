@@ -1,10 +1,9 @@
-import os
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.paginator import Paginator
 from catalog.forms import PostForm, CategoryFormUpdate, CategoryFormCreate, FeedbackForm, ChangeBlogForm
 from catalog.models import *
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, FormView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, FormView
 from catalog.auxfunc import translit
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -31,7 +30,7 @@ class ProductHomeListView(ListView):
 
 class CategoryCreateView(CreateView):
     model = Category
-    template_name = 'catalog/form_category.html'
+    template_name = 'catalog/category_form.html'
     form_class = CategoryFormCreate
     success_url = reverse_lazy('users:categories_for_content_manager')
 
@@ -50,7 +49,7 @@ class CategoryCreateView(CreateView):
 
 class CategoryUpdateView(UpdateView):
     model = Category
-    template_name = 'catalog/form_category.html'
+    template_name = 'catalog/category_form.html'
     form_class = CategoryFormUpdate
     success_url = reverse_lazy('users:categories_for_content_manager')
 
@@ -245,7 +244,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(CreateView):
     model = Post
-    template_name = 'catalog/form_post.html'
+    template_name = 'catalog/post_form.html'
     form_class = PostForm
 
     def get(self, request, *args, **kwargs):
@@ -283,7 +282,7 @@ class PostCreateView(CreateView):
 
 class PostUpdateView(UpdateView):
     model = Post
-    template_name = 'catalog/form_post.html'
+    template_name = 'catalog/post_form.html'
     form_class = PostForm
 
     def get(self, request, *args, **kwargs):
@@ -375,7 +374,7 @@ class ContactsFormView(FormView):
 
 class ChangeBlogUpdateView(UpdateView):
     model = Blog
-    template_name = 'catalog/form_blog.html'
+    template_name = 'catalog/blog_form.html'
     form_class = ChangeBlogForm
 
     def get(self, request, *args, **kwargs):

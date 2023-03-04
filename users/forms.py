@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.core.exceptions import ValidationError
 from catalog.forms_mixin import StyleFormMixin
 from catalog.models import Product
 from users.models import User
@@ -42,9 +41,7 @@ class CustomAuthenticationForm(AuthenticationForm):
 
                 if not self.user_cache.email_verify:
                     send_email_for_verify(self.request, self.user_cache)
-                    self.add_error('username', '''Ваша регистрация не была завершена, проверьте почту - 
-                    мы отправили письмо с завершением регистрации. Оно могло попасть в папку "Спам"''')
-                    #raise ValidationError('Ваша регистрация не была завершена, проверьте почту')  TODO: разобраться, почему эта команда не работает
+                    self.add_error('username', '''Ваша регистрация не была завершена, мы отправили Вам письмо с завершением регистрации - проверьте почту''')
 
                 else:
                     self.confirm_login_allowed(self.user_cache)
@@ -67,8 +64,7 @@ class CustomPasswordResetForm(StyleFormMixin, forms.Form):
         else:
 
             if not user.email_verify:
-                self.add_error('email', '''Ваша регистрация не была завершена, проверьте почту - 
-                    мы отправили письмо с завершением регистрации. Оно могло попасть в папку "Спам"''')
+                self.add_error('email', '''Ваша регистрация не была завершена, мы отправили Вам письмо с завершением регистрации - проверьте почту''')
                 return False
 
             return email

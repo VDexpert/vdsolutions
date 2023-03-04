@@ -87,7 +87,7 @@ class LoginUser(LoginView):
         super().get(request, *args, **kwargs)
 
         if self.request.user.is_authenticated:
-            return redirect('users:user_products')
+            return HttpResponseRedirect(self.get_success_url())
 
         return self.render_to_response(self.get_context_data())
 
@@ -250,7 +250,7 @@ class CustomPasswordResetFormView(FormView):
 
 
 class ConfirmEmailTemplateView(TemplateView):
-    template_name ='users/confirm_email.html'
+    template_name = 'users/service/confirm_email.html'
 
     def get(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -262,7 +262,7 @@ class ConfirmEmailTemplateView(TemplateView):
 
 
 class ConfirmResetPasswordTemplateView(TemplateView):
-    template_name ='users/reset_password_confirm.html'
+    template_name = 'users/service/after_reset_password.html'
 
     def get(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -274,7 +274,7 @@ class ConfirmResetPasswordTemplateView(TemplateView):
 
 
 class InvalidVerifyTemplateView(TemplateView):
-    template_name = 'users/errors/invalid_verify.html'
+    template_name = 'users/service/invalid_verify.html'
 
     def get(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -325,7 +325,7 @@ class ChangeProductBannedUpdateView(UpdateView):
 
             try:
                 send_mail(
-                    subject='''Ваш продукт на портале Skystore разбанен''',
+                    subject='''Ваш продукт на портале VDsolutions разбанен''',
                     message=f'''Продукт '{obj.product_name}' разбанен. {reason_ban}. Если у Вас есть вопросы, Вы можете написать модератору на почту {self.request.user.email}''',
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[obj.user.email,]
@@ -345,7 +345,7 @@ class ChangeProductBannedUpdateView(UpdateView):
 
             try:
                 send_mail(
-                    subject='''Ваш продукт на портале Skystore забанен''',
+                    subject='''Ваш продукт на портале VDsolutions забанен''',
                     message=f'''Продукт: '{obj.product_name}' забанен. \nПричины бана: {reason_ban}. Если у Вас есть вопросы. Вы можете написать модератору на почту {self.request.user.email}''',
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[obj.user.email,]
@@ -378,7 +378,7 @@ class CategoryUserListView(ListView):
 
 
 class ErrorPermissionTemplateView(TemplateView):
-    template_name = 'users/errors/permission_error.html'
+    template_name = 'users/service/permission_error.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -422,7 +422,7 @@ class ChangePostBannedUpdateView(UpdateView):
 
             try:
                 send_mail(
-                    subject='''Ваша публикация на портале Skystore разбанена''',
+                    subject='''Ваша публикация на портале VDsolutions разбанена''',
                     message=f'''Публикация '{obj.title}' разбанена. {reason_ban}. Если у Вас есть вопросы, Вы можете написать модератору на почту {self.request.user.email}''',
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[obj.user.email, ]
@@ -442,7 +442,7 @@ class ChangePostBannedUpdateView(UpdateView):
 
             try:
                 send_mail(
-                    subject='''Ваша публикация на портале Skystore забанена''',
+                    subject='''Ваша публикация на портале VDsolutions забанена''',
                     message=f'''Публикация: '{obj.title}' забанена. \nПричины бана: {reason_ban}. Если у Вас есть вопросы. Вы можете написать модератору на почту {self.request.user.email}''',
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[obj.user.email, ]
