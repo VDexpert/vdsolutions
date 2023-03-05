@@ -77,11 +77,11 @@
 {% if not perms.catalog.moderating_products and not perms.catalog.management_category and not perms.catalog.management_posts %}
     {% if not user.first_name or not user.last_name or not user.phone or not user.country or not user.stack %}
         <div class="card-footer text-bg-danger text-center mx-3">
-            <span>Заполните профиль - это повысит доверие посетителей Skystore</span>
+            <span>Заполните профиль - это повысит доверие посетителей VDsolutions</span>
         </div>
         {% elif not user.avatar %}
         <div class="card-footer text-bg-danger text-center mx-3">
-            <span>Загрузите фото - это повысит доверие посетителей Skystore</span>
+            <span>Загрузите фото - это повысит доверие посетителей VDsolutions</span>
         </div>
     {% endif %}
 {% endif %}
