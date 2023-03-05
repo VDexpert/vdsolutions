@@ -42,13 +42,13 @@
         </div>
         <div class="col-lg-7 col-md-12 col-sm-12">
         {% if perms.catalog.moderating_products and exist_versions %}
-            <div class="card border-warning mb-5 mt-lg-5 mx-md-5 mx-lg-2 mx-3">
-                <div class="card-header text-bg-warning">
+            <div class="card border-dark mb-5 mt-lg-5 mx-md-5 mx-lg-2 mx-3">
+                <div class="card-header text-bg-warning py-2">
                         <h5>Версии продукта</h5>
                 </div>
             {% elif not perms.catalog.moderating_products %}
-                <div class="card border-warning mb-5 mt-lg-5 mx-md-5 mx-lg-2 mx-3">
-                <div class="card-header text-bg-warning py-1">
+                <div class="card border-dark mb-5 mt-lg-5 mx-md-5 mx-lg-2 mx-3">
+                <div class="card-header text-bg-warning py-2">
                         <h5>Версии продукта</h5>
                 </div>
             {% endif %}

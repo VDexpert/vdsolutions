@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="col-lg-3 col-md-12 col-sm-12 col-12">
-    <div class="card border-warning my-5 td-table-info">
+    <div class="card border-dark my-5 td-table-info">
         {% if not user.avatar %}
             {% if user.gender == 'женский' %}
                 <img src="{% static 'img/womannoimage.png' %}" class="card-img-top">
@@ -53,7 +53,7 @@
             <tbody>
                 <tr>
                     <td class="col-3">Email:</td>
-                    <td class="col-9">{{ user.email|truncatechars:14 }}</td>
+                    <td class="col-9">{{ user.email|truncatechars:13 }}</td>
                 </tr>
                 <tr>
                     <td class="col-3">Пол:</td>
