@@ -96,3 +96,12 @@ a.add-row {
 .main-menu-desktop {
     flex-grow: 1;
 }
+
+a.filter-link {
+    text-decoration: unset;
+}
+
+button.filter-button {
+    border-radius: 0;
+
+}

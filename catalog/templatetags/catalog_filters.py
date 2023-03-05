@@ -3,6 +3,7 @@ from django.template.defaultfilters import stringfilter
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from catalog.models import Version, Category, Product
+import re
 
 register = template.Library()
 
@@ -39,3 +40,8 @@ def getcategories(user, autoescape=False):
         esc = lambda x: x
 
     return [x for x in Category.objects.all() if Product.objects.all().filter(status=Product.STATUS_ACTIVE, banned=Product.BANNED_FALSE, category=x).first()]
+
+
+@register.filter()
+def checkurlpath(path, name_filter):
+    return True if re.findall(name_filter, path) else False

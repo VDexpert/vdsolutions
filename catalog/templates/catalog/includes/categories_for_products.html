@@ -1,9 +1,14 @@
 {%  load catalog_tags %}
+{% load catalog_filters %}
 
 <div class="filter">
     {% for object in categories %}
-        <a style="text-decoration: unset" href="{% url 'catalog:category_with_products' object.slug %}">
-            <button class="button text-bg-primary my-1 mx-1">{{ object.category_name }}</button>
+        <a class="filter-link" href="{% url 'catalog:category_with_products' object.slug %}">
+        {% if request.path|checkurlpath:object.slug %}
+            <button class="filter-button btn btn-light my-1 mx-1 border-dark disabled"><strong>{{ object.category_name }}</strong></button>
+        {% else %}
+            <button class="filter-button btn btn-primary my-1 mx-1">{{ object.category_name }}</button>
+        {% endif %}
         </a>
   {% endfor %}
 </div>
