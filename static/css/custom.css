@@ -103,5 +103,28 @@ a.filter-link {
 
 button.filter-button {
     border-radius: 0;
+}
 
+.ban-form {
+    max-width: 450px;
+}
+
+.login-register-reset-form {
+    max-width: 400px;
+}
+
+.delete-form {
+  max-width: 360px;
+}
+
+.update-profile-form {
+    max-width: 450px;
+}
+
+.update-range-prod-form {
+    max-width: 450px;
+}
+
+.media-form {
+    max-width: 600px;
 }
