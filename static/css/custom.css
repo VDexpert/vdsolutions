@@ -22,7 +22,7 @@
 }
 
 .bg-post-preview {
-  filter: brightness(50%);
+  background-color: rgb(100%, 76%, 3%, 0.5);
 }
 
 .post-white-link {
