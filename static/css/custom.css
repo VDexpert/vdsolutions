@@ -22,12 +22,12 @@
 }
 
 .bg-post-preview {
-  background-color: rgb(100%, 76%, 3%, 0.5);
+  filter: brightness(50%);
 }
 
 .post-white-link {
-    color: #ffffff;
-    text-decoration: unset;
+color: #ffffff;
+text-decoration: unset;
 }
 
 .post-white-link:hover {
