@@ -2,6 +2,7 @@
 
     {% load static %}
     {% load user_agents %}
+    {% load tz %}
 
 {% block content %}
 
@@ -41,7 +42,7 @@
                     </p>
                     {% if user.is_authenticated and object.user.pk == user.pk or perms.catalog.management_posts %}
                         <p class="card-text">
-                            <small class="text-muted">Изменено: {{ object.change_at }}</small>
+                            <small class="text-muted">Изменено: {{ object.change_at|timezone:"Europe/Moscow" }}</small>
                         </p>
                     {% endif %}
                     <p class="card-text">{% autoescape off %}{{ object.content|linebreaks }}{% endautoescape %}

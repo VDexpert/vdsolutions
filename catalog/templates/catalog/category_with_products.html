@@ -48,7 +48,7 @@
         <div class="row row-cols-lg-2 row-cols-xl-3 row-cols-md-2 row-cols-sm-1 row-cols-1 align-items-center">
             {% for object in products %}
             <div class="col mb-4">
-                <div class="card box-shadow">
+                <div class="card box-shadow h-100">
                     <div class="card-header text-center text-bg-dark">
                         <a class="prod-white-link" href="{{ object.get_absolute_url }}">
                             <h4 class="my-0 font-weight-normal">{{ object.product_name|truncatechars:35 }}</h4>

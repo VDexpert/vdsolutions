@@ -43,9 +43,9 @@
             </div>
         </div>
     </div>
-        <div class="row">
+        <div class="row row-cols-lg-2 row-cols-xl-3 row-cols-md-2 row-cols-sm-1 row-cols-1 d-flex justify-content-center">
             {% for object in posts %}
-            <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="col-12">
                 <div class="card text-bg-dark border-0 mb-4">
                     <div class="wrapper-post exmpl">
                         <img  class="card-img bg-post-preview" src="{% if object.picture %}{{ object.picture.url }}
