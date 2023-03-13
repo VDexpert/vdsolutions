@@ -14,6 +14,8 @@ class Home(models.Model):
     description = tinymce_models.HTMLField(verbose_name='Содержание', **NULLABLE)
     meta_description = models.CharField(verbose_name='Метатэг description', max_length=300, **NULLABLE, help_text='До 300 символов')
     meta_keywords = models.CharField(max_length=150, verbose_name='Метатег Keywords', **NULLABLE, help_text='До 150 символов')
+    yandex_counter = models.CharField(max_length=1000, verbose_name='Счетчик Яндекс-Метрика', **NULLABLE)
+    google_counter = models.CharField(max_length=1000, verbose_name='Счетчик Google Analytics', **NULLABLE)
 
     class Meta():
         verbose_name = 'Главная страница'

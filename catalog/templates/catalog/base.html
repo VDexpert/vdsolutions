@@ -1,5 +1,6 @@
 {% load static %}
 {% load catalog_filters %}
+{% load catalog_tags %}
 {% load user_agents %}
 {% load users_filters%}
 
@@ -50,5 +51,7 @@
     </div>
 </footer>
 <script src="{% static 'js/bootstrap.js' %}"></script>
+{% autoescape off %}{% getyandexcounter %}{% endautoescape %}
+{% autoescape off %}{% getgooglecounter %}{% endautoescape %}
 </body>
 </html>

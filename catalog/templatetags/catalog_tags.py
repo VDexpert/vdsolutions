@@ -1,6 +1,6 @@
 from django import template
 from catalog.auxfunc import translit
-from catalog.models import Version, Contacts
+from catalog.models import Version, Contacts, Home
 import re
 
 register = template.Library()
@@ -49,3 +49,25 @@ def getphone():
         return Contacts.objects.all().first().phone
 
     return 'False phone'
+
+
+@register.simple_tag()
+def getyandexcounter():
+    if Home.objects.all().first():
+        if Home.objects.all().first().yandex_counter:
+            return Home.objects.all().first().yandex_counter
+        else:
+            return ""
+
+    return ""
+
+
+@register.simple_tag()
+def getgooglecounter():
+    if Home.objects.all().first():
+        if Home.objects.all().first().google_counter:
+            return Home.objects.all().first().google_counter
+        else:
+            return ""
+
+    return ""
