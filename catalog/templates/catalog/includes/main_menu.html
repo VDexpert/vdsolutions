@@ -58,16 +58,18 @@
             <li class="main-menu-desktop nav-item">
               <a class="nav-link disabled" >{% getemail %}</a>
             </li>
-        </ul>
-      <ul class="d-flex">
           {% if not user.is_authenticated %}
-            <a class="p-2 btn btn-outline-dark w-30 float-end mt-2" href="{% url 'users:login' %}">
-                <strong>Войти</strong>
-            </a>
+              <li class="main-menu-desktop nav-item">
+                <a class="p-2 btn btn-outline-dark w-30 float-end" href="{% url 'users:login' %}">
+                    <strong>Войти</strong>
+                </a>
+              </li>
           {% else %}
-              <a class="p-2 btn btn-outline-dark w-30 float-end mt-2" href="{% url 'users:logout' %}">
+              <li class="main-menu-desktop nav-item">
+                <a class="p-2 btn btn-outline-dark w-30 float-end" href="{% url 'users:logout' %}">
                   <strong>Выйти</strong>
-              </a>
+                </a>
+              </li>
           {% endif %}
       </ul>
     </div>
